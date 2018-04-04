@@ -2,8 +2,10 @@
 
 ### PREFERENCES/QUESTIONS WHEN YOU SIGN UP:
 - type of race: 5K, 10K, HM, M
-- training days per week: 1 - 7
+- training days per week: 1 - 7 AND specify which days per week you will run
 - runner level: Beginner vs Intermediate
+- first run date: the start of the scheduled plan 
+- race date: the day of the race
 - we will also include the option to upload or manually input any past training info. (NOTE: allow for the option to edit preferences) `date`, `miles`, `time run`, `workout`, `long run`, `race`
 
 
