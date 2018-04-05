@@ -6,35 +6,6 @@ file_path = '../users/master_users.csv'
 
 app = Flask(__name__)
 
-
-####################
-# # config
-# app.config.update(
-#     DEBUG=True,
-#     SECRET_KEY='secret_xxx'
-# )
-#
-# # flask-login
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view = "login"
-#
-#
-# # silly user model
-# class User(UserMixin):
-#     def __init__(self, id):
-#         self.id = id
-#         self.name = "user" + str(id)
-#         self.password = self.name + "_secret"
-#
-#     def __repr__(self):
-#         return "%d/%s/%s" % (self.id, self.name, self.password)
-#
-#
-# # create some users with ids 1 to 20
-# users = [User(id) for id in range(1, 21)]
-####################
-
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -86,8 +57,8 @@ def login():
 def showSignup():
     return render_template('signup.html')
 
-@app.route('/signUp', methods=['POST'])
-def signUp():
+@app.route('/home', methods=['POST'])
+def home():
     # read the posted values from the UI
     _name = request.form['inputName']
     _email = request.form['inputEmail']
@@ -120,13 +91,13 @@ def signUp():
         myFile.close()
 
         # return render_template('home.html', username=_name)
-        return json.dumps({'html': '<span>Good job</span>'})
+        return render_template('home.html', name=_name)
     else:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
 
-@app.route('/home/<string:username>')
-def home(username):
-    return render_template('home.html', username=username)
+# @app.route('/home/<string:username>')
+# def home(username):
+#     return render_template('home.html', username=username)
 
 if __name__ == "__main__":
     app.run()
