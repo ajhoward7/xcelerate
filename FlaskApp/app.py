@@ -79,7 +79,7 @@ def home():
         for row in reader:
             if _name == row[0] or _email == row[1]:
                 flag = 'In file'
-                return json.dumps({'html': '<span>Enter the required fields</span>'})
+                return render_template('signup.html')
 
         # write only if the user's email or name does not exist
         if flag == 'Not in file':
@@ -93,11 +93,7 @@ def home():
         # return render_template('home.html', username=_name)
         return render_template('home.html', name=_name)
     else:
-        return json.dumps({'html': '<span>Enter the required fields</span>'})
-
-# @app.route('/home/<string:username>')
-# def home(username):
-#     return render_template('home.html', username=username)
+        return render_template('signup.html')
 
 if __name__ == "__main__":
     app.run()
