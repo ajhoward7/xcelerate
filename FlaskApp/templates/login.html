@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Xcelerate signup page</title>
-
+    <title>Xcelerate login page</title>
 
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link href="../static/signup.css" rel="stylesheet">
 
   </head>
@@ -15,18 +12,16 @@
 
       <div class="jumbotron">
         <h1 align = 'center'>Xcelerate</h1>
-        <form class="form-signin">
+        <form class="form-signin" action="{{url_for('home2')}}" method="post">
         <label for="inputName" class="sr-only">Name</label>
         <input type="text" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
         <p class="lead"></p>
-        <center><a id="btnLogin" class="btn btn-lg btn-success" href="/home/{{username}}" role="button">Log In</a></center>
 
-        <!--<button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Log In</button>-->
-        <script src="../static/js/jquery-3.3.1.min.js"></script>
-        <script src="../static/js/logIn.js"></script>
-      </form>
+        <center><input id="btnSignUp" class="btn btn-lg btn-success" href="home2" value="Submit" type="submit"></center>
+
+       </form>
       </div>
 
 
