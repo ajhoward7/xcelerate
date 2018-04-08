@@ -5,10 +5,6 @@ file_path = '../users/master_users.csv'
 
 app = Flask(__name__)
 
-# @app.route("/")
-# def index():
-#     return render_template('index.html')
-
 @app.route("/")
 def login():
     return render_template('login.html')
@@ -61,9 +57,30 @@ def racetype():
         myFile.close()
 
         # return render_template('home.html', username=_name)
-        return render_template('test.html')
+        return render_template('racetype.html')
     else:
         return render_template('signup.html')
+
+@app.route("/daysperweek", methods=['POST'])
+def daysperweek():
+    print(request.form['typerace'])
+    return render_template('daysperweek.html')
+
+@app.route("/runlevel", methods=['POST'])
+def runlevel():
+    print(request.form.getlist('dayofweek'))
+    return render_template('runerlevel.html')
+
+@app.route("/dates", methods=['POST'])
+def dates():
+    print(request.form['runlevel'])
+    return render_template('dates.html')
+
+@app.route("/home2",methods=["POST"])
+def backhome():
+    print(request.form['startdate'])
+    print(request.form['enddate'])
+    return render_template('home.html')
 
 if __name__ == "__main__":
     app.run()
