@@ -5,16 +5,16 @@ file_path = '../users/master_users.csv'
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return render_template('index.html')
+# @app.route("/")
+# def index():
+#     return render_template('index.html')
 
-@app.route("/login")
+@app.route("/")
 def login():
     return render_template('login.html')
 
-@app.route("/home2",methods=["POST"])
-def home2():
+@app.route("/home",methods=["POST"])
+def home():
     username = request.form['inputName']
     password = request.form['inputPassword']
     myFile = open(file_path, 'r+')
@@ -32,8 +32,8 @@ def home2():
 def showSignup():
     return render_template('signup.html')
 
-@app.route('/home', methods=['POST'])
-def home():
+@app.route('/racetype', methods=['POST'])
+def racetype():
     # read the posted values from the UI
     _name = request.form['inputName']
     _email = request.form['inputEmail']
@@ -61,7 +61,7 @@ def home():
         myFile.close()
 
         # return render_template('home.html', username=_name)
-        return render_template('home.html', name=_name)
+        return render_template('test.html')
     else:
         return render_template('signup.html')
 
