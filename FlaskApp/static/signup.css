@@ -37,9 +37,12 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.container {
+    padding: 10px;
+}
 /* Style the submit button with a specific background color etc */
 input[type=submit] {
-    background-color: #4d73be;
+    background-color: #4270c1;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -53,4 +56,9 @@ img.resize {
   margin-right: auto;
   max-width:20%;
   max-height:20%;
+}
+.sinup {
+    margin:1.5em;
+    padding:1em;
+    text-align:center;
 }

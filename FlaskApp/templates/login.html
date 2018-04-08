@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Xcelerate login page</title>
 
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,7 +11,7 @@
 
   <body>
 
-      <div>
+      <div class="container">
         <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
         <h4 align = 'center'><font color="#4d73be">Log In</font></h4>
 
@@ -24,13 +25,15 @@
         <p class="lead"></p>
 
         <center><input id="btnSignUp" class="btn btn-lg btn-success" href="home2" value="Submit" type="submit"></center>
-
         </form>
 
       </div>
+      <div style = 'text-align:center;'>
+        <a href="showSignup">Sign up</a>
+      </div>
 
+      <footer>
 
-      <footer class="footer">
         <center>&copy; Xcelerate 2018</center>
       </footer>
 
