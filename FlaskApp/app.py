@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import os
 import csv
 import json
+from algorithms import *
 
 master_file_path = '../users/master_users.csv'
 users_folder_file_path = '../users/'
@@ -63,6 +64,12 @@ def createUsers():
 
         new_path = users_folder_file_path + username
         os.makedirs(new_path)
+
+        p = open(new_path + '/past_training.csv', 'w')
+        p.close()
+
+        f = open(new_path + '/future_training.csv', 'w')
+        f.close()
 
         return redirect(url_for('.racetype', username=username))
     else:
@@ -133,6 +140,45 @@ def backhome(username):
         json_file.truncate()
 
     return redirect(url_for('.home', username=username))
+
+@app.route('/inputs/<username>')
+def render(username):
+    return render_template('inputs.html', username=username)
+
+@app.route('/home/<username>/results', methods=["POST"])
+def inputs(username):
+    new_path = users_folder_file_path + username
+
+    racelevel = request.form['racelevel']
+    numdays = request.form['numdays']
+    print(racelevel, numdays)
+
+    myFile = open(new_path + '/past_training.csv', 'r+')
+
+    myData = []
+    myData.append([racelevel, numdays])
+
+    writer = csv.writer(myFile)
+    writer.writerows(myData)
+    myFile.close()
+
+    output = algorithm(racelevel, numdays)
+
+    myFile = open(new_path + '/future_training.csv', 'r+')
+
+    myData = []
+    myData.append([output])
+
+    writer = csv.writer(myFile)
+    writer.writerows(myData)
+    myFile.close()
+
+    # return redirect(url_for('.results', username = username, output = output))
+    return render_template('results.html', name=username, output=output)
+
+# @app.route('/results/<username>')
+# def results(username, output):
+#     return render_template('results.html', name = username, output = output)
 
 if __name__ == "__main__":
     app.run()
