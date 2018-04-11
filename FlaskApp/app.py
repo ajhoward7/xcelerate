@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import csv
 
-file_path = '../users/master_users.csv'
+mater_file_path = '../users/master_users.csv'
 
 app = Flask(__name__)
 
@@ -9,20 +9,24 @@ app = Flask(__name__)
 def login():
     return render_template('login.html')
 
-@app.route("/home",methods=["POST"])
-def home():
+@app.route("/authenicate",methods=["POST"])
+def authenticate():
     username = request.form['inputName']
     password = request.form['inputPassword']
-    myFile = open(file_path, 'r+')
+    myFile = open(mater_file_path, 'r+')
     reader = csv.reader(myFile, delimiter=',')
 
     # check database whether the user's name or email already exists
     for row in reader:
         if (username == row[0] or username == row[1]) and password == row[2]:
-            return render_template('home.html', name=row[0])
+            return redirect(url_for('.home', username=row[0]))
 
     myFile.close()
-    return render_template('login.html')
+    return redirect(url_for('login'))
+
+@app.route("/home/<username>")
+def home(username):
+    return render_template('home.html', name=username)
 
 @app.route("/showSignup")
 def showSignup():
@@ -31,23 +35,23 @@ def showSignup():
 @app.route('/racetype', methods=['POST'])
 def racetype():
     # read the posted values from the UI
-    _name = request.form['inputName']
-    _email = request.form['inputEmail']
-    _password = request.form['inputPassword']
+    username = request.form['inputName']
+    email = request.form['inputEmail']
+    password = request.form['inputPassword']
 
     # validate the received values
-    if _name and _email and _password:
+    if username and email and password:
         # write in the users file
         myData = []
-        myData.append([_name, _email, _password])
+        myData.append([username, email, password])
 
-        myFile = open(file_path, 'r+')
+        myFile = open(mater_file_path, 'r+')
 
         reader = csv.reader(myFile, delimiter=',')
         # check database whether the user's name or email already exists
         for row in reader:
-            if _name == row[0] or _email == row[1]:
-                # flag = 'In file'
+            if username == row[0] or email == row[1]:
+
                 return render_template('signup.html')
 
         # write only if the user's email or name does not exist
@@ -63,23 +67,31 @@ def racetype():
 
 @app.route("/daysperweek", methods=['POST'])
 def daysperweek():
+    ###
     print(request.form['typerace'])
+    ###
     return render_template('daysperweek.html')
 
 @app.route("/runlevel", methods=['POST'])
 def runlevel():
+    ###
     print(request.form.getlist('dayofweek'))
+    ###
     return render_template('runerlevel.html')
 
 @app.route("/dates", methods=['POST'])
 def dates():
+    ###
     print(request.form['runlevel'])
+    ###
     return render_template('dates.html')
 
 @app.route("/home2",methods=["POST"])
 def backhome():
+    ###
     print(request.form['startdate'])
     print(request.form['enddate'])
+    ###
     return render_template('home.html')
 
 if __name__ == "__main__":
