@@ -12,13 +12,13 @@
   <body>
   <div class="container">
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
-     <h4 align = 'center'><font color="#4d73be">What is you running level?</font></h4>
+     <h4 align = 'center'><font color="#4d73be">What is the start and end date of when you want to train?</font></h4>
 
     <form class="form-signin" method="post" action="{{url_for('backhome', username=username)}}">
         <center>
-          Start date of race
+          Start date
           <input type="date" id = 'startdate' name="startdate" required autofocus><br>
-          End date of race
+          End date
           <input type="date" id = 'enddate' name="enddate" required autofocus><br>
 
           <input class="btn btn-lg btn-success" type="submit" value="Submit">
