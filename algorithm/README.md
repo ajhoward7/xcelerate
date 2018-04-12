@@ -14,7 +14,7 @@ A full training plan will be created when the plan is initialised and this will 
 - The runner will have a checkbox to provide feedback on how their week has gone (too hard / about right / too easy), which will further adjust their tranining by factor of 20%  
 
 **Deciding weekly mileage levels:**
-- NOVICE: Peak mileage levels for each distance will be pre-defined by us, each plan will start art 50% of this and increase the level by 10% every 2nd week
+- NOVICE: Peak mileage levels for each distance will be pre-defined by us, each plan will start at 50% of this and increase the level by 10% every 2nd week
 - INTERMEDIATE -- looking to keep training steady: mileage will remain approximately constant with a 5 mile reduction every 3rd week
 - INTERMEDIATE -- looking to increase training: mileage will start at previous levels and increase by 10% every 2nd week until increased by 50%
 
