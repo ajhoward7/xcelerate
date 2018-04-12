@@ -18,7 +18,7 @@ A full training plan will be created when the plan is initialised and this will 
 - INTERMEDIATE -- looking to keep training steady: mileage will remain approximately constant with a 5 mile reduction every 3rd week
 - INTERMEDIATE -- looking to increase training: mileage will start at previous levels and increase by 10% every 2nd week until increased by 50%
 
-**Information we need to perform this algorithm:**
+**Information we need to perform this algorithm (i.e. preferences / information provided):**
 
 NOVICE:
 - Number of days willing to run per week
