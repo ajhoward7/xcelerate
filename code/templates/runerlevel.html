@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xcelerate days per week</title>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/signup.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+  <div class="container">
+     <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
+     <h4 align = 'center'><font color="#4d73be">What is your running level?</font></h4>
+
+    <form class="form-signin" method="post" action="{{url_for('dates', username=username)}}">
+
+          <input type="radio" name="runlevel" value="beginner" required autofocus> Beginner<br>
+          <input type="radio" name="runlevel" value="intermediate" required autofocus> Intermediate<br>
+        <center>
+          <input class="btn btn-lg btn-success" type="submit" value="Submit">
+        </center>
+    </form>
+  </div>
+  </body>
+</html>
+
