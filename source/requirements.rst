@@ -1,4 +1,0 @@
-Requirements
-============
-
-requirements.txt

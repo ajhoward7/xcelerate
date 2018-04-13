@@ -1,1 +1,0 @@
-{"username": "alex", "dayofweek": ["Thursday"], "enddate": "2018-04-26", "typerace": "5k", "startdate": "2018-04-25", "runlevel": "beginner"}
