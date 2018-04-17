@@ -26,7 +26,7 @@ def get_preferences(user):
 
 def get_run_vector(distance, level):
     """
-    Obtain appropriate run vector given specific prefences
+    Obtain appropriate run vector given specific preferences ----- JAKE
     """
 
 
@@ -41,7 +41,7 @@ def build_plan(preferences, run_vector):
 
     weeks_of_plan = how_many_weeks_left(preferences['race_date'], preferences['start_date'])  # Jake
 
-    days_per_week = generate_run_days(preferences, weeks_of_plan)
+    days_per_week = generate_run_days(preferences, weeks_of_plan)  # Holly
 
     miles_per_week = generate_mpw(preferences, weeks_of_plan)
 
