@@ -42,7 +42,16 @@
           <div class="body" role="main">
             
   <h1>Source code for algorithms</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="algorithm"><a class="viewcode-back" href="../algorithm.html#algorithms.algorithm">[docs]</a><span></span><span class="k">def</span> <span class="nf">algorithm</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">):</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">input1 : the level of difficulty of the previous week</span>
+<span class="sd">input2 : the days the user trained the previous week</span>
+
+<span class="sd">This function returns the days the user will train</span>
+<span class="sd">the following week</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="algorithm"><a class="viewcode-back" href="../algorithm.html#algorithms.algorithm">[docs]</a><span class="k">def</span> <span class="nf">algorithm</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">input1</span> <span class="o">==</span> <span class="s1">&#39;Too Hard&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">elif</span> <span class="n">input1</span> <span class="o">==</span> <span class="s1">&#39;Too Easy&#39;</span><span class="p">:</span>
