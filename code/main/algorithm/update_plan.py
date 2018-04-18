@@ -1,4 +1,4 @@
-
+import constants
 
 
 def update_training_plans(user):
