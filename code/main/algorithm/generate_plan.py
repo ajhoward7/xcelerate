@@ -1,3 +1,8 @@
+import json # Used in get_preferences
+import pandas as pd # Used in get_run_vector
+
+from datetime import * # Used in how_many_weeks_left
+
 import constants
 
 
@@ -20,15 +25,26 @@ def generate_training_plan(user):
 def get_preferences(user):
     """
     Given user object, return dictionary of preferences from appropriate file ---- JAKE
+
+    NOTES:
+    -This is bad practice because I am hardcoding a filepath, but I think that is fine for this project -JT
     """
+    preferences = json.load(open('../users/' + user + '/preferences.txt'))
     return preferences
 
 
-def get_run_vector(distance, level):
+def get_run_vector(user):
     """
     Obtain appropriate run vector given specific preferences ----- JAKE
-    """
 
+    NOTES:
+    -I changed the input of this function to be a user instead of distances.  The output is a dataframe -JT
+    -We should standardize the runner types and run levels so that the labels in the preferences match the names of the vector files -JT
+    """
+    preferences = get_preferences(user)
+    runlevel = preferences['runlevel']
+    typerace = preferences['typerace']
+    run_vector = pd.read_csv('../plan_vectors/' + runlevel + '_' + typerace + '.csv')
     return run_vector
 
 def build_plan(preferences, run_vector):
@@ -42,7 +58,7 @@ def build_plan(preferences, run_vector):
 
     weeks_of_plan = how_many_weeks_left(preferences['race_date'], preferences['start_date'])  # Jake
 
-    days_per_week = generate_run_days(preferences, weeks_of_plan)  # Holly
+    days_per_week = days_per_week(preferences, weeks_of_plan)  # Holly
 
     mileage_baseline = get_baseline_mileage(preferences)
     mileage_limit = get_limit_mileage(preferences)
@@ -130,3 +146,83 @@ def get_limit_mileage(preferences):
             if preferences['race_distance'] == 3:
                 return constants.inter_full_limit
 
+
+def how_many_weeks_left(user):
+    """
+    Calculate the number of weeks until the race
+    """
+    preferences = get_preferences(user)
+    enddate = datetime.strptime(preferences['enddate'], '%Y-%m-%d')
+    today = datetime.today()
+    interval = enddate - today
+    total_days_left = interval.days
+    weeks_left = total_days_left/7
+    return weeks_left
+
+
+def days_per_week(preferences, weeks_of_plan):
+    """
+    INPUTS
+    max_days: number of days per week the user wants to run
+    level: intermediate or novice
+    increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True
+                if level = novice
+    weeks_of_plan: number of weeks left until race day
+    previous_days: number of training days per week from previous training. Will be -1 if no previous data
+
+    OUTPUTS
+    plan: vector of number of days per week for remaining training
+
+    """
+
+    max_days = preferences['max_days_per_week']
+    level = preferences['runner_type']
+    try:
+        increase = preferences['training_level_increase']
+    except:
+        pass
+    try:
+        previous_days = preferences['prior_days_per_week']
+    except:
+        previous_days = 0
+
+    if level == 0:
+        initial = int(round(max_days * .666))
+
+    elif level == 1:
+        if previous_days > 0:
+            initial = previous_days
+        else:
+            initial = int(round(max_days * .666))
+
+    if initial > max_days:  # Handles edge case of previous days per week > max_days
+        initial = max_days
+
+    if increase == False:
+        plan = [initial] * (weeks_of_plan)
+
+    else:
+        plan = []
+
+        plan.append(initial)
+        plan.append(initial)
+
+        days = initial
+
+        i = 0
+
+        while plan[i] < max_days:
+            days = plan[i] + 1
+            plan.append(days)
+            plan.append(days)
+            i += 2
+
+        last = [max_days] * (weeks_of_plan - len(plan))
+        plan = plan + last
+
+    return plan
+
+
+def construct_plan(...):
+
+    return training plan
