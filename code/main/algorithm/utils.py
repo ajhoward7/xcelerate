@@ -13,7 +13,7 @@ def get_preferences(user):
     return preferences
 
 
-def get_run_vector(user):
+def get_run_vector(preferences):
     """
     Obtain appropriate run vector given specific preferences ----- JAKE
 
@@ -21,10 +21,9 @@ def get_run_vector(user):
     -I changed the input of this function to be a user instead of distances.  The output is a dataframe -JT
     -We should standardize the runner types and run levels so that the labels in the preferences match the names of the vector files -JT
     """
-    preferences = get_preferences(user)
-    runlevel = preferences['runlevel']
-    typerace = preferences['typerace']
-    run_vector = pd.read_csv('../plan_vectors/' + runlevel + '_' + typerace + '.csv')
+    runlevel = preferences['runner_type']
+    typerace = preferences['race_distance']
+    run_vector = pd.read_csv('../plan_vectors/' + str(runlevel) + '_' + str(typerace) + '.csv')
     return run_vector
 
 

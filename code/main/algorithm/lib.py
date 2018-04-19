@@ -1,5 +1,7 @@
 from datetime import *
 
+import utils
+import constants
 
 def get_baseline_mileage(preferences):
     """
@@ -57,8 +59,8 @@ def how_many_weeks_left(user):
     """
     Calculate the number of weeks until the race
     """
-    preferences = get_preferences(user)
-    enddate = datetime.strptime(preferences['enddate'], '%Y-%m-%d')
+    preferences = utils.get_preferences(user)
+    enddate = datetime.strptime(preferences['race_date'], '%Y-%m-%d')
     today = datetime.today()
     interval = enddate - today
     total_days_left = interval.days
