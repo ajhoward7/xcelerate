@@ -2,6 +2,8 @@ import constants
 import lib
 import utils
 
+import pandas as pd
+
 
 def generate_mpw(mileage_baseline, mileage_limit, weeks_of_plan):
     """
@@ -117,7 +119,32 @@ def build_plan(user):
     miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks_of_plan)
 
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
-    training_plan = construct_plan(days_per_week, miles_per_week, run_vector, weeks_of_plan)
-    # Probably just put this bit within the function
+
+    number_of_runs = sum(days_per_week)
+    run_miles = run_vector['run_miles'][:number_of_runs]
+    week_of_run = []
+    adj_run_vector = []
+    k = 0
+
+    for i in range(days_per_week):
+        days_this_week = days_per_week[i]
+        miles_this_week = miles_per_week[i]
+        runs_this_week = []
+
+        for j in range(days_this_week):
+            week_of_run.append(i)
+            runs_this_week.append(run_miles[k])
+            k += 1
+
+        factor = miles_this_week / sum(runs_this_week)
+
+        runs_this_week = [run * factor for run in runs_this_week]
+
+        adj_run_vector += runs_this_week
+
+    training_plan = pd.DataFrame()
+
+    training_plan['week_of_run'] = week_of_run
+    training_plan['miles'] = adj_run_vector
 
     return training_plan

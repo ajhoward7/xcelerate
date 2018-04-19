@@ -26,3 +26,13 @@ def get_run_vector(user):
     typerace = preferences['typerace']
     run_vector = pd.read_csv('../plan_vectors/' + runlevel + '_' + typerace + '.csv')
     return run_vector
+
+
+def get_logged_training(user):
+    # Blah
+    return True
+
+
+def get_planned_training(user):
+    # Blah
+    return True
