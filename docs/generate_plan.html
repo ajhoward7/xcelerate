@@ -29,78 +29,40 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-app">
-<span id="auto-generated-documentation"></span><h1>Auto Generated Documentation<a class="headerlink" href="#module-app" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-generate_plan">
+<span id="auto-generated-documentation"></span><h1>Auto Generated Documentation<a class="headerlink" href="#module-generate_plan" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="app.authenticate">
-<code class="descclassname">app.</code><code class="descname">authenticate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.authenticate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Requests the username and password and authenticates them</p>
+<dt id="generate_plan.build_plan">
+<code class="descclassname">generate_plan.</code><code class="descname">build_plan</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#build_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.build_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Steps:
+1. Decide how many days to run on each week up until race day
+2. Decide how many miles to run on each week
+3. Select appropriate proportion of run vector
+4. Return plan, divided by week</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="app.backhome">
-<code class="descclassname">app.</code><code class="descname">backhome</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#backhome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.backhome" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the home page after a user signups</p>
+<dt id="generate_plan.generate_days_per_week">
+<code class="descclassname">generate_plan.</code><code class="descname">generate_days_per_week</code><span class="sig-paren">(</span><em>preferences</em>, <em>weeks_of_plan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_days_per_week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_days_per_week" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the preferences dictionary and the number of weeks in the plan, this function returns 
+a list of the number of training days per week for each week of the training plan.</p>
+<p>INPUTS
+max_days: number of days per week the user wants to run
+level: intermediate or novice
+increase: boolean to indicate whether the user (intermediate only) wants to increase training.
+Will be True if level = novice
+weeks_of_plan: number of weeks left until race day
+previous_days: number of training days per week from previous training. Will be -1 if no previous data</p>
+<p>OUTPUTS
+plan: vector of number of days per week for remaining training</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="app.createUsers">
-<code class="descclassname">app.</code><code class="descname">createUsers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#createUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.createUsers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Requests the new usre’s username, email and password</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.dates">
-<code class="descclassname">app.</code><code class="descname">dates</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#dates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.dates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the dates page</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.daysperweek">
-<code class="descclassname">app.</code><code class="descname">daysperweek</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#daysperweek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.daysperweek" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the dayperweek page</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.home">
-<code class="descclassname">app.</code><code class="descname">home</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#home"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.home" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the home page</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.inputs">
-<code class="descclassname">app.</code><code class="descname">inputs</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.inputs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the results page</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.login">
-<code class="descclassname">app.</code><code class="descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.login" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the login.html</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.racetype">
-<code class="descclassname">app.</code><code class="descname">racetype</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#racetype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.racetype" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.render">
-<code class="descclassname">app.</code><code class="descname">render</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.render" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the inputs page</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.runlevel">
-<code class="descclassname">app.</code><code class="descname">runlevel</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#runlevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.runlevel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the runerlevel page</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="app.showSignup">
-<code class="descclassname">app.</code><code class="descname">showSignup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#showSignup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.showSignup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders the signup page</p>
+<dt id="generate_plan.generate_mpw">
+<code class="descclassname">generate_plan.</code><code class="descname">generate_mpw</code><span class="sig-paren">(</span><em>mileage_baseline</em>, <em>mileage_limit</em>, <em>weeks_of_plan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_mpw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_mpw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the preferences dictionary and number of weeks in the plan,
+this function returns a list of weekly mileages
+for the individual.</p>
 </dd></dl>
 
 </div>

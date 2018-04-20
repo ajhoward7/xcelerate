@@ -1,5 +1,5 @@
 Auto Generated Documentation
 ============================
-.. automodule:: app
+.. automodule:: generate_plan
                 :members:
                 :undoc-members:

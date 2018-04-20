@@ -7,10 +7,10 @@ import pandas as pd
 
 def generate_mpw(mileage_baseline, mileage_limit, weeks_of_plan):
     """
-    Given the preferences dictionary and number of weeks in the plan, this function returns a list of weekly mileages
+    Given the preferences dictionary and number of weeks in the plan,
+    this function returns a list of weekly mileages
     for the individual.
     """
-
     miles_per_week = [0 for _ in range(weeks_of_plan)]
 
     current_mileage = mileage_baseline
@@ -35,14 +35,13 @@ def generate_days_per_week(preferences, weeks_of_plan):
     INPUTS
     max_days: number of days per week the user wants to run
     level: intermediate or novice
-    increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True
-                if level = novice
+    increase: boolean to indicate whether the user (intermediate only) wants to increase training.
+    Will be True if level = novice
     weeks_of_plan: number of weeks left until race day
     previous_days: number of training days per week from previous training. Will be -1 if no previous data
 
     OUTPUTS
     plan: vector of number of days per week for remaining training
-
     """
 
     max_days = preferences['max_days_per_week']
