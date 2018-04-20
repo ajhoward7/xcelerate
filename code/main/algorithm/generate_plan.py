@@ -32,6 +32,9 @@ def generate_mpw(mileage_baseline, mileage_limit, weeks):
 
 def generate_days_per_week(preferences, weeks):
     """
+    Given the preferences dictionary and the number of weeks in the plan, this function returns
+    a list of the number of training days per week for each week of the training plan.
+
     INPUTS
     max_days: number of days per week the user wants to run
     level: intermediate or novice
