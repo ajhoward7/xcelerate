@@ -3,38 +3,41 @@ import lib
 import utils
 
 import pandas as pd
+from datetime import *
+import numpy as np
+
+import sys
 
 
-def generate_mpw(mileage_baseline, mileage_limit, weeks_of_plan):
+def generate_mpw(mileage_baseline, mileage_limit, weeks):
     """
     Given the preferences dictionary and number of weeks in the plan, this function returns a list of weekly mileages
     for the individual.
     """
-
-    miles_per_week = [0 for _ in range(weeks_of_plan)]
+    miles_per_week = [0 for _ in range(weeks)]
 
     current_mileage = mileage_baseline
 
-    for i in range(weeks_of_plan):
+    for i in range(weeks):
         miles_per_week[i] = current_mileage
         if i % constants.increase_period == 0 and current_mileage < mileage_limit:
             current_mileage *= (1+constants.increase_factor)
 
-    for i in range(weeks_of_plan):
+    for i in range(weeks):
         if i+1 % constants.easy_week_frequency == 0:
             miles_per_week[i] *= constants.easy_week_cycle_adjustment
 
     return miles_per_week
 
 
-def generate_days_per_week(preferences, weeks_of_plan):
+def generate_days_per_week(preferences, weeks):
     """
     INPUTS
     max_days: number of days per week the user wants to run
     level: intermediate or novice
     increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True
                 if level = novice
-    weeks_of_plan: number of weeks left until race day
+    weeks: number of weeks left until race day
     previous_days: number of training days per week from previous training. Will be -1 if no previous data
 
     OUTPUTS
@@ -66,7 +69,7 @@ def generate_days_per_week(preferences, weeks_of_plan):
         initial = max_days
 
     if increase == False:
-        plan = [initial] * (weeks_of_plan)
+        plan = [initial] * (weeks)
 
     else:
         plan = []
@@ -84,7 +87,7 @@ def generate_days_per_week(preferences, weeks_of_plan):
             plan.append(days)
             i += 2
 
-        last = [max_days] * int(weeks_of_plan - len(plan))
+        last = [max_days] * int(weeks - len(plan))
         plan = plan + last
 
     return plan
@@ -104,10 +107,10 @@ def build_plan(user):
     run_vector = utils.get_run_vector(preferences)
 
     # Part 2: Calculate weeks of plan
-    weeks_of_plan = int(lib.how_many_weeks_left(user))  # Jake
+    weeks = lib.weeks_of_plan(preferences)  # Jake
 
     # Part 3: Generate number of days per week to run on each week
-    days_per_week = generate_days_per_week(preferences, weeks_of_plan)  # Holly
+    days_per_week = generate_days_per_week(preferences, weeks)  # Holly
     print(days_per_week)
 
     # Part 4: Generate mileage per week for each week
@@ -117,7 +120,7 @@ def build_plan(user):
     if mileage_limit <= mileage_baseline + 5:
         mileage_limit = mileage_baseline + 5
 
-    miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks_of_plan)
+    miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks)
     print(miles_per_week)
 
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
@@ -126,16 +129,35 @@ def build_plan(user):
     run_miles = run_vector['run_miles'][:number_of_runs]
     week_of_run = []
     adj_run_vector = []
+    run_day = []
+    run_date = []
+
     k = 0
+
+    today = datetime.today()
+    start_of_week = today - timedelta(days=today.weekday())  # Initialise start_of_week
+
+    available_days = preferences['available_days']
 
     for i in range(len(days_per_week)):
         days_this_week = days_per_week[i]
         miles_this_week = miles_per_week[i]
         runs_this_week = []
+        try:
+            which_days_this_week = np.sort(np.random.choice(available_days, days_this_week, False))
+
+        except:
+            raise(ValueError("Selected too many days for individual"))
 
         for j in range(days_this_week):
             week_of_run.append(i)
             runs_this_week.append(run_miles[k])
+            run_day.append(which_days_this_week[j])
+            if which_days_this_week[j] == 0:
+                run_date.append(start_of_week)
+            else:
+                run_date.append(start_of_week + timedelta(days=int(which_days_this_week[j])))
+
             k += 1
 
         factor = float(miles_this_week) / sum(runs_this_week)
@@ -144,14 +166,19 @@ def build_plan(user):
 
         adj_run_vector += runs_this_week
 
+        start_of_week += timedelta(days=7)
+
     training_plan = pd.DataFrame()
 
     training_plan['week_of_run'] = week_of_run
     training_plan['miles'] = [int(round(run)) for run in adj_run_vector]
+    training_plan['run_day'] = run_day
+    training_plan['run_date'] = [this_date.date() for this_date in run_date]
 
     return training_plan
 
 if __name__ == "__main__":
 
-    training_plan = build_plan('alex')
-    training_plan.to_csv('i_did_this.csv', index = False)
+    user = 'alex'
+    training_plan = build_plan(user)
+    training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index = False)

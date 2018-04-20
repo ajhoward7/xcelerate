@@ -6,4 +6,5 @@
 "prior_days_per_week": 0,
 "prior_training" : 0,
 "race_distance": 0,
-"startdate": "2018-04-25"}
+"startdate": "2018-04-25",
+"available_days": [0,1,2,3,4]}
