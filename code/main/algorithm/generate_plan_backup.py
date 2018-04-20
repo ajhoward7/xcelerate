@@ -171,12 +171,17 @@ def build_plan(user):
 
         start_of_week += timedelta(days=7)
 
+    run_day[-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d').weekday()
+    run_date[-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d').date()  # Adding in correct race date
+
     training_plan = pd.DataFrame()
 
     training_plan['week_of_run'] = week_of_run
     training_plan['miles'] = [int(round(run)) for run in adj_run_vector]
     training_plan['run_day'] = run_day
     training_plan['run_date'] = [this_date.date() for this_date in run_date]
+
+    training_plan = training_plan[training_plan['run_date'] > datetime.today().date()] # Removing part of week before current date
 
     return training_plan
 
