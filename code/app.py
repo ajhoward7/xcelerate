@@ -28,11 +28,12 @@ def login():
     return render_template('login.html')
 
 
-@app.route("/authenicate", methods=["POST"])
+@app.route("/authenticate", methods=["POST"])
 def authenticate():
     """
     Requests the username and password and authenticates them
     """
+    print(request.form['inputName'])
     username = request.form['inputName']
     password = request.form['inputPassword']
     myfile = open(master_file_path, 'r+')
@@ -41,7 +42,8 @@ def authenticate():
     # check database whether the user's name or email already exists
     for row in reader:
         if (username == row[0] or username == row[1]) and password == row[2]:
-            return redirect(url_for('.home', username=row[0]))
+            # return redirect(url_for('.home', username=row[0]))
+            return render_template('welcomeback.html', username=row[0])
 
     myfile.close()
     return redirect(url_for('login'))
@@ -193,7 +195,10 @@ def daysperweek(username):
         json.dump(data, json_file)
         json_file.truncate()    
 
-    return render_template('daysperweek.html', username=username)
+    if data['runner_type'] == 0:
+        return render_template('daysperweek.html', username=username)
+    elif data['runner_type'] == 1:
+        return render_template('thankyou.html', username=username)
 
 
 @app.route("/prior_training/<username>", methods=['POST'])
@@ -269,6 +274,21 @@ def increase(username):
     return render_template('increase.html', username=username)
 
 
+@app.route("/max_days/<username>", methods=['POST'])
+def max_days(username):
+    path = users_folder_file_path + username
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+
+        data['training_level_increase'] = int(request.form['training_level_increase'])
+
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate() 
+
+    return render_template('max_days.html', username=username)
+
+
 @app.route("/thankyou/<username>", methods=['POST'])
 def thankyou(username):
     path = users_folder_file_path + username
@@ -276,6 +296,7 @@ def thankyou(username):
         data = json.load(json_file)
 
         data['training_level_increase'] = int(request.form['training_level_increase'])
+        data['max_days_per_week'] = 99
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)

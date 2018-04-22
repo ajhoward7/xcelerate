@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Xcelerate days per week</title>
+    <title>Xcelerate: Thank You For Signing Up!</title>
 
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/signup.css" rel="stylesheet">
@@ -12,14 +12,12 @@
   <body>
   <div class="container">
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
-     <h4 align = 'center'><font color="#4d73be">Are you looking to increase levels of training?</font></h4>
-
+     <h4 align = 'center'><font color="#4d73be">Welcome back to Xcelerate!</font></h4>
      <form method="post">
-       <center>
-       <button name="training_level_increase" value="1" formaction="{{ url_for('max_days', username=username) }}">Yes </button>
-       <button name="training_level_increase" value="0" formaction="{{ url_for('thankyou', username=username) }}">No </button>
-       </center>
+       <center><button formaction="{{ url_for('.home', username=username) }}">Continue To Home Page</button></center>
      </form> 
+ 
+
   </div>
   </body>
 </html>
