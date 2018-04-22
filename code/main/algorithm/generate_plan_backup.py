@@ -172,12 +172,7 @@ def build_plan(user):
 
         start_of_week += timedelta(days=7)
 
-    adj_run_vector[-1] = lib.get_race_distance(preferences)
-
-    run_day[-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d').weekday()
-    run_date[-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d')  # Adding in correct race date
-
-    training_plan = pd.DataFrame()
+    training_plan = pd.DataFrame([])
 
     training_plan['week_of_run'] = week_of_run
     training_plan['miles'] = adj_run_vector
@@ -186,7 +181,14 @@ def build_plan(user):
     training_plan['workout'] = run_workout[:len(run_date)][::-1]
     training_plan['long_run'] = run_long_run[:len(run_date)][::-1]
 
-    training_plan = training_plan[training_plan['run_date'] > datetime.today().date()] # Removing part of week before current date
+    race_day = datetime.strptime(preferences['race_date'], '%Y-%m-%d')
+
+    training_plan = training_plan[training_plan['run_date'] > datetime.today().date()]
+    training_plan = training_plan[training_plan['run_date'] <= race_day.date()]
+
+    training_plan['miles'][-1] = lib.get_race_distance(preferences)
+    training_plan['run_day'][-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d').weekday()
+    training_plan['run_date'][-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d')
 
     return training_plan
 
