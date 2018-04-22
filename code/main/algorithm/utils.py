@@ -24,18 +24,30 @@ def get_run_vector(preferences):
     return run_vector
 
 
-def get_logged_training(user, weeks = 3):
-    # Blah
+def get_recent_logged_training(user, n_weeks=3):
+
+    x_weeks_before = date.today() - timedelta(days=date.today().weekday()) - timedelta(days=7 * (n_weeks-1))
+
     return training_df
 
 
-def get_recent_planned_training(user, weeks = 3):
+def get_recent_planned_training(user, n_weeks=3):
+
     planned_training = get_all_planned_training(user)
 
+    x_weeks_before = date.today() - timedelta(days=date.today().weekday()) - timedelta(days=7 * (n_weeks - 1))
 
-    return recent_planned_training_df
+    recent_planned_training = planned_training[(planned_training.run_date >= x_weeks_before) &
+                                               (planned_training.run_date <= date.today())]
+
+    return recent_planned_training
 
 
 def get_all_planned_training(user):
 
     return pd.read_csv('../users/{}/planned_training.csv'.format(user), parse_dates = ['run_date'])
+
+
+def get_all_logged_training(user):
+
+    return pd.read_csv('../users/{}/logged_training.csv'.format(user), parse_dates=['run_date'])
