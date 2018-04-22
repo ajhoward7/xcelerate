@@ -48,7 +48,7 @@ def generate_days_per_week(preferences, weeks):
 
     """
 
-    max_days = preferences['max_days_per_week']
+    max_days = preferences['max_days_per_week']  # Catch for intermediate case where not specified
     level = preferences['runner_type']
     try:
         increase = preferences['training_level_increase']
@@ -60,7 +60,7 @@ def generate_days_per_week(preferences, weeks):
         previous_days = 0
 
     if level == 0:
-        initial = int(round(max_days * .666))
+        initial = int(round(max_days * .666))  # Want to change this to 'if previous_days > 0 then initial....'
 
     elif level == 1:
         if previous_days > 0:

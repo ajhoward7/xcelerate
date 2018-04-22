@@ -15,11 +15,7 @@ def get_preferences(user):
 
 def get_run_vector(preferences):
     """
-    Obtain appropriate run vector given specific preferences ----- JAKE
-
-    NOTES:
-    -I changed the input of this function to be a user instead of distances.  The output is a dataframe -JT
-    -We should standardize the runner types and run levels so that the labels in the preferences match the names of the vector files -JT
+    Obtain appropriate run vector given specific preferences
     """
     runlevel = preferences['runner_type']
     typerace = preferences['race_distance']
@@ -27,11 +23,17 @@ def get_run_vector(preferences):
     return run_vector
 
 
-def get_logged_training(user):
+def get_logged_training(user, weeks = 3):
     # Blah
-    return True
+    return training_df
 
 
-def get_planned_training(user):
+def get_recent_planned_training(user, weeks = 3):
+    planned_training = get_all_planned_training(user)
+    #Blah
+    return recent_planned_training_df
+
+
+def get_all_planned_training(user):
     # Blah
-    return True
+    return planned_training_df
