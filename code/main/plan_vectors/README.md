@@ -1,7 +1,15 @@
 # Training Plan Vectors
 
-- novice_marathon_1.csv: Novice 1 - Hal Higdon Training Programs
-- inter_marathon_1.csv: Inter 1 - Hal Higdon Training Programs
-- novice_half_1.csv: Novice - Hal Higdon Training Programs
-- inter_half_1.csv: Inter - Hal Higdon Training Programs
+Plans are labelled according to:  
+    `{}_{}.csv.format(runner_type, race_length)`
+
+Runner Type Key:  
+- 0: Novice  
+- 1: Intermediate  
+
+Race Distance Key:  
+- 0: 5k  
+- 1: 10k  
+- 2: HM  
+- 3: M  
 
