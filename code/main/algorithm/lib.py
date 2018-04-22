@@ -76,3 +76,17 @@ def weeks_of_plan(preferences):
     return int(weeks)
 
 
+def get_race_distance(preferences):
+    """
+    Return number of miles of race from preferences
+    """
+    race_distance = preferences['race_distance']
+
+    if race_distance == 0:
+        return 3.1
+    if race_distance == 1:
+        return 6.2
+    if race_distance == 2:
+        return 13.1
+    if race_distance == 3:
+        return 26.2

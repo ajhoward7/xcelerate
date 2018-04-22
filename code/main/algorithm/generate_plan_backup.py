@@ -129,7 +129,10 @@ def build_plan(user):
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
 
     number_of_runs = sum(days_per_week)
-    run_miles = run_vector['run_miles'][:number_of_runs]
+    run_miles = run_vector['run_miles'][:number_of_runs][::-1]
+    run_workout = run_vector['workout'][:number_of_runs][::-1]
+    run_long_run = run_vector['long_run'][:number_of_runs][::-1]
+
     week_of_run = []
     adj_run_vector = []
     run_day = []
@@ -150,7 +153,7 @@ def build_plan(user):
             which_days_this_week = np.sort(np.random.choice(available_days, days_this_week, False))
 
         except:
-            raise(ValueError("Selected too many days for individual"))
+            raise(ValueError("Individual can't run on this many days"))
 
         for j in range(days_this_week):
             week_of_run.append(i)
@@ -165,21 +168,23 @@ def build_plan(user):
 
         factor = float(miles_this_week) / sum(runs_this_week)
 
-        runs_this_week = [run * factor for run in runs_this_week]
-
-        adj_run_vector += runs_this_week
+        adj_run_vector += [int(round(run * factor)) for run in runs_this_week]
 
         start_of_week += timedelta(days=7)
 
+    adj_run_vector[-1] = lib.get_race_distance(preferences)
+
     run_day[-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d').weekday()
-    run_date[-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d').date()  # Adding in correct race date
+    run_date[-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d')  # Adding in correct race date
 
     training_plan = pd.DataFrame()
 
     training_plan['week_of_run'] = week_of_run
-    training_plan['miles'] = [int(round(run)) for run in adj_run_vector]
+    training_plan['miles'] = adj_run_vector
     training_plan['run_day'] = run_day
     training_plan['run_date'] = [this_date.date() for this_date in run_date]
+    training_plan['workout'] = run_workout[:len(run_date)][::-1]
+    training_plan['long_run'] = run_long_run[:len(run_date)][::-1]
 
     training_plan = training_plan[training_plan['run_date'] > datetime.today().date()] # Removing part of week before current date
 
@@ -187,6 +192,6 @@ def build_plan(user):
 
 if __name__ == "__main__":
 
-    user = 'alex'
+    user = 'alex'  # Adapt this
     training_plan = build_plan(user)
     training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index = False)
