@@ -3,6 +3,7 @@ import os
 import csv
 import json
 import sys
+import datetime as dt
 
 sys.path.insert(0, './main/algorithm')
 try:
@@ -46,7 +47,7 @@ def authenticate():
     return redirect(url_for('login'))
 
 
-@app.route("/home/<username>")
+@app.route("/home/<username>", methods=["GET", "POST"])
 def home(username):
     """
     Renders the home page
@@ -100,17 +101,81 @@ def createUsers():
         f = open(new_path + '/future_training.csv', 'w')
         f.close()
 
-        return redirect(url_for('.racetype', username=username))
+        # return redirect(url_for('.race_distance', username=username))
+        return render_template('race_distance.html', username=username)
     else:
         return redirect(url_for('showSignup'))
 
 
-@app.route('/racetype/<username>')
-def racetype(username):
+@app.route('/race_distance/<username>')
+def race_distance(username):
     """
-    Renders the
+    Renders the race distance page
     """
-    return render_template('racetype.html', username=username)
+    return render_template('race_distance.html', username=username)
+
+
+@app.route('/race_date/<username>', methods=['POST'])
+def race_date(username):
+    """
+    Renders the race date page and creates the preferences.txt file
+    """
+    new_path = users_folder_file_path + username
+
+    data = {}
+    data['username'] = username
+    data['start_date'] = dt.datetime.today().strftime("%Y-%m-%d")
+    data['difficulty'] = 1
+    data['race_distance'] = int(request.form['race_distance'])
+    data['race_date'] = ''
+    data['runner_type'] = ''
+    data['max_days_per_week'] = ''
+    data['prior_training'] = ''
+
+    with open(new_path + '/preferences.txt', 'w') as outfile:
+        json.dump(data, outfile)
+
+    return render_template('race_date.html', username=username)
+
+
+@app.route("/runner_type/<username>", methods=['POST'])
+def runner_type(username):
+    """
+    Renders the runner type page
+    """
+    path = users_folder_file_path + username
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+
+        data["race_date"] = request.form['race_date']
+
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate()
+
+    return render_template('runner_type.html', username=username)
+
+
+@app.route("/split/<username>", methods=['POST'])
+def split(username):
+    """
+    If user is a Novice, render the max days page
+    If user is an Intermediate, render the how page
+    """
+    path = users_folder_file_path + username
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+
+        data["runner_type"] = int(request.form['runner_type'])
+
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate()
+
+    if request.form['runner_type'] == "0":
+        return render_template('max_days.html', username=username)
+    else:
+        return render_template('how.html', username=username)
 
 
 @app.route("/daysperweek/<username>", methods=['POST'])
@@ -118,57 +183,105 @@ def daysperweek(username):
     """
     Renders the dayperweek page
     """
+    path = users_folder_file_path + username
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
 
-    new_path = users_folder_file_path + username
+        data["max_days_per_week"] = int(request.form['max_days_per_week'])
 
-    data = {}
-    data['username'] = username
-    data['typerace'] = request.form['typerace']
-    data['dayofweek'] = ''
-    data['runlevel'] = ''
-    data['startdate'] = ''
-    data['enddate'] = ''
-
-    with open(new_path + '/preferences.txt', 'w') as outfile:
-        json.dump(data, outfile)
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate()    
 
     return render_template('daysperweek.html', username=username)
 
 
-@app.route("/runlevel/<username>", methods=['POST'])
-def runlevel(username):
+@app.route("/prior_training/<username>", methods=['POST'])
+def prior_training(username):
     """
-    Renders the runerlevel page
+
     """
+    path = users_folder_file_path + username
+    dow_list = request.form.getlist('available_days')
+    dow_list_int = [int(x) for x in dow_list]
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+
+        data["available_days"] = dow_list_int
+
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate() 
+    if data['runner_type'] == 0:
+        return render_template('prior_training.html', username=username)
+    elif data['runner_type'] == 1:
+        return render_template('increase.html', username=username)
+
+
+@app.route("/redirect/<username>", methods=['POST'])
+def redirect(username):
+    """
+    """
+    path = users_folder_file_path + username
+
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+
+        data["prior_training"] = int(request.form['prior_training'])
+
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate()     
+
+    if request.form['prior_training'] == "1":
+        return render_template('approx.html', username=username)
+    
+    elif request.form['prior_training'] == "0":
+        return render_template('thankyou.html', username=username)
+
+
+@app.route("/fill/<username>", methods=['POST'])
+def fill(username):
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
-        data["dayofweek"] = request.form.getlist('dayofweek')
+        data['prior_days_per_week'] = int(request.form['prior_days_per_week'])
+        data['prior_miles_per_week'] = float(request.form['prior_miles_per_week'])
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
-        json_file.truncate()
+        json_file.truncate()     
 
-    return render_template('runerlevel.html', username=username)
+    if data['runner_type'] == 0:
+        return render_template('thankyou.html', username=username)
+    elif data['runner_type'] == 1:
+        return render_template('daysperweek.html', username=username)
 
 
-@app.route("/dates/<username>", methods=['POST'])
-def dates(username):
-    """
-    Renders the dates page
-    """
+@app.route("/upload/<username>", methods=['GET'])
+def upload(username):
+    return render_template('upload.html', username=username)
+
+
+@app.route("/increase/<username>", methods=['POST'])
+def increase(username):
+    return render_template('increase.html', username=username)
+
+
+@app.route("/thankyou/<username>", methods=['POST'])
+def thankyou(username):
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
-        data["runlevel"] = request.form['runlevel']
+        data['training_level_increase'] = int(request.form['training_level_increase'])
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
-        json_file.truncate()
+        json_file.truncate() 
 
-    return render_template('dates.html', username=username)
+    return render_template('thankyou.html', username=username)
 
 
 @app.route("/backhome/<username>", methods=["POST"])

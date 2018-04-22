@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xcelerate Runner Type</title>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/signup.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+  <div class="container">
+     <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
+     <h4 align = 'center'><font color="#4d73be">What sort of runner would you classify yourself as?</font></h4>
+
+    <form class="form-signin" method="post" action="{{url_for('split', username=username)}}">
+
+          <input type="radio" name="runner_type" value="0" required autofocus> Novice<br>
+          <input type="radio" name="runner_type" value="1" required autofocus> Intermediate<br>
+        <center>
+          <input class="btn btn-lg btn-success" type="submit" value="Submit">
+        </center>
+    </form>
+  </div>
+  </body>
+</html>
+

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Xcelerate days per week</title>
+    <title>Xcelerate: Any Prior Training?</title>
 
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/signup.css" rel="stylesheet">
@@ -12,19 +12,17 @@
   <body>
   <div class="container">
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
-     <h4 align = 'center'><font color="#4d73be">What is the start and end date of when you want to train?</font></h4>
+     <h4 align = 'center'><font color="#4d73be">Do you have any prior training experience you want to share with us?</font></h4>
 
-    <form class="form-signin" method="post" action="{{url_for('backhome', username=username)}}">
+    <form class="form-signin" method="post" action="{{url_for('redirect', username=username)}}">
+          <input type="radio" name="prior_training" value="1" required autofocus> Yes<br>
+          <input type="radio" name="prior_training" value="0" required autofocus> No<br>
+
         <center>
-          Start date
-          <input type="date" id = 'startdate' name="startdate" required autofocus><br>
-          End date
-          <input type="date" id = 'enddate' name="enddate" required autofocus><br>
-
           <input class="btn btn-lg btn-success" type="submit" value="Submit">
         </center>
+
     </form>
   </div>
   </body>
 </html>
-

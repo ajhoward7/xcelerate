@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xcelerate Runner Type</title>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/signup.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+  <div class="container">
+     <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
+     <h4 align = 'center'><font color="#4d73be">What's the maximum number of days you want to run per week?</font></h4>
+
+    <form class="form-signin" method="post" action="{{url_for('daysperweek', username=username)}}">
+
+        <select class="form-control" id="maxdays" name="max_days_per_week">
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+        </select>
+        <br>
+
+        <center>
+          <input class="btn btn-lg btn-success" type="submit" value="Submit">
+        </center>
+    </form>
+  </div>
+  </body>
+</html>

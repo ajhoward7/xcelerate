@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xcelerate days per week</title>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/signup.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+  <div class="container">
+     <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
+     <h4 align = 'center'><font color="#4d73be">Please give an indication of approximate number of days per week and miles per run in prior training</font></h4>
+
+    <form class="form-signin" action="{{url_for('fill', username=username)}}" method="post">
+        <label for="fname">Number of Days Per Week:</label>
+        <input type="text" id="fname" name="prior_days_per_week">
+        <br>
+
+        <label for="fname">Approximate Miles Per Week:</label>
+        <input type="text" id="fname" name="prior_miles_per_week">
+        <br>
+
+        <center>
+          <input class="btn btn-lg btn-success" type="submit" value="Submit">
+        </center>
+    </form>
+  </div>
+  </body>
+</html>
+
