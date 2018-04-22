@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+from datetime import *
 
 
 def get_preferences(user):
@@ -30,10 +31,11 @@ def get_logged_training(user, weeks = 3):
 
 def get_recent_planned_training(user, weeks = 3):
     planned_training = get_all_planned_training(user)
-    #Blah
+
+
     return recent_planned_training_df
 
 
 def get_all_planned_training(user):
-    # Blah
-    return planned_training_df
+
+    return pd.read_csv('../users/{}/planned_training.csv'.format(user), parse_dates = ['run_date'])

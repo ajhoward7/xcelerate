@@ -186,9 +186,16 @@ def build_plan(user):
     training_plan = training_plan[training_plan['run_date'] > datetime.today().date()]
     training_plan = training_plan[training_plan['run_date'] <= race_day.date()]
 
-    training_plan['miles'][-1] = lib.get_race_distance(preferences)
-    training_plan['run_day'][-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d').weekday()
-    training_plan['run_date'][-1] = datetime.strptime(preferences['race_date'], '%Y-%m-%d')
+    training_plan.miles = training_plan['miles'].astype('float')
+
+    training_plan = training_plan[:-1]
+
+    training_plan = training_plan.append({'miles': lib.get_race_distance(preferences),
+                                          'week_of_run': week_of_run[-1],
+                                          'run_date': datetime.strptime(preferences['race_date'], '%Y-%m-%d').date(),
+                                          'run_day': datetime.strptime(preferences['race_date'], '%Y-%m-%d').weekday(),
+                                          'workout':0,'long_run':0},
+                                         ignore_index = True)
 
     return training_plan
 
