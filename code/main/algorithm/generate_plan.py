@@ -59,6 +59,11 @@ def generate_days_per_week(preferences, weeks):
     except:
         previous_days = 0
 
+    ### ADDED #####################
+    if max_days == 99:
+        max_days = previous_days
+    ###############################
+
     if level == 0:
         initial = int(round(max_days * .666))
 
@@ -96,6 +101,83 @@ def generate_days_per_week(preferences, weeks):
     return plan
 
 
+def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
+
+    number_of_runs = sum(days_per_week)
+
+    run_miles = run_vector['run_miles'][:number_of_runs][::-1]
+    run_workout = run_vector['workout'][:number_of_runs][::-1]
+    run_long_run = run_vector['long_run'][:number_of_runs][::-1]
+
+    week_of_run = []
+    adj_run_vector = []
+    run_day = []
+    run_date = []
+
+    k = 0
+
+    today = datetime.today()
+    start_of_week = today - timedelta(days=today.weekday())  # Initialise start_of_week
+
+    available_days = preferences['available_days']
+
+    for i in range(len(days_per_week)):
+        days_this_week = days_per_week[i]
+        miles_this_week = miles_per_week[i]
+        runs_this_week = []
+        try:
+            which_days_this_week = np.sort(np.random.choice(available_days, days_this_week, False))
+
+        except:
+            raise(ValueError("Individual can't run on this many days"))
+
+        for j in range(days_this_week):
+            week_of_run.append(i)
+            runs_this_week.append(run_miles[k])
+            run_day.append(which_days_this_week[j])
+            if which_days_this_week[j] == 0:
+                run_date.append(start_of_week)
+            else:
+                run_date.append(start_of_week + timedelta(days=int(which_days_this_week[j])))
+
+            k += 1
+
+        factor = float(miles_this_week) / sum(runs_this_week)
+
+        adj_run_vector += [int(round(run * factor)) for run in runs_this_week]
+
+        start_of_week += timedelta(days=7)
+
+    training_plan = pd.DataFrame([])
+
+    training_plan['week_of_run'] = week_of_run
+    training_plan['miles'] = adj_run_vector
+    training_plan['run_day'] = run_day
+    training_plan['run_date'] = [this_date.date() for this_date in run_date]
+    training_plan['workout'] = run_workout[:len(run_date)][::-1]
+    training_plan['long_run'] = run_long_run[:len(run_date)][::-1]
+    training_plan['week_start'] = training_plan.run_date.apply(lambda x : (x - timedelta(days=x.weekday())))
+
+    race_day = datetime.strptime(preferences['race_date'], '%Y-%m-%d').date()
+
+    #training_plan = training_plan[training_plan['run_date'] > datetime.today().date()]
+    training_plan = training_plan[training_plan['run_date'] <= race_day]
+
+    training_plan.miles = training_plan['miles'].astype('float')
+
+    training_plan = training_plan[:-1]
+
+    training_plan = training_plan.append({'miles': lib.get_race_distance(preferences),
+                                          'week_of_run': week_of_run[-1],
+                                          'run_date': race_day,
+                                          'run_day': race_day.weekday(),
+                                          'week_start': race_day - timedelta(days = race_day.weekday()),
+                                          'workout':0,'long_run':0},
+                                         ignore_index = True)
+
+    return training_plan
+
+
 def build_plan(user):
     """
     Steps:
@@ -128,60 +210,11 @@ def build_plan(user):
 
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
 
-    number_of_runs = sum(days_per_week)
-    run_miles = run_vector['run_miles'][:number_of_runs]
-    week_of_run = []
-    adj_run_vector = []
-    run_day = []
-    run_date = []
+    return combine_miles_days(miles_per_week, days_per_week, preferences, run_vector)
 
-    k = 0
-
-    today = datetime.today()
-    start_of_week = today - timedelta(days=today.weekday())  # Initialise start_of_week
-
-    available_days = preferences['available_days']
-
-    for i in range(len(days_per_week)):
-        days_this_week = days_per_week[i]
-        miles_this_week = miles_per_week[i]
-        runs_this_week = []
-        try:
-            which_days_this_week = np.sort(np.random.choice(available_days, days_this_week, False))
-
-        except:
-            raise(ValueError("Selected too many days for individual"))
-
-        for j in range(days_this_week):
-            week_of_run.append(i)
-            runs_this_week.append(run_miles[k])
-            run_day.append(which_days_this_week[j])
-            if which_days_this_week[j] == 0:
-                run_date.append(start_of_week)
-            else:
-                run_date.append(start_of_week + timedelta(days=int(which_days_this_week[j])))
-
-            k += 1
-
-        factor = float(miles_this_week) / sum(runs_this_week)
-
-        runs_this_week = [run * factor for run in runs_this_week]
-
-        adj_run_vector += runs_this_week
-
-        start_of_week += timedelta(days=7)
-
-    training_plan = pd.DataFrame()
-
-    training_plan['week_of_run'] = week_of_run
-    training_plan['miles'] = [int(round(run)) for run in adj_run_vector]
-    training_plan['run_day'] = run_day
-    training_plan['run_date'] = [this_date.date() for this_date in run_date]
-
-    return training_plan
 
 if __name__ == "__main__":
 
-    user = 'alex'
+    user = 'alex'  # Adapt this
     training_plan = build_plan(user)
     training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index = False)

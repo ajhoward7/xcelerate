@@ -5,7 +5,7 @@ import utils
 import lib
 import constants
 
-import generate_plan_backup
+import generate_plan
 
 
 def update_miles_per_week(preferences, summary, miles_per_week):
@@ -71,7 +71,7 @@ def update_training_plan(user):
 
     run_vector = utils.get_run_vector(preferences)
 
-    return generate_plan_backup.combine_miles_days(updated_miles_per_week, updated_days_per_week,
+    return generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
                                                    preferences, run_vector)
 
 
