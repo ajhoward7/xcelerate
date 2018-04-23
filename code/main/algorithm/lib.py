@@ -90,3 +90,16 @@ def get_race_distance(preferences):
         return 13.1
     if race_distance == 3:
         return 26.2
+
+
+def generate_week_summary_stats(planned, logged):
+
+    planned['weeks_before_now'] = planned.run_date.apply(lambda x : int((date.now() - x.date()).days/7))
+
+    planned_grouped = planned.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
+
+    logged['weeks_before_now'] = logged.run_date.apply(lambda x : int((date.now() - x.date()).days/7))
+
+    logged_grouped = logged.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
+
+    return pd.merge(planned, logged, how='left', on='weeks_before_now', suffixes=['_planned','_logged'])
