@@ -154,7 +154,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
 
     race_day = datetime.strptime(preferences['race_date'], '%Y-%m-%d').date()
 
-    training_plan = training_plan[training_plan['run_date'] > datetime.today().date()]
+    #training_plan = training_plan[training_plan['run_date'] > datetime.today().date()]
     training_plan = training_plan[training_plan['run_date'] <= race_day]
 
     training_plan.miles = training_plan['miles'].astype('float')

@@ -1,3 +1,4 @@
+import pandas as pd
 from datetime import *
 
 import utils
@@ -102,4 +103,14 @@ def generate_week_summary_stats(planned, logged):
 
     logged_grouped = logged.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
 
-    return pd.merge(planned, logged, how='left', on='weeks_before_now', suffixes=['_planned','_logged'])
+    return pd.merge(planned_grouped, logged_grouped, how='left', on='weeks_before_now', suffixes=['_planned','_logged'])
+
+
+def retrieve_summary_stats(planned):
+
+    future_training = planned[planned.run_date >= date.today() - timedelta(days=date.today().weekday())]
+
+    future_by_week = planned.groupby(['week_start'], as_index = False).agg({'miles':'sum','run_date':'count'}).\
+                        sort_values('week_start',ascending = True)
+
+    return future_by_week
