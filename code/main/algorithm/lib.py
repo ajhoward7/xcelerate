@@ -95,11 +95,11 @@ def get_race_distance(preferences):
 
 def generate_week_summary_stats(planned, logged):
 
-    planned['weeks_before_now'] = planned.run_date.apply(lambda x : int((date.now() - x.date()).days/7))
+    planned['weeks_before_now'] = planned.run_date.apply(lambda x : int((date.today() - x.date()).days/7))
 
     planned_grouped = planned.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
 
-    logged['weeks_before_now'] = logged.run_date.apply(lambda x : int((date.now() - x.date()).days/7))
+    logged['weeks_before_now'] = logged.run_date.apply(lambda x : int((date.today() - x.date()).days/7))
 
     logged_grouped = logged.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
 
@@ -110,7 +110,7 @@ def retrieve_summary_stats(planned):
 
     future_training = planned[planned.run_date >= date.today() - timedelta(days=date.today().weekday())]
 
-    future_by_week = planned.groupby(['week_start'], as_index = False).agg({'miles':'sum','run_date':'count'}).\
+    future_by_week = future_training.groupby(['week_start'], as_index = False).agg({'miles':'sum','run_date':'count'}).\
                         sort_values('week_start',ascending = True)
 
     return future_by_week

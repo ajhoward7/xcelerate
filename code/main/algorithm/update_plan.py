@@ -19,7 +19,7 @@ def update_miles_per_week(preferences, summary, miles_per_week):
 
 
     for i in range(len(miles_per_week)):
-        diff = (previous_logged - previous_planned) / previous_planned
+        diff = float((previous_logged - previous_planned) / previous_planned)
         updated_miles_per_week[i] *= (1 + diff/2)
 
         previous_logged = updated_miles_per_week[i]
@@ -44,8 +44,8 @@ def update_days_per_week(summary, days_per_week):
     previous_planned = summary[summary.weeks_before_now == 0].run_date_planned
 
     for i in range(len(days_per_week)):
-        diff = (previous_logged - previous_planned) / previous_planned
-        updated_days_per_week[i] *= (1 + diff / 2)
+        diff = int((previous_logged - previous_planned) / previous_planned)
+        updated_days_per_week[i] = int((1 + diff / 2) * updated_days_per_week[i])
 
         previous_logged = updated_days_per_week[i]
         previous_planned = days_per_week[i]
@@ -66,8 +66,8 @@ def update_training_plan(user):
 
     training_plan_summary = lib.retrieve_summary_stats(training_plan)
 
-    updated_miles_per_week = update_miles_per_week(preferences, summary, training_plan_summary['miles'])
-    updated_days_per_week = update_days_per_week(summary, training_plan_summary['run_date'])
+    updated_miles_per_week = update_miles_per_week(preferences, summary, training_plan_summary.miles.tolist())
+    updated_days_per_week = update_days_per_week(summary, training_plan_summary.run_date.tolist())
 
     run_vector = utils.get_run_vector(preferences)
 

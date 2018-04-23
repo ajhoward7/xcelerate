@@ -99,6 +99,7 @@ def generate_days_per_week(preferences, weeks):
 def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
 
     number_of_runs = sum(days_per_week)
+
     run_miles = run_vector['run_miles'][:number_of_runs][::-1]
     run_workout = run_vector['workout'][:number_of_runs][::-1]
     run_long_run = run_vector['long_run'][:number_of_runs][::-1]
