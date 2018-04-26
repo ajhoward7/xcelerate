@@ -8,7 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 sys.path.insert(0, './main/algorithm')
 try:
-    from algorithms import *
+    from generate_plan import *
 except ImportError:
     raise
 
@@ -314,7 +314,10 @@ def redirect(username):
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
-        json_file.truncate()     
+        json_file.truncate()
+
+    output = generate_plan(username)
+    print(output)     
 
     if request.form['prior_training'] == "1":
         return render_template('approx.html', username=username)
@@ -378,7 +381,10 @@ def thankyou(username):
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
-        json_file.truncate() 
+        json_file.truncate()
+
+    output = generate_plan(username)
+    print(output)
 
     return render_template('thankyou.html', username=username)
 

@@ -213,8 +213,15 @@ def build_plan(user):
     return combine_miles_days(miles_per_week, days_per_week, preferences, run_vector)
 
 
-if __name__ == "__main__":
-
-    user = 'alex'  # Adapt this
+def generate_plan(user):
     training_plan = build_plan(user)
-    training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index = False)
+    training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index = False)
+
+    return training_plan
+
+
+# if __name__ == "__main__":
+
+#     user = 'alex'  # Adapt this
+#     training_plan = build_plan(user)
+#     training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index = False)
