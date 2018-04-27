@@ -20,7 +20,7 @@ def turn_plan_to_json(path, username):
     list_of_events = []
     for row in reader:
         if row[1] != "miles":
-            list_of_events.append({"title": "workout " + row[1] + " miles", "start": str(row[3])})
+            list_of_events.append({"title": row[1] + " mile run", "start": str(row[3])})
 
     with open(path + username + "/events.json", 'w') as outfile:
         json.dump(list_of_events, outfile)
