@@ -1,5 +1,5 @@
 Auto Generated Documentation
 ============================
-.. automodule:: constants
+.. automodule:: utils
                 :members:
                 :undoc-members:

@@ -1,5 +1,5 @@
 Auto Generated Documentation
 ============================
-.. automodule:: algorithms
+.. automodule:: update_plan
                 :members:
                 :undoc-members:

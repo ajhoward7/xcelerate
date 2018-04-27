@@ -35,18 +35,45 @@
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">from</span> <span class="nn">werkzeug.security</span> <span class="k">import</span> <span class="n">check_password_hash</span><span class="p">,</span> <span class="n">generate_password_hash</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;./main/algorithm&#39;</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">algorithms</span> <span class="k">import</span> <span class="o">*</span>
+    <span class="kn">from</span> <span class="nn">generate_plan</span> <span class="k">import</span> <span class="o">*</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span>
 
-<span class="c1"># sys.path.insert(0, &#39;./main/algorithm&#39;)</span>
-<span class="c1"># from algorithms import *</span>
+
+<div class="viewcode-block" id="turn_plan_to_json"><a class="viewcode-back" href="../app.html#app.turn_plan_to_json">[docs]</a><span class="k">def</span> <span class="nf">turn_plan_to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+    <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">username</span> <span class="o">+</span> <span class="s2">&quot;/planned_training.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">)</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">myfile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="n">list_of_events</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;miles&quot;</span><span class="p">:</span>
+            <span class="n">list_of_events</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;workout &quot;</span> <span class="o">+</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; miles&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">])})</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">username</span> <span class="o">+</span> <span class="s2">&quot;/events.json&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">list_of_events</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
 
 <span class="n">master_file_path</span> <span class="o">=</span> <span class="s1">&#39;./main/users/master_users.csv&#39;</span>
 <span class="n">users_folder_file_path</span> <span class="o">=</span> <span class="s1">&#39;./main/users/&#39;</span>
+
+<div class="viewcode-block" id="User"><a class="viewcode-back" href="../app.html#app.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+
+<div class="viewcode-block" id="User.set_password"><a class="viewcode-back" href="../app.html#app.User.set_password">[docs]</a>    <span class="k">def</span> <span class="nf">set_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password_hash</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="User.check_password"><a class="viewcode-back" href="../app.html#app.User.check_password">[docs]</a>    <span class="k">def</span> <span class="nf">check_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">check_password_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">password_hash</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span></div></div>
+
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -59,31 +86,40 @@
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;login.html&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="authenticate"><a class="viewcode-back" href="../app.html#app.authenticate">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/authenicate&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="authenticate"><a class="viewcode-back" href="../app.html#app.authenticate">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/authenticate&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">authenticate</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests the username and password and authenticates them</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputName&#39;</span><span class="p">]</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputPassword&#39;</span><span class="p">]</span>
+    <span class="n">inputname</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputName&#39;</span><span class="p">]</span>
+    <span class="n">inputpassword</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputPassword&#39;</span><span class="p">]</span>
+
     <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">master_file_path</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span>
     <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">myfile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 
-    <span class="c1"># check database whether the user&#39;s name or email already exists</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">username</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">username</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">password</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.home&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">inputname</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">inputname</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">check_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">inputpassword</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;welcomeback.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="home"><a class="viewcode-back" href="../app.html#app.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/home/&lt;username&gt;&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="home"><a class="viewcode-back" href="../app.html#app.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&lt;username&gt;/home&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Renders the home page</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;home.html&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;json.html&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="return_data"><a class="viewcode-back" href="../app.html#app.return_data">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&lt;username&gt;/data&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">return_data</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;##&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span> <span class="o">+</span> <span class="s2">&quot;/events.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">input_data</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">input_data</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="showSignup"><a class="viewcode-back" href="../app.html#app.showSignup">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/showSignup&quot;</span><span class="p">)</span>
@@ -101,7 +137,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputName&#39;</span><span class="p">]</span>
     <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputEmail&#39;</span><span class="p">]</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputPassword&#39;</span><span class="p">]</span>
+    <span class="n">real_p</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputPassword&#39;</span><span class="p">]</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">real_p</span><span class="p">)</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">password_hash</span>
 
     <span class="c1"># validate the received values</span>
     <span class="k">if</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">email</span> <span class="ow">and</span> <span class="n">password</span><span class="p">:</span>
@@ -132,17 +171,81 @@
         <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_path</span> <span class="o">+</span> <span class="s1">&#39;/future_training.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
         <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.racetype&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;race_distance.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;showSignup&#39;</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="racetype"><a class="viewcode-back" href="../app.html#app.racetype">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/racetype/&lt;username&gt;&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">racetype</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+
+<div class="viewcode-block" id="race_distance"><a class="viewcode-back" href="../app.html#app.race_distance">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/race_distance/&lt;username&gt;&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">race_distance</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Renders the</span>
+<span class="sd">    Renders the race distance page</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;racetype.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;race_distance.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="race_date"><a class="viewcode-back" href="../app.html#app.race_date">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/race_date/&lt;username&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">race_date</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Renders the race date page and creates the preferences.txt file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;difficulty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;race_distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;race_distance&#39;</span><span class="p">])</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;race_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;max_days_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prior_training&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;race_date.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="runner_type"><a class="viewcode-back" href="../app.html#app.runner_type">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/runner_type/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">runner_type</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Renders the runner type page</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;race_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;race_date&#39;</span><span class="p">]</span>
+
+        <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+        <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;runner_type.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="split"><a class="viewcode-back" href="../app.html#app.split">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/split/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If user is a Novice, render the max days page</span>
+<span class="sd">    If user is an Intermediate, render the how page</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;runner_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">])</span>
+
+        <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+        <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;max_days.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;how.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="daysperweek"><a class="viewcode-back" href="../app.html#app.daysperweek">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/daysperweek/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
@@ -150,57 +253,130 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Renders the dayperweek page</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">new_path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;typerace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;typerace&#39;</span><span class="p">]</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runlevel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;startdate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;enddate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;daysperweek.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="runlevel"><a class="viewcode-back" href="../app.html#app.runlevel">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/runlevel/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">runlevel</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Renders the runerlevel page</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;dayofweek&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_days_per_week&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;max_days_per_week&#39;</span><span class="p">])</span>
+
+        <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+        <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>    
+
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;daysperweek.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;thankyou.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="prior_training"><a class="viewcode-back" href="../app.html#app.prior_training">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/prior_training/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">prior_training</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+    <span class="n">dow_list</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;available_days&#39;</span><span class="p">)</span>
+    <span class="n">dow_list_int</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dow_list</span><span class="p">]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;available_days&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dow_list_int</span>
+
+        <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+        <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span> 
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;prior_training.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;increase.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="redirect"><a class="viewcode-back" href="../app.html#app.redirect">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/redirect/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">redirect</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;prior_training&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;prior_training&#39;</span><span class="p">])</span>
 
         <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
         <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;runerlevel.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+    <span class="n">generate_plan</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="n">turn_plan_to_json</span><span class="p">(</span><span class="n">users_folder_file_path</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;prior_training&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;approx.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;prior_training&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;thankyou.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="dates"><a class="viewcode-back" href="../app.html#app.dates">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/dates/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">dates</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Renders the dates page</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="fill"><a class="viewcode-back" href="../app.html#app.fill">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/fill/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;runlevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;runlevel&#39;</span><span class="p">]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prior_days_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;prior_days_per_week&#39;</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prior_miles_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;prior_miles_per_week&#39;</span><span class="p">])</span>
+
+        <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+        <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>     
+
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;thankyou.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;daysperweek.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="upload"><a class="viewcode-back" href="../app.html#app.upload">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/upload/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;upload.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="increase"><a class="viewcode-back" href="../app.html#app.increase">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/increase/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">increase</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;increase.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="max_days"><a class="viewcode-back" href="../app.html#app.max_days">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/max_days/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">max_days</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;training_level_increase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;training_level_increase&#39;</span><span class="p">])</span>
+
+        <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+        <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span> 
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;max_days.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="thankyou"><a class="viewcode-back" href="../app.html#app.thankyou">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/thankyou/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">thankyou</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;training_level_increase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;training_level_increase&#39;</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;max_days_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
 
         <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
         <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;dates.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
+    <span class="n">generate_plan</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="n">turn_plan_to_json</span><span class="p">(</span><span class="n">users_folder_file_path</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;thankyou.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="backhome"><a class="viewcode-back" href="../app.html#app.backhome">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/backhome/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
@@ -264,6 +440,7 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 

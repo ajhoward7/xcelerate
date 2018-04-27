@@ -38,16 +38,13 @@ def generate_days_per_week(preferences, weeks):
     INPUTS
     max_days: number of days per week the user wants to run
     level: intermediate or novice
-    increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True
-                if level = novice
+    increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True if level = novice
     weeks: number of weeks left until race day
     previous_days: number of training days per week from previous training. Will be -1 if no previous data
 
     OUTPUTS
     plan: vector of number of days per week for remaining training
-
     """
-
     max_days = preferences['max_days_per_week']
     level = preferences['runner_type']
     try:
@@ -206,7 +203,7 @@ def build_plan(user):
         mileage_limit = mileage_baseline + 5
 
     miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks)
-    print(miles_per_week)
+    # print(miles_per_week)
 
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
 

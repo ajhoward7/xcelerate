@@ -1,0 +1,1 @@
+{"username": "sushi", "runner_type": 0, "prior_training": 0, "race_distance": 0, "available_days": [0, 4, 5, 6], "difficulty": 1, "max_days_per_week": 4, "race_date": "2018-05-24", "start_date": "2018-04-27"}

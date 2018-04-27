@@ -16,3 +16,4 @@ eating,eating@eating,pbkdf2:sha256:50000$Jp6pKy8h$426bdf543357198cb51d9d69d354d6
 jose,jose@jose.com,pbkdf2:sha256:50000$cJINzKYW$8f6547e6e7fbea082eade9042b8015fe696168c2cd43b8fe79b1b9881273af86
 thumb,thumb@tack,pbkdf2:sha256:50000$kTibIRPF$1ead7d4a719323df4c4ef3f575becd1f70a029e73cf9c845227cb934770cc22b
 chicken,chicken@chicken,pbkdf2:sha256:50000$5EZAlo52$8476dcb311f3b561ff23741d963ee5ec95bb1b129ca5eadd5ad7246009039300
+sushi,sushi@rrito,pbkdf2:sha256:50000$LObntljH$61466b4a28a0a91339f1b60193817140ab3caf95847cc4ecf825956f7ccfdac6

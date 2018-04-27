@@ -42,16 +42,20 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="generate_plan.combine_miles_days">
+<code class="descclassname">generate_plan.</code><code class="descname">combine_miles_days</code><span class="sig-paren">(</span><em>miles_per_week</em>, <em>days_per_week</em>, <em>preferences</em>, <em>run_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#combine_miles_days"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.combine_miles_days" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="generate_plan.generate_days_per_week">
-<code class="descclassname">generate_plan.</code><code class="descname">generate_days_per_week</code><span class="sig-paren">(</span><em>preferences</em>, <em>weeks_of_plan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_days_per_week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_days_per_week" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the preferences dictionary and the number of weeks in the plan, this function returns 
+<code class="descclassname">generate_plan.</code><code class="descname">generate_days_per_week</code><span class="sig-paren">(</span><em>preferences</em>, <em>weeks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_days_per_week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_days_per_week" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the preferences dictionary and the number of weeks in the plan, this function returns
 a list of the number of training days per week for each week of the training plan.</p>
 <p>INPUTS
 max_days: number of days per week the user wants to run
 level: intermediate or novice
-increase: boolean to indicate whether the user (intermediate only) wants to increase training.
-Will be True if level = novice
-weeks_of_plan: number of weeks left until race day
+increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True if level = novice
+weeks: number of weeks left until race day
 previous_days: number of training days per week from previous training. Will be -1 if no previous data</p>
 <p>OUTPUTS
 plan: vector of number of days per week for remaining training</p>
@@ -59,11 +63,15 @@ plan: vector of number of days per week for remaining training</p>
 
 <dl class="function">
 <dt id="generate_plan.generate_mpw">
-<code class="descclassname">generate_plan.</code><code class="descname">generate_mpw</code><span class="sig-paren">(</span><em>mileage_baseline</em>, <em>mileage_limit</em>, <em>weeks_of_plan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_mpw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_mpw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the preferences dictionary and number of weeks in the plan,
-this function returns a list of weekly mileages
+<code class="descclassname">generate_plan.</code><code class="descname">generate_mpw</code><span class="sig-paren">(</span><em>mileage_baseline</em>, <em>mileage_limit</em>, <em>weeks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_mpw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_mpw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the preferences dictionary and number of weeks in the plan, this function returns a list of weekly mileages
 for the individual.</p>
 </dd></dl>
+
+<dl class="function">
+<dt id="generate_plan.generate_plan">
+<code class="descclassname">generate_plan.</code><code class="descname">generate_plan</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_plan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 

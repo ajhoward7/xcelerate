@@ -12,8 +12,20 @@ try:
 except ImportError:
     raise
 
-# sys.path.insert(0, './main/algorithm')
-# from algorithms import *
+
+def turn_plan_to_json(path, username):
+    myfile = open(path + username + "/planned_training.csv", "r+")
+    reader = csv.reader(myfile, delimiter=',')
+
+    list_of_events = []
+    for row in reader:
+        if row[1] != "miles":
+            list_of_events.append({"title": "workout " + row[1] + " miles", "start": str(row[3])})
+
+    with open(path + username + "/events.json", 'w') as outfile:
+        json.dump(list_of_events, outfile)
+    return
+
 
 master_file_path = './main/users/master_users.csv'
 users_folder_file_path = './main/users/'
@@ -47,22 +59,6 @@ def authenticate():
     """
     Requests the username and password and authenticates them
     """
-
-    # print(request.form['inputName'])
-    # username = request.form['inputName']
-    # password = request.form['inputPassword']
-    # myfile = open(master_file_path, 'r+')
-    # reader = csv.reader(myfile, delimiter=',')
-    #
-    # # check database whether the user's name or email already exists
-    # for row in reader:
-    #     if (username == row[0] or username == row[1]) and password == row[2]:
-    #         # return redirect(url_for('.home', username=row[0]))
-    #         return render_template('welcomeback.html', username=row[0])
-    #
-    # myfile.close()
-    # return redirect(url_for('login'))
-
     inputname = request.form['inputName']
     inputpassword = request.form['inputPassword']
 
@@ -73,19 +69,25 @@ def authenticate():
         if inputname == row[0] or inputname == row[1]:
             password = row[2]
             if check_password_hash(password, inputpassword):
-                # return redirect(url_for('.home', username=row[0]))
                 return render_template('welcomeback.html', username=row[0])
 
     myfile.close()
     return redirect(url_for('login'))
 
 
-@app.route("/home/<username>", methods=["GET", "POST"])
+@app.route("/<username>/home", methods=["GET", "POST"])
 def home(username):
     """
     Renders the home page
     """
-    return render_template('home.html', name=username)
+    return render_template('json.html', name=username)
+
+
+@app.route('/<username>/data')
+def return_data(username):
+    print('##')
+    with open(users_folder_file_path + username + "/events.json", "r") as input_data:
+        return input_data.read()
 
 
 @app.route("/showSignup")
@@ -101,45 +103,6 @@ def createUsers():
     """
     Requests the new usre's username, email and password
     """
-
-    # username = request.form['inputName']
-    # email = request.form['inputEmail']
-    # password = request.form['inputPassword']
-    #
-    # # validate the received values
-    # if username and email and password:
-    #     # write in the users file
-    #     myData = []
-    #     myData.append([username, email, password])
-    #
-    #     myFile = open(master_file_path, 'r+')
-    #
-    #     reader = csv.reader(myFile, delimiter=',')
-    #     # check database whether the user's name or email already exists
-    #     for row in reader:
-    #         if username == row[0] or email == row[1]:
-    #             return redirect(url_for('showSignup'))
-    #
-    #     # write only if the user's email or name does not exist
-    #     writer = csv.writer(myFile)
-    #     writer.writerows(myData)
-    #
-    #     myFile.close()
-    #
-    #     new_path = users_folder_file_path + username
-    #     os.makedirs(new_path)
-    #
-    #     p = open(new_path + '/past_training.csv', 'w')
-    #     p.close()
-    #
-    #     f = open(new_path + '/future_training.csv', 'w')
-    #     f.close()
-    #
-    #     # return redirect(url_for('.race_distance', username=username))
-    #     return render_template('race_distance.html', username=username)
-    # else:
-    #     return redirect(url_for('showSignup'))
-
     username = request.form['inputName']
     email = request.form['inputEmail']
     real_p = request.form['inputPassword']
@@ -157,13 +120,8 @@ def createUsers():
 
         reader = csv.reader(myFile, delimiter=',')
         # check database whether the user's name or email already exists
-        print(username)
-        print(email)
         for row in reader:
-            print(row[0])
-            print(row[1])
             if username == row[0] or email == row[1]:
-                print(1)
                 return redirect(url_for('showSignup'))
 
         # write only if the user's email or name does not exist
@@ -316,8 +274,8 @@ def redirect(username):
         json.dump(data, json_file)
         json_file.truncate()
 
-    output = generate_plan(username)
-    print(output)     
+    generate_plan(username)
+    turn_plan_to_json(users_folder_file_path, username)
 
     if request.form['prior_training'] == "1":
         return render_template('approx.html', username=username)
@@ -383,8 +341,8 @@ def thankyou(username):
         json.dump(data, json_file)
         json_file.truncate()
 
-    output = generate_plan(username)
-    print(output)
+    generate_plan(username)
+    turn_plan_to_json(users_folder_file_path, username)
 
     return render_template('thankyou.html', username=username)
 
@@ -450,4 +408,5 @@ def inputs(username):
 
 
 if __name__ == "__main__":
-    app.run('0.0.0.0')
+    app.debug = True
+    app.run()

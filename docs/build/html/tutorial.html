@@ -33,8 +33,22 @@
   <div class="section" id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
 <div class="line-block">
-<div class="line">To set up the environment, navigate to the appropriate directory in your terminal, then clone the git repo:</div>
+<div class="line">To set up the environment on AWS, perform the following steps:</div>
+<div class="line"><br /></div>
+<div class="line">Launch Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type t2.large (size may need to be bigger eventually)</div>
+<div class="line"><br /></div>
+<div class="line">Connect to AWS instance</div>
+<div class="line"><br /></div>
+<div class="line">In the terminal, run the following commands:</div>
+<div class="line">sudo yum install python-setuptools python-setuptools-devel</div>
+<div class="line">sudo easy_install pip</div>
+<div class="line">sudo yum install git</div>
+<div class="line"><br /></div>
+<div class="line">Navigate to the appropriate directory, then clone the git repo:</div>
 <div class="line">git clone <a class="reference external" href="https://github.com/MSDS698/group-assignment-2-xcelerate">https://github.com/MSDS698/group-assignment-2-xcelerate</a></div>
+<div class="line"><br /></div>
+<div class="line">Install the requirements:</div>
+<div class="line">sudo pip install -r requirements.txt</div>
 <div class="line"><br /></div>
 <div class="line">Activate the environment:</div>
 <div class="line">source venv/bin/activate</div>
