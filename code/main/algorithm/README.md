@@ -29,3 +29,6 @@ INTERMEDIATE:
 - Approximate previous mileage (miles/run) beforehand
 - Are they looking to keep training levels from before or increase? (If increase, how many days a week do you want to run?)
 
+## Notes to self:
+To work on -- improving incorporation of workouts to training plans
+
