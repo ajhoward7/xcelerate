@@ -4,7 +4,7 @@ from datetime import *
 import constants
 
 
-def get_baseline_mileage(preferences):
+def get_baseline_mileage(preferences, first_week_days):
     """
     1. Novice, no prior training - pre-defined constants
     2. Novice, prior training - prior training levels
@@ -15,13 +15,13 @@ def get_baseline_mileage(preferences):
         return preferences['prior_miles_per_week']
     else:
         if preferences['race_distance'] == 0:
-            return constants.novice_5k_baseline
+            return constants.novice_5k_baseline_mpd * first_week_days
         if preferences['race_distance'] == 1:
-            return constants.novice_10k_baseline
+            return constants.novice_10k_baseline_mpd * first_week_days
         if preferences['race_distance'] == 2:
-            return constants.novice_half_baseline
+            return constants.novice_half_baseline_mpd * first_week_days
         if preferences['race_distance'] == 3:
-            return constants.novice_full_baseline
+            return constants.novice_full_baseline_mpd * first_week_days
 
 
 def get_limit_mileage(preferences):

@@ -1,13 +1,17 @@
 novice_5k_baseline = 15
+novice_5k_baseline_mpd = 2.5
 novice_5k_limit = 25
 
 novice_10k_baseline = 15
+novice_10k_baseline_mpd = 3
 novice_10k_limit = 30
 
 novice_half_baseline = 15
+novice_half_baseline_mpd = 4
 novice_half_limit = 35
 
 novice_full_baseline = 15
+novice_full_baseline_mpd = 4
 novice_full_limit = 40
 
 difficulty_adjustment = 0.15  # Factor to adjust by from checkbox

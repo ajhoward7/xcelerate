@@ -47,6 +47,12 @@ def generate_mpw(mileage_baseline, mileage_limit, weeks):
         if i+1 % constants.easy_week_frequency == 0:
             miles_per_week[i] *= constants.easy_week_cycle_adjustment
 
+    # Incorporate 3 week taper:
+    if weeks > 3:
+        miles_per_week[-3] *= 0.9
+        miles_per_week[-2] *= 0.75
+        miles_per_week[-1] *= 0.5
+
     return miles_per_week
 
 
@@ -106,6 +112,8 @@ def generate_days_per_week(preferences, weeks):
 
         last = [max_days] * int(weeks - len(plan))
         plan = plan + last
+
+    plan[-1] += -1  # One less day training on the last week
 
     return plan
 
@@ -190,6 +198,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
 
     training_plan = training_plan[:-1]
 
+    # Adjust final entry to have correct race distance:
     training_plan = training_plan.append({'miles': lib.get_race_distance(preferences),
                                           'week_of_run': week_of_run[-1],
                                           'run_date': race_day,
@@ -220,10 +229,10 @@ def build_plan(user):
 
     # Part 3: Generate number of days per week to run on each week
     days_per_week = generate_days_per_week(preferences, weeks)  # Holly
-    print(days_per_week)
 
     # Part 4: Generate mileage per week for each week
-    mileage_baseline = lib.get_baseline_mileage(preferences)
+    first_week_days = days_per_week[0]
+    mileage_baseline = lib.get_baseline_mileage(preferences, first_week_days)
     mileage_limit = lib.get_limit_mileage(preferences)
 
     if mileage_limit <= mileage_baseline + 5:
