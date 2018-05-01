@@ -175,7 +175,15 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
 
         factor = float(miles_this_week) / sum(runs_this_week)
 
-        adj_run_vector += [int(round(run * factor)) for run in runs_this_week]  # Adjust run vector to make correct MpW
+        max_val = np.max(runs_this_week)
+        max_arg = np.argmax(runs_this_week)
+
+        # Putting longest run as the last run:
+        runs_this_week[max_arg] = runs_this_week[-1]
+        runs_this_week[-1] = max_val
+
+        # Adjust run vector to make correct MpW:
+        adj_run_vector += [int(round(run * factor)) for run in runs_this_week]
 
         start_of_week += timedelta(days=7)  # Initialise for next time round
 
