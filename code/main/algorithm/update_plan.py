@@ -1,11 +1,14 @@
-import pandas as pd
-from datetime import *
-
 import utils
 import lib
 import constants
 
 import generate_plan
+
+"""
+This code is used to update a training plan that has been generated for a particular user.
+
+Training plans can be updated by calling: 
+"""
 
 
 def update_miles_per_week(preferences, summary, miles_per_week):
@@ -71,8 +74,12 @@ def update_training_plan(user):
 
     run_vector = utils.get_run_vector(preferences)
 
-    return generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
-                                                   preferences, run_vector)
+    updated_training_plan = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
+                                                                preferences, run_vector)
+
+    updated_training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
+
+    return updated_training_plan
 
 
 if __name__ == "__main__":

@@ -7,10 +7,33 @@ from datetime import *
 import numpy as np
 
 
+"""
+This code is used to generate an initial training plan for our user, using the user preferences (stored as a dict) and
+our constants - specified in constants.py
+
+A training plan can be constructed by calling `generate_plan(user)`.
+
+Method:
+1. Read user preferences and appropriate run vectors
+2. Decide MPW for each week of plan (`generate_mpw`)
+3. Decide days per week for each week of plan (`generate_days_per_week`)
+4. Generate full training plan by concatenating 2&3 with run vector
+
+
+"""
+
+
 def generate_mpw(mileage_baseline, mileage_limit, weeks):
     """
     Given the preferences dictionary and number of weeks in the plan, this function returns a list of weekly mileages
     for the individual.
+
+    Steps:
+    1. Initialise to 0
+    2. Set baseline (previous training if applicable, else baseline defined in constants)
+    3. Increase by constant factor (`increase_factor`) every `increase_period` number of weeks
+    4. Adjust weekly mileage down every `easy_week_frequency` number of weeks
+    5. Adjust mileage for final two weeks (TO DO)
     """
     miles_per_week = [0 for _ in range(weeks)]
 
@@ -33,18 +56,11 @@ def generate_days_per_week(preferences, weeks):
     Given the preferences dictionary and the number of weeks in the plan, this function returns
     a list of the number of training days per week for each week of the training plan.
 
-    INPUTS
-    max_days: number of days per week the user wants to run
-    level: intermediate or novice
-    increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True if level = novice
-    weeks: number of weeks left until race day
-    previous_days: number of training days per week from previous training. Will be -1 if no previous data
-
-    OUTPUTS
-    plan: vector of number of days per week for remaining training
+    Number of days per week initialised and then increased every 2nd week until reach maximum.
     """
     max_days = preferences['max_days_per_week']
     level = preferences['runner_type']
+
     if 'training_level_increase' in preferences.keys():
         increase = preferences['training_level_increase']
     else:
@@ -96,9 +112,20 @@ def generate_days_per_week(preferences, weeks):
 
 
 def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
+    """
+    Take MpW and days per week inputs and output training plan appropriate from run vector
+    """
 
     number_of_runs = sum(days_per_week)
 
+    run_vector_length = len(run_vector)
+
+    # Deal with edge case that run vector not long enough:
+    while run_vector_length < number_of_runs:
+        second_half_training = run_vector[int(run_vector_length/2):]
+        run_vector = pd.concat([run_vector,second_half_training])
+
+    # Take relevant portion of run vectors (and reverse order):
     run_miles = run_vector['run_miles'][:number_of_runs][::-1]
     run_workout = run_vector['workout'][:number_of_runs][::-1]
     run_long_run = run_vector['long_run'][:number_of_runs][::-1]
@@ -113,8 +140,11 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
     today = datetime.today()
     start_of_week = today - timedelta(days=today.weekday())  # Initialise start_of_week
 
-    available_days = preferences['available_days']
+    available_days = preferences['available_days']  # Days available to run
 
+    np.random.seed(666)  # Set seed for reproducibility when plan updated
+
+    # Loop through each week and place days as appropriate:
     for i in range(len(days_per_week)):
         days_this_week = days_per_week[i]
         miles_this_week = miles_per_week[i]
@@ -138,12 +168,12 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
 
         factor = float(miles_this_week) / sum(runs_this_week)
 
-        adj_run_vector += [int(round(run * factor)) for run in runs_this_week]
+        adj_run_vector += [int(round(run * factor)) for run in runs_this_week]  # Adjust run vector to make correct MpW
 
-        start_of_week += timedelta(days=7)
+        start_of_week += timedelta(days=7)  # Initialise for next time round
 
+    # Format output:
     training_plan = pd.DataFrame([])
-
     training_plan['week_of_run'] = week_of_run
     training_plan['miles'] = adj_run_vector
     training_plan['run_day'] = run_day
@@ -154,7 +184,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
 
     race_day = datetime.strptime(preferences['race_date'], '%Y-%m-%d').date()
 
-    #training_plan = training_plan[training_plan['run_date'] > datetime.today().date()]
+    training_plan = training_plan[training_plan['run_date'] > datetime.today().date()] # May want to omit this later
     training_plan = training_plan[training_plan['run_date'] <= race_day]
 
     training_plan.miles = training_plan['miles'].astype('float')
@@ -167,18 +197,19 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
                                           'run_day': race_day.weekday(),
                                           'week_start': race_day - timedelta(days = race_day.weekday()),
                                           'workout':0,'long_run':0},
-                                         ignore_index = True)
+                                            ignore_index = True)
 
     return training_plan
 
 
 def build_plan(user):
     """
-    Steps:
-    1. Decide how many days to run on each week up until race day
-    2. Decide how many miles to run on each week
-    3. Select appropriate proportion of run vector
-    4. Return plan, divided by week
+    Master function to build plan
+    1: Read in preferences and appropriate run vector
+    2: Calculate weeks of plan
+    3: Generate number of days per week to run on each week
+    4: Generate mileage per week for each week
+    5: concatenate Part 3 & 4 to create full plan with run vector
     """
 
     # Part 1: Read in preferences and appropriate run vector
@@ -200,7 +231,6 @@ def build_plan(user):
         mileage_limit = mileage_baseline + 5
 
     miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks)
-    # print(miles_per_week)
 
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
 
