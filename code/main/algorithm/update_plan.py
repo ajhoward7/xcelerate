@@ -7,13 +7,23 @@ import generate_plan
 """
 This code is used to update a training plan that has been generated for a particular user.
 
-Training plans can be updated by calling: 
+Training plans can be updated by calling: `update_training_plan(user)`
+
+Method:
+1. Update MpW
+2. Update Days per Week
+3. Combine identically as when producing initial training plan
+
+This script in particular uses helper functions that generate summary statistics from lib.py (e.g.
+`lib.retrieve_summary_statistics()`.
+
 """
 
 
 def update_miles_per_week(preferences, summary, miles_per_week):
     """
-    Starting point: just use previous week training and halve distance to expect
+    Update miles per week for new training plan - calculate difference for previous week and halve this difference
+    iteratively
     """
     updated_miles_per_week = miles_per_week.copy()
 
@@ -39,7 +49,7 @@ def update_miles_per_week(preferences, summary, miles_per_week):
 
 def update_days_per_week(summary, days_per_week):
     """
-    JUST THIS TO COMPLETE
+    Update days per week from initial training plan - compute difference for previous week and halve this iteratively
     """
     updated_days_per_week = days_per_week.copy()
 
@@ -57,23 +67,33 @@ def update_days_per_week(summary, days_per_week):
 
 
 def update_training_plan(user):
+    """
+    Method:
+    1. Update MpW
+    2. Update Days per Week
+    3. Combine identically as when producing initial training plan
+
+    Output re-writes 'planned_training.csv' file.
+    """
 
     preferences = utils.get_preferences(user)
 
     recent_logged_training = utils.get_recent_logged_training(user, n_weeks=3)
-
     recent_planned_training = utils.get_recent_planned_training(user, n_weeks=3)
+
     training_plan = utils.get_all_planned_training(user)
 
+    # Generate summary statistics from planned training and logged training:
     summary = lib.generate_week_summary_stats(recent_planned_training, recent_logged_training)
-
     training_plan_summary = lib.retrieve_summary_stats(training_plan)
 
+    # Update MpW and days per week:
     updated_miles_per_week = update_miles_per_week(preferences, summary, training_plan_summary.miles.tolist())
     updated_days_per_week = update_days_per_week(summary, training_plan_summary.run_date.tolist())
 
     run_vector = utils.get_run_vector(preferences)
 
+    # Combine these with function taken from `generate_plan` python script:
     updated_training_plan = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
                                                                 preferences, run_vector)
 

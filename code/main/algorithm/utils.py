@@ -5,10 +5,7 @@ from datetime import *
 
 def get_preferences(user):
     """
-    Given user object, return dictionary of preferences from appropriate file ---- JAKE
-
-    NOTES:
-    -This is bad practice because I am hardcoding a filepath, but I think that is fine for this project -JT
+    Given user object, return dictionary of preferences from appropriate file
     """
     preferences = json.load(open('main/users/' + user + '/preferences.txt'))
     return preferences
@@ -25,7 +22,9 @@ def get_run_vector(preferences):
 
 
 def get_recent_logged_training(user, n_weeks=3):
-
+    """
+    Subset logged training based on n_weeks prior
+    """
     x_weeks_before = date.today() - timedelta(days=7 * n_weeks)
 
     logged_training = get_all_logged_training(user)
@@ -37,7 +36,9 @@ def get_recent_logged_training(user, n_weeks=3):
 
 
 def get_recent_planned_training(user, n_weeks=3):
-
+    """
+    Subset planned training based on n_weeks prior
+    """
     planned_training = get_all_planned_training(user)
 
     x_weeks_before = date.today() - timedelta(days=7 * n_weeks)
@@ -49,10 +50,14 @@ def get_recent_planned_training(user, n_weeks=3):
 
 
 def get_all_planned_training(user):
-
+    """
+    Read planned training into DF
+    """
     return pd.read_csv('../users/{}/planned_training.csv'.format(user), parse_dates = ['run_date','week_start'])
 
 
 def get_all_logged_training(user):
-
+    """
+    Read logged training into DF
+    """
     return pd.read_csv('../users/{}/logged_training.csv'.format(user), parse_dates=['run_date'])

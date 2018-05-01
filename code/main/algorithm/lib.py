@@ -1,8 +1,8 @@
 import pandas as pd
 from datetime import *
 
-import utils
 import constants
+
 
 def get_baseline_mileage(preferences):
     """
@@ -60,7 +60,6 @@ def weeks_of_plan(preferences):
     """
     Calculate the number of weeks until the race
     """
-
     today = date.today()
     start_of_first_week = today - timedelta(days=today.weekday())
 
@@ -94,20 +93,30 @@ def get_race_distance(preferences):
 
 
 def generate_week_summary_stats(planned, logged):
-
+    """
+    For each number of weeks before present day, generate summary statistics for planned and logged training and merge
+    into a single data frame.
+    """
+    # Bucket weeks based on integer number of weeks before today:
     planned['weeks_before_now'] = planned.run_date.apply(lambda x : int((date.today() - x.date()).days/7))
+    logged['weeks_before_now'] = logged.run_date.apply(lambda x: int((date.today() - x.date()).days / 7))
 
+    # Group data frames based on 'weeks_before_now':
     planned_grouped = planned.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
-
-    logged['weeks_before_now'] = logged.run_date.apply(lambda x : int((date.today() - x.date()).days/7))
-
     logged_grouped = logged.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
 
-    return pd.merge(planned_grouped, logged_grouped, how='left', on='weeks_before_now', suffixes=['_planned','_logged'])
+    # Join appropriately to return:
+    output = pd.merge(planned_grouped, logged_grouped, how='left',
+                      on='weeks_before_now', suffixes=['_planned','_logged'])
+
+    return output
 
 
 def retrieve_summary_stats(planned):
-
+    """
+    Read in the planned_training dataframe and retrieve summary statistics (miles per week, days per week) to work from
+    when updated training plans.
+    """
     future_training = planned[planned.run_date >= date.today() - timedelta(days=date.today().weekday())]
 
     future_by_week = future_training.groupby(['week_start'], as_index = False).agg({'miles':'sum','run_date':'count'}).\
