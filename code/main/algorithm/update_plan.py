@@ -4,6 +4,7 @@ import constants
 
 import generate_plan
 
+
 """
 This code is used to update a training plan that has been generated for a particular user.
 
