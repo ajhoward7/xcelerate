@@ -19,7 +19,6 @@ Method:
 3. Decide days per week for each week of plan (`generate_days_per_week`)
 4. Generate full training plan by concatenating 2&3 with run vector
 
-
 """
 
 
