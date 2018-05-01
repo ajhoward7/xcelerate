@@ -6,8 +6,6 @@ import pandas as pd
 from datetime import *
 import numpy as np
 
-import sys
-
 
 def generate_mpw(mileage_baseline, mileage_limit, weeks):
     """
@@ -47,19 +45,18 @@ def generate_days_per_week(preferences, weeks):
     """
     max_days = preferences['max_days_per_week']
     level = preferences['runner_type']
-    try:
+    if 'training_level_increase' in preferences.keys():
         increase = preferences['training_level_increase']
-    except:
+    else:
         increase = 'NaN'
-    try:
+
+    if 'prior_days_per_week' in preferences.keys():
         previous_days = preferences['prior_days_per_week']
-    except:
+    else:
         previous_days = 0
 
-    ### ADDED #####################
     if max_days == 99:
         max_days = previous_days
-    ###############################
 
     if level == 0:
         initial = int(round(max_days * .666))
@@ -73,7 +70,7 @@ def generate_days_per_week(preferences, weeks):
     if initial > max_days:  # Handles edge case of previous days per week > max_days
         initial = max_days
 
-    if increase == False:
+    if not increase:
         plan = [initial] * (weeks)
 
     else:
