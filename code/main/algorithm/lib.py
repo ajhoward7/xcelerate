@@ -60,7 +60,7 @@ def weeks_of_plan(preferences):
     """
     Calculate the number of weeks until the race
     """
-    today = pd.to_datetime(preferences['startdate']).date()
+    today = date.today()
     start_of_first_week = today - timedelta(days=today.weekday())
 
     end_date = datetime.strptime(preferences['race_date'], '%Y-%m-%d')
