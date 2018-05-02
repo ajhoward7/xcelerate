@@ -14,12 +14,17 @@
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
      <h4 align = 'center'><font color="#4d73be">Upload Data</font></h4>
 
-    <form class="form-signin" action="{{url_for('increase', username=username)}}" method="post">
-        <center><button>Upload Data</button></center>
+<!--     <form action="{{url_for('increase', username=username)}}" method="post" enctype=multipart/form-data>
 
+        <input type="file" name="myFile">
+        <br>
         <center>
           <input class="btn btn-lg btn-success" type="submit" value="Submit">
         </center>
+    </form> -->
+    <form method='post' action="{{url_for('increase', username=username)}}" enctype='multipart/form-data'>
+    <input type='file' name='newfile'>
+    <center><input type='submit' value='Submit'></center>
     </form>
     
   </div>

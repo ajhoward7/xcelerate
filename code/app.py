@@ -324,13 +324,24 @@ def fill(username):
         return render_template('daysperweek.html', username=username)
 
 
-@app.route("/upload/<username>", methods=['GET'])
+@app.route("/upload/<username>", methods=['GET', 'POST'])
 def upload(username):
     return render_template('upload.html', username=username)
 
 
 @app.route("/increase/<username>", methods=['POST'])
 def increase(username):
+
+    path = users_folder_file_path + username
+
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+        if data['runner_type'] == 1:
+
+            file = request.files['newfile']
+
+            file.save('main/users/{}/uploaded_training.csv'.format(username))
+
     return render_template('increase.html', username=username)
 
 
