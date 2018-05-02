@@ -169,6 +169,8 @@ def race_date(username):
     data['runner_type'] = ''
     data['max_days_per_week'] = ''
     data['prior_training'] = ''
+    data['prior_days_per_week'] = 0
+    data['prior_miles_per_week'] = 0
 
     with open(new_path + '/preferences.txt', 'w') as outfile:
         json.dump(data, outfile)
@@ -331,16 +333,8 @@ def upload(username):
 
 @app.route("/increase/<username>", methods=['POST'])
 def increase(username):
-
-    path = users_folder_file_path + username
-
-    with open(path + '/preferences.txt', 'r+') as json_file:
-        data = json.load(json_file)
-        if data['runner_type'] == 1:
-
-            file = request.files['newfile']
-
-            file.save('main/users/{}/activities.csv'.format(username))
+    file = request.files['newfile']
+    file.save('main/users/{}/activities.csv'.format(username))
 
     return render_template('increase.html', username=username)
 

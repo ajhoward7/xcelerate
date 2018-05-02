@@ -14,7 +14,7 @@
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
      <h4 align = 'center'><font color="#4d73be">How do you want to tell us about your training?</font></h4>
 
-     <form>
+     <form method="post">
        <center>
        <button formaction="{{ url_for('.upload', username=username) }}">Upload Data (GPX, csv)</button>
        <button name="prior_training" value="1" formaction="{{ url_for('rdirect', username=username) }}">Q&A</button>
