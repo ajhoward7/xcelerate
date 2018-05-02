@@ -32,8 +32,9 @@ def update_preferences(training):
     filename = '../users/' + user + '/preferences.txt'
     with open(filename, 'r') as f:
         data = json.load(f)
-        data['prior_days_per_week'] = prior_days_per_week
-        data['prior_miles_per_week'] = prior_miles_per_week
+
+    data['prior_days_per_week'] = prior_days_per_week
+    data['prior_miles_per_week'] = prior_miles_per_week
 
     os.remove(filename)
     with open(filename, 'w') as f:
@@ -43,15 +44,19 @@ def update_preferences(training):
 
 
 def write_planned_training(training):
-	"""
-	Alex: write planned training with file
-	"""
+    """
+    Alex: write planned training with file
+    """
 
-	training['run_date'] = pd.to_datetime(training['Date']).apply(lambda x : x.date())
-	training['miles'] = training['Distance']
+    training['run_date'] = pd.to_datetime(training['Date']).apply(lambda x : x.date())
+    training['miles'] = training['Distance']
 
-	training[['run_date','miles','Time','Title']].to_csv('../users/{}/logged_training.csv'.format(user), index=False)
+    training[['run_date','miles','Time','Title']].to_csv('../users/{}/logged_training.csv'.format(user), index=False)
 	
-	return True
+    return True
 
-write_planned_training(training)
+
+if __name__=="__main__":
+    write_planned_training(training)
+    update_preferences(training)
+
