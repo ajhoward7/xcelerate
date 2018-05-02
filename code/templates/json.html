@@ -3,6 +3,9 @@
 <html>
 <head>
 <title>Xcelerate</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
 <meta charset='utf-8' />
 <link href="{{ url_for('static', filename='fullcalendar.min.css') }}" rel='stylesheet' />
 <link href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}" rel='stylesheet' />
@@ -91,10 +94,12 @@
 
 	<div style="width: 100%;overflow: hidden; margin-top: 1px; margin-left: 2px;">
 		<font size="20" color="#f8f8f8">
+			<!--<<>>-->
 		<!--<div id="leftPanel" style="width: 200px; height: 660px; float: left; background-color: #2ed39e; position: absolute;">-->
 			<!--<br><br>-->
 				<!--<div id="time" align="center" style="background-color: #2bc493;"></div>-->
 			<!--<br><br>-->
+			<!--<<>>-->
 			<script type="text/javascript">
 				function checkTime(i) {
 				    if (i < 10) {
@@ -155,7 +160,7 @@
 					<!--var r3 = prompt("End Date : ", "yyyy-mm-dd");-->
 				<!--}-->
 			<!--</script>-->
-		</div>
+		<!--</div>-->
 
 		<div id="rightPanel" style="margin-left: 100px; margin-top: 0px;">
 			<div id='loading'>loading...</div>
