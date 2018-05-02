@@ -4,8 +4,7 @@ import constants
 
 import generate_plan
 
-import os
-os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
+import copy
 """
 This code is used to update a training plan that has been generated for a particular user.
 
@@ -28,7 +27,8 @@ def update_miles_per_week(preferences, summary, miles_per_week):
     iteratively
     """
     # print(miles_per_week)
-    updated_miles_per_week = miles_per_week.copy()
+
+    updated_miles_per_week = copy.copy(miles_per_week)
 
     previous_logged = summary[summary.weeks_before_now == 0].miles_logged
     previous_planned = summary[summary.weeks_before_now == 0].miles_planned
