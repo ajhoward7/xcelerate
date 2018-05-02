@@ -6,7 +6,6 @@ import constants
 import lib
 import utils
 
-
 """
 This code is used to generate an initial training plan for our user, using the user preferences (stored as a dict) and
 our constants - specified in constants.py
@@ -183,6 +182,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
         max_arg = np.argmax(runs_this_week)
 
         # Putting longest run as the last run:
+        runs_this_week = [max(run,2) for run in runs_this_week]
         runs_this_week[max_arg] = runs_this_week[-1]
         runs_this_week[-1] = max_val
 
@@ -265,8 +265,8 @@ def generate_plan(user):
     return training_plan
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
-#     user = 'alex'  # Adapt this
-#     training_plan = build_plan(user)
-#     training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index = False)
+    user = '441'  # Adapt this
+    training_plan = build_plan(user)
+    training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index = False)

@@ -12,16 +12,17 @@ def get_baseline_mileage(preferences, first_week_days):
     """
 
     if 'prior_miles_per_week' in preferences.keys():
-        return preferences['prior_miles_per_week']
-    else:
-        if preferences['race_distance'] == 0:
-            return constants.novice_5k_baseline_mpd * first_week_days
-        if preferences['race_distance'] == 1:
-            return constants.novice_10k_baseline_mpd * first_week_days
-        if preferences['race_distance'] == 2:
-            return constants.novice_half_baseline_mpd * first_week_days
-        if preferences['race_distance'] == 3:
-            return constants.novice_full_baseline_mpd * first_week_days
+        if preferences['prior_miles_per_week'] > 0:
+            return preferences['prior_miles_per_week']
+
+    if preferences['race_distance'] == 0:
+        return constants.novice_5k_baseline_mpd * first_week_days
+    if preferences['race_distance'] == 1:
+        return constants.novice_10k_baseline_mpd * first_week_days
+    if preferences['race_distance'] == 2:
+        return constants.novice_half_baseline_mpd * first_week_days
+    if preferences['race_distance'] == 3:
+        return constants.novice_full_baseline_mpd * first_week_days
 
 
 def get_limit_mileage(preferences):
