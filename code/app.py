@@ -216,25 +216,25 @@ def split(username):
         return render_template('how.html', username=username)
 
 
-@app.route("/daysperweek/<username>", methods=['POST'])
-def daysperweek(username):
-    """
-    Renders the dayperweek page
-    """
-    path = users_folder_file_path + username
-    with open(path + '/preferences.txt', 'r+') as json_file:
-        data = json.load(json_file)
+# @app.route("/daysperweek/<username>", methods=['POST'])
+# def daysperweek(username):
+#     """
+#     Renders the dayperweek page
+#     """
+#     path = users_folder_file_path + username
+#     with open(path + '/preferences.txt', 'r+') as json_file:
+#         data = json.load(json_file)
 
-        data["max_days_per_week"] = int(request.form['max_days_per_week'])
+#         data["max_days_per_week"] = int(request.form['max_days_per_week'])
 
-        json_file.seek(0)  # rewind
-        json.dump(data, json_file)
-        json_file.truncate()    
+#         json_file.seek(0)  # rewind
+#         json.dump(data, json_file)
+#         json_file.truncate()    
 
-    if data['runner_type'] == 0:
-        return render_template('daysperweek.html', username=username)
-    elif data['runner_type'] == 1:
-        return render_template('thankyou.html', username=username)
+#     if data['runner_type'] == 0:
+#         return render_template('daysperweek.html', username=username)
+#     elif data['runner_type'] == 1:
+#         return render_template('thankyou.html', username=username)
 
 
 @app.route("/prior_training/<username>", methods=['POST'])
@@ -245,22 +245,35 @@ def prior_training(username):
     path = users_folder_file_path + username
     dow_list = request.form.getlist('available_days')
     dow_list_int = [int(x) for x in dow_list]
+    
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
-        data["available_days"] = dow_list_int
+        if data['runner_type'] == 0:
+            data["max_days_per_week"] = int(request.form['max_days_per_week'])
+            data["available_days"] = dow_list_int
 
-        json_file.seek(0)  # rewind
-        json.dump(data, json_file)
-        json_file.truncate() 
-    if data['runner_type'] == 0:
-        return render_template('prior_training.html', username=username)
-    elif data['runner_type'] == 1:
+            json_file.seek(0)  # rewind
+            json.dump(data, json_file)
+            json_file.truncate() 
+
+            return render_template('prior_training.html', username=username)
+        elif data['runner_type'] == 1:
+
+            data["available_days"] = dow_list_int
+            data['prior_days_per_week'] = int(request.form['prior_days_per_week'])
+            data['prior_miles_per_week'] = float(request.form['prior_miles_per_week'])
+
+            json_file.seek(0) 
+            json.dump(data, json_file)
+            json_file.truncate() 
+
+
         return render_template('increase.html', username=username)
 
 
-@app.route("/redirect/<username>", methods=['POST'])
-def redirect(username):
+@app.route("/rdirect/<username>", methods=['POST'])
+def rdirect(username):
     """
     """
     path = users_folder_file_path + username
@@ -274,18 +287,22 @@ def redirect(username):
         json.dump(data, json_file)
         json_file.truncate()
 
-    generate_plan(username)
-    turn_plan_to_json(users_folder_file_path, username)
-
-    if request.form['prior_training'] == "1":
+    if request.form['prior_training'] == "1" and data['runner_type'] == 0:
         return render_template('approx.html', username=username)
+
+    elif request.form['prior_training'] == "1" and data['runner_type'] == 1:
+        return render_template('approx_int.html', username=username)
     
     elif request.form['prior_training'] == "0":
+        generate_plan(username)
+        turn_plan_to_json(users_folder_file_path, username)
+
         return render_template('thankyou.html', username=username)
 
 
 @app.route("/fill/<username>", methods=['POST'])
 def fill(username):
+    print(username)
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
@@ -298,7 +315,11 @@ def fill(username):
         json_file.truncate()     
 
     if data['runner_type'] == 0:
+        generate_plan(username)
+        turn_plan_to_json(users_folder_file_path, username)
+
         return render_template('thankyou.html', username=username)
+        # return redirect(url_for('.home', username=username))
     elif data['runner_type'] == 1:
         return render_template('daysperweek.html', username=username)
 
@@ -345,66 +366,6 @@ def thankyou(username):
     turn_plan_to_json(users_folder_file_path, username)
 
     return render_template('thankyou.html', username=username)
-
-
-@app.route("/backhome/<username>", methods=["POST"])
-def backhome(username):
-    """
-    Renders the home page after a user signups
-    """
-    path = users_folder_file_path + username
-    with open(path + '/preferences.txt', 'r+') as json_file:
-        data = json.load(json_file)
-
-        data["startdate"] = request.form['startdate']
-        data["enddate"] = request.form['enddate']
-
-        json_file.seek(0)  # rewind
-        json.dump(data, json_file)
-        json_file.truncate()
-
-    return redirect(url_for('.home', username=username))
-
-
-@app.route('/inputs/<username>')
-def render(username):
-    """
-    Renders the inputs page
-    """
-    return render_template('inputs.html', username=username)
-
-
-@app.route('/home/<username>/results', methods=["POST"])
-def inputs(username):
-    """
-    Renders the results page
-    """
-    new_path = users_folder_file_path + username
-
-    racelevel = request.form['racelevel']
-    numdays = request.form['numdays']
-
-    myFile = open(new_path + '/past_training.csv', 'r+')
-
-    myData = []
-    myData.append([racelevel, numdays])
-
-    writer = csv.writer(myFile)
-    writer.writerows(myData)
-    myFile.close()
-
-    output = algorithm(racelevel, numdays)
-
-    myFile = open(new_path + '/future_training.csv', 'r+')
-
-    myData = []
-    myData.append([output])
-
-    writer = csv.writer(myFile)
-    writer.writerows(myData)
-    myFile.close()
-
-    return render_template('results.html', name=username, output=output)
 
 
 if __name__ == "__main__":

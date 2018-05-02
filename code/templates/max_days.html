@@ -14,7 +14,7 @@
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
      <h4 align = 'center'><font color="#4d73be">What's the maximum number of days you want to run per week?</font></h4>
 
-    <form class="form-signin" method="post" action="{{url_for('daysperweek', username=username)}}">
+    <form class="form-signin" method="post" action="{{url_for('prior_training', username=username)}}">
 
         <select class="form-control" id="maxdays" name="max_days_per_week">
           <option>2</option>
@@ -24,6 +24,17 @@
           <option>6</option>
           <option>7</option>
         </select>
+        <br>
+        <br>
+        <h4 align = 'center'><font color="#4d73be">Select the days you are available to run in a week</font></h4>
+          <input type="checkbox" name="available_days" value="0"> Monday<br>
+          <input type="checkbox" name="available_days" value="1"> Tuesday<br>
+          <input type="checkbox" name="available_days" value="2"> Wednesday<br>
+          <input type="checkbox" name="available_days" value="3"> Thursday<br>
+          <input type="checkbox" name="available_days" value="4"> Friday<br>
+          <input type="checkbox" name="available_days" value="5"> Saturday<br>
+          <input type="checkbox" name="available_days" value="6"> Sunday<br>
+        <br>
         <br>
 
         <center>
