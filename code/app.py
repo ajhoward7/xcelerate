@@ -340,7 +340,7 @@ def increase(username):
 
             file = request.files['newfile']
 
-            file.save('main/users/{}/uploaded_training.csv'.format(username))
+            file.save('main/users/{}/activities.csv'.format(username))
 
     return render_template('increase.html', username=username)
 
