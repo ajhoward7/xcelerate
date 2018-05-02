@@ -1,7 +1,9 @@
+from datetime import *
+import pandas as pd
+
 import utils
 import lib
 import constants
-
 import generate_plan
 
 
@@ -83,6 +85,7 @@ def update_training_plan(user):
     recent_planned_training = utils.get_recent_planned_training(user, n_weeks=3)
 
     training_plan = utils.get_all_planned_training(user)
+    prior_training_plan = training_plan[training_plan.run_date <= date.today()]
 
     # Generate summary statistics from planned training and logged training:
     summary = lib.generate_week_summary_stats(recent_planned_training, recent_logged_training)
@@ -97,6 +100,8 @@ def update_training_plan(user):
     # Combine these with function taken from `generate_plan` python script:
     updated_training_plan = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
                                                                 preferences, run_vector)
+
+    updated_training_plan = pd.concat([prior_training_plan, updated_training_plan])
 
     updated_training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
 
