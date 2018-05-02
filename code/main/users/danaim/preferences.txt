@@ -1,0 +1,1 @@
+{"username": "danaim", "runner_type": 0, "prior_training": 0, "race_distance": 0, "available_days": [0, 1, 2, 3, 4, 5], "difficulty": 1, "max_days_per_week": 4, "race_date": "2018-05-23", "prior_miles_per_week": 0, "start_date": "2018-05-02", "prior_days_per_week": 0}

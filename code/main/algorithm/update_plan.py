@@ -1,9 +1,7 @@
-from datetime import *
-import pandas as pd
-
 import utils
 import lib
 import constants
+
 import generate_plan
 
 
@@ -28,6 +26,7 @@ def update_miles_per_week(preferences, summary, miles_per_week):
     Update miles per week for new training plan - calculate difference for previous week and halve this difference
     iteratively
     """
+    # print(miles_per_week)
     updated_miles_per_week = miles_per_week.copy()
 
     previous_logged = summary[summary.weeks_before_now == 0].miles_logged
@@ -85,7 +84,6 @@ def update_training_plan(user):
     recent_planned_training = utils.get_recent_planned_training(user, n_weeks=3)
 
     training_plan = utils.get_all_planned_training(user)
-    prior_training_plan = training_plan[training_plan.run_date <= date.today()]
 
     # Generate summary statistics from planned training and logged training:
     summary = lib.generate_week_summary_stats(recent_planned_training, recent_logged_training)
@@ -101,15 +99,17 @@ def update_training_plan(user):
     updated_training_plan = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
                                                                 preferences, run_vector)
 
-    updated_training_plan = pd.concat([prior_training_plan, updated_training_plan])
-
     updated_training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
 
     return updated_training_plan
 
-
-if __name__ == "__main__":
-
-    user = 'alex'  # Adapt this
+def update_plan(user):
     training_plan = update_training_plan(user)
-    training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index=False)
+    training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
+    return(training_plan)
+
+# if __name__ == "__main__":
+#
+#     user = 'alex'  # Adapt this
+#     training_plan = update_training_plan(user)
+#     training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index=False)

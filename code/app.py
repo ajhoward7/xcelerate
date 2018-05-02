@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 sys.path.insert(0, './main/algorithm')
 try:
+    from update_plan import *
     from generate_plan import *
 except ImportError:
     raise
@@ -75,8 +76,30 @@ def authenticate():
     return redirect(url_for('login'))
 
 
-@app.route("/<username>/home", methods=["GET", "POST"])
+@app.route("/foo/<username>", methods=["POST"])
 def home(username):
+    """
+    Renders the home page
+    """
+    # print(1)
+    inputdate = request.form['inputdate']
+    inputmiles = request.form['inputmiles']
+    inputtime = request.form['inputtime']
+    inputtitle = request.form['inputtitle']
+
+    if request.form['submit'] == 'add more':
+        with open(users_folder_file_path + username + '/logged_training.csv', 'a') as f:
+            writer = csv.writer(f)
+            writer.writerow([inputdate, inputmiles, inputtime, inputtitle])
+
+    elif request.form['submit'] == 'finish update':
+        update_plan(username)
+
+    return redirect(url_for('.foo', username=username))
+
+
+@app.route("/<username>/home", methods=["GET", "POST"])
+def foo(username):
     """
     Renders the home page
     """
@@ -133,11 +156,13 @@ def createUsers():
         new_path = users_folder_file_path + username
         os.makedirs(new_path)
 
-        p = open(new_path + '/past_training.csv', 'w')
-        p.close()
-
         f = open(new_path + '/future_training.csv', 'w')
         f.close()
+
+        g = open(new_path + '/logged_training.csv', 'w')
+        writer = csv.writer(g)
+        writer.writerow(['run_date', 'miles', 'time', 'title'])
+        g.close()
 
         return render_template('race_distance.html', username=username)
     else:

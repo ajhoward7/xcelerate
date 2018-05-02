@@ -53,11 +53,11 @@ def get_all_planned_training(user):
     """
     Read planned training into DF
     """
-    return pd.read_csv('../users/{}/planned_training.csv'.format(user), parse_dates = ['run_date','week_start'])
+    return pd.read_csv('main/users/{}/planned_training.csv'.format(user), parse_dates = ['run_date','week_start'])
 
 
 def get_all_logged_training(user):
     """
     Read logged training into DF
     """
-    return pd.read_csv('../users/{}/logged_training.csv'.format(user), parse_dates=['run_date'])
+    return pd.read_csv('main/users/{}/logged_training.csv'.format(user), parse_dates=['run_date'])

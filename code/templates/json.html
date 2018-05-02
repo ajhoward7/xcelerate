@@ -4,7 +4,7 @@
 <head>
 <title>Xcelerate</title>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="../static/signup.css" rel="stylesheet">
 
 <meta charset='utf-8' />
 <link href="{{ url_for('static', filename='fullcalendar.min.css') }}" rel='stylesheet' />
@@ -14,6 +14,7 @@
 <script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='fullcalendar.min.js') }}"></script>
 <link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
+
 
 <script>
 
@@ -82,8 +83,10 @@
 
 </head>
 <body>
-<div class="jumbotron">
-	<h1 align="center">Xcelerate</h1>
+<div class="container">
+	<!--<h1 align="center">Xcelerate</h1>-->
+	<img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
+
 	<p class="lead"></p>
 	<center><h4>Hello {{name}}</h4></center>
 	<br>
@@ -162,14 +165,33 @@
 			<!--</script>-->
 		<!--</div>-->
 
-		<div id="rightPanel" style="margin-left: 100px; margin-top: 0px;">
+		<!--<div id="rightPanel" style="margin-left: 100px; margin-top: 0px;">-->
+		<div id = "rightPanel" style = "float: left; margin: 0 1.5%; width: 63%;">
 			<div id='loading'>loading...</div>
 			<div id='calendar'></div>
+		</div>
+		<div id = "leftPanel" style = "float: right; margin: 0 1.5%; width: 30%; height: 120px; line-height: 90px;">
+			<form action="{{ url_for('.home', username=name) }}" method="post">
+
+        	<label for="inputdate" class="sr-only">Input Date</label>
+        	<input type="date" name="inputdate" id="inputdate" class="form-control" placeholder="Date">
+        	<label for="inputmiles" class="sr-only">Input Miles</label>
+        	<input type="text" name="inputmiles" id="inputmiles" class="form-control" placeholder="Number of miles">
+			<label for="inputtime" class="sr-only">Input Time</label>
+        	<input type="text" name="inputtime" id="inputtime" class="form-control" placeholder="Time">
+			<label for="inputtitle" class="sr-only">Input Title</label>
+        	<input type="text" name="inputtitle" id="inputtitle" class="form-control" placeholder="Title">
+
+        	<p class="lead"></p>
+
+        	<input class="btn btn-lg btn-success" value="add more" type="submit" name="submit">
+			<input class="btn btn-lg btn-success" value="finish update" type="submit" name="submit">
+        	</form>
 		</div>
 
 	</div>
 
-	</font>
+	</font>s
 </div>
 </body>
 </html>

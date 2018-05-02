@@ -1,0 +1,1 @@
+{"username": "aw", "runner_type": 0, "prior_training": 0, "race_distance": 1, "available_days": [1, 2, 3, 5, 6], "difficulty": 1, "max_days_per_week": 4, "race_date": "2018-06-02", "prior_miles_per_week": 0, "start_date": "2018-05-02", "prior_days_per_week": 0}
