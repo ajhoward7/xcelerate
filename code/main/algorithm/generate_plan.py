@@ -154,7 +154,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
 
     # Loop through each week and place days as appropriate:
     for i in range(len(days_per_week)):
-        days_this_week = days_per_week[i]
+        days_this_week = max(days_per_week[i],1)
         miles_this_week = miles_per_week[i]
         runs_this_week = []
 
@@ -182,7 +182,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
         max_arg = np.argmax(runs_this_week)
 
         # Putting longest run as the last run:
-        runs_this_week = [max(run,2) for run in runs_this_week]
+        runs_this_week = [max(run,2) for run in runs_this_week]  # Hack to make sure no 0 values
         runs_this_week[max_arg] = runs_this_week[-1]
         runs_this_week[-1] = max_val
 
