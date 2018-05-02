@@ -131,11 +131,13 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
     while run_vector_length < number_of_runs:
         second_half_training = run_vector[int(run_vector_length/2):]
         run_vector = pd.concat([run_vector,second_half_training])
+        run_vector_length = len(run_vector)
+        run_vector['runs_to_race'] = range(run_vector_length)
 
     # Take relevant portion of run vectors (and reverse order):
-    run_miles = run_vector['run_miles'][:number_of_runs][::-1]
-    run_workout = run_vector['workout'][:number_of_runs][::-1]
-    run_long_run = run_vector['long_run'][:number_of_runs][::-1]
+    run_miles = list(run_vector['run_miles'])[:number_of_runs][::-1]
+    #run_workout = run_vector['workout'][:number_of_runs][::-1]
+    #run_long_run = run_vector['long_run'][:number_of_runs][::-1]
 
     week_of_run = []
     adj_run_vector = []
@@ -156,11 +158,12 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
         days_this_week = days_per_week[i]
         miles_this_week = miles_per_week[i]
         runs_this_week = []
-        try:
+
+        if days_this_week <= len(available_days):
             which_days_this_week = np.sort(np.random.choice(available_days, days_this_week, False))
 
-        except:
-            raise(ValueError("Individual can't run on this many days"))
+        else:
+            which_days_this_week = np.sort(np.random.choice(range(7), days_this_week, False))
 
         for j in range(days_this_week):
             week_of_run.append(i)
@@ -174,6 +177,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
             k += 1
 
         factor = float(miles_this_week) / sum(runs_this_week)
+
 
         max_val = np.max(runs_this_week)
         max_arg = np.argmax(runs_this_week)
@@ -193,8 +197,8 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
     training_plan['miles'] = adj_run_vector
     training_plan['run_day'] = run_day
     training_plan['run_date'] = [this_date.date() for this_date in run_date]
-    training_plan['workout'] = run_workout[:len(run_date)][::-1]
-    training_plan['long_run'] = run_long_run[:len(run_date)][::-1]
+    #training_plan['workout'] = run_workout[:len(run_date)][::-1]
+    #training_plan['long_run'] = run_long_run[:len(run_date)][::-1]
     training_plan['week_start'] = training_plan.run_date.apply(lambda x : (x - timedelta(days=x.weekday())))
 
     race_day = datetime.strptime(preferences['race_date'], '%Y-%m-%d').date()
@@ -211,8 +215,9 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
                                           'week_of_run': week_of_run[-1],
                                           'run_date': race_day,
                                           'run_day': race_day.weekday(),
-                                          'week_start': race_day - timedelta(days = race_day.weekday()),
-                                          'workout':0,'long_run':0},
+                                          'week_start': race_day - timedelta(days = race_day.weekday())
+                                          #  ,'workout':0,'long_run':0
+                                          },
                                             ignore_index = True)
 
     return training_plan

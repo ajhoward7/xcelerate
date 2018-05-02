@@ -4,7 +4,8 @@ import constants
 
 import generate_plan
 
-
+import os
+os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
 """
 This code is used to update a training plan that has been generated for a particular user.
 
@@ -108,8 +109,7 @@ def update_plan(user):
     training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
     return(training_plan)
 
-# if __name__ == "__main__":
-#
-#     user = 'alex'  # Adapt this
-#     training_plan = update_training_plan(user)
-#     training_plan.to_csv('../users/{}/planned_training.csv'.format(user), index=False)
+if __name__ == "__main__":
+
+    user = 'alex'  # Adapt this
+    update_training_plan(user)
