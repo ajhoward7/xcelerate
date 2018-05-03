@@ -92,7 +92,7 @@ def update_days_per_week(summary, days_per_week):
     return updated_days_per_week
 
 
-def update_training_plan(user, inputdate):
+def update_training_plan(user, today):
     """
     Method:
     1. Update MpW
@@ -101,8 +101,6 @@ def update_training_plan(user, inputdate):
 
     Output re-writes 'planned_training.csv' file.
     """
-    today = pd.to_datetime(inputdate).date()
-    today = max(today, date.today())
 
     preferences = utils.get_preferences(user)
 
@@ -134,8 +132,22 @@ def update_training_plan(user, inputdate):
     return updated_training_plan
 
 def update_plan(user, inputdate):
-    update_training_plan(user, inputdate)
-    return(True)
+    # If training logged is within 20% of planned then keep the same training plan
+    today = pd.to_datetime(inputdate).date()
+    today = max(today, date.today())
+
+    logged_training = utils.get_all_logged_training(user)
+    planned_training = utils.get_all_planned_training(user)
+
+    if len(planned_training[planned_training.run_date == today]) == 1:
+        planned_run = list(planned_training[planned_training.run_date == today].miles)[0]
+        logged_run = list(logged_training[logged_training.run_date == today].miles)[0]
+
+        if abs((planned_run - logged_run)/planned_run) < 0.2:
+            return True
+
+    update_training_plan(user, today)
+    return True
 
 if __name__ == "__main__":
 
