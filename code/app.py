@@ -70,10 +70,16 @@ def authenticate():
         if inputname == row[0] or inputname == row[1]:
             password = row[2]
             if check_password_hash(password, inputpassword):
-                return render_template('welcomeback.html', username=row[0])
+                return redirect(url_for('.welcome', username=row[0]))
+                # return render_template('welcomeback.html', username=row[0])
 
     myfile.close()
     return redirect(url_for('login'))
+
+
+@app.route("/fi/<username>", methods=["GET", "POST"])
+def welcome(username):
+    return redirect(url_for('.foo', username=username))
 
 
 @app.route("/foo/<username>", methods=["POST"])
@@ -81,7 +87,6 @@ def home(username):
     """
     Renders the home page
     """
-    # print(1)
     inputdate = request.form['inputdate']
     inputmiles = request.form['inputmiles']
     inputtime = request.form['inputtime']
@@ -108,7 +113,6 @@ def foo(username):
 
 @app.route('/<username>/data')
 def return_data(username):
-    print('##')
     with open(users_folder_file_path + username + "/events.json", "r") as input_data:
         return input_data.read()
 
