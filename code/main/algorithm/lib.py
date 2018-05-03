@@ -107,8 +107,8 @@ def generate_week_summary_stats(planned, logged):
     logged_grouped = logged.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
 
     # Join appropriately to return:
-    output = pd.merge(planned_grouped, logged_grouped, how='left',
-                      on='weeks_before_now', suffixes=['_planned','_logged'])
+    output = pd.merge(planned_grouped, logged_grouped, how='outer',
+                      on='weeks_before_now', suffixes=['_planned','_logged']).fillna(0)
 
     return output
 

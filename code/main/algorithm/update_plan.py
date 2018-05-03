@@ -5,6 +5,9 @@ import constants
 import generate_plan
 
 import copy
+
+#import os
+#os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
 """
 This code is used to update a training plan that has been generated for a particular user.
 
@@ -26,13 +29,13 @@ def update_miles_per_week(preferences, summary, miles_per_week):
     Update miles per week for new training plan - calculate difference for previous week and halve this difference
     iteratively
     """
-    # print(miles_per_week)
 
     updated_miles_per_week = copy.copy(miles_per_week)
-
     previous_logged = summary[summary.weeks_before_now == 0].miles_logged
     previous_planned = summary[summary.weeks_before_now == 0].miles_planned
 
+    if previous_planned == 0:
+        return miles_per_week
 
     for i in range(len(miles_per_week)):
         diff = float((previous_logged - previous_planned) / previous_planned)
@@ -54,10 +57,13 @@ def update_days_per_week(summary, days_per_week):
     """
     Update days per week from initial training plan - compute difference for previous week and halve this iteratively
     """
-    updated_days_per_week = days_per_week.copy()
+    updated_days_per_week = copy.copy(days_per_week)
 
     previous_logged = summary[summary.weeks_before_now == 0].run_date_logged
     previous_planned = summary[summary.weeks_before_now == 0].run_date_planned
+
+    if previous_planned == 0:
+        return days_per_week
 
     for i in range(len(days_per_week)):
         diff = int((previous_logged - previous_planned) / previous_planned)
@@ -111,5 +117,5 @@ def update_plan(user):
 
 if __name__ == "__main__":
 
-    user = 'alex'  # Adapt this
+    user = '441'  # Adapt this
     update_training_plan(user)
