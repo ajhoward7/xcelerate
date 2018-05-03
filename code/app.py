@@ -75,7 +75,7 @@ def authenticate():
         if inputname == row[0] or inputname == row[1]:
             password = row[2]
             if check_password_hash(password, inputpassword):
-                return redirect(url_for('.gohome', username=row[0]))
+                return redirect(url_for('.foo', username=row[0]))
 
     myfile.close()
     return redirect(url_for('login'))
