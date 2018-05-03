@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, abort
 import os
 import csv
 import json
 import sys
 import datetime as dt
+from calendar import Calendar
+from datetime import date, datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
 sys.path.insert(0, './main/algorithm')
@@ -126,18 +128,18 @@ def home(username):
     return redirect(url_for('.foo', username=username))
 
 
-@app.route("/<username>/home", methods=["GET", "POST"])
-def foo(username):
-    """
-    Renders the home page
-    """
-    return render_template('json.html', name=username)
+# @app.route("/<username>/home", methods=["GET", "POST"])
+# def foo(username):
+#     """
+#     Renders the home page
+#     """
+#     return render_template('json.html', name=username)
 
 
-@app.route('/<username>/data')
-def return_data(username):
-    with open(users_folder_file_path + username + "/events.json", "r") as input_data:
-        return input_data.read()
+# @app.route('/<username>/data')
+# def return_data(username):
+#     with open(users_folder_file_path + username + "/events.json", "r") as input_data:
+#         return input_data.read()
 
 
 @app.route("/showSignup")
@@ -468,6 +470,45 @@ def daysperweek(username):
         #     return redirect(request.url)
             
             # return render_template('max_days.html', username=username)
+
+
+@app.route('/home/<username>', methods=['GET', 'POST'])
+@app.route('/<int:year>/')
+def foo(username):
+    year = 2018
+    cal = Calendar(0)
+    training_list = []
+    path = users_folder_file_path + username
+    with open(path + '/planned_training.csv') as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+        next(readCSV, None)
+        for row in readCSV:
+
+            if datetime.strptime(row[3], '%Y-%m-%d')>= datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) :
+                training_list.append([row[1], int(row[3].split('-')[0]), int(row[3].split('-')[1]), int(row[3].split('-')[2])])
+
+
+    logged_training = []
+    with open(path + '/logged_training.csv') as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+        next(readCSV, None)
+        for row in readCSV:
+            if row[0] != '' and row[1] != '':
+                logged_training.append([row[1], int(row[0].split('-')[0]), int(row[0].split('-')[1]), int(row[0].split('-')[2])])
+
+
+    try:
+        if not year:
+            year = date.today().year
+        cal_list = [
+            cal.monthdatescalendar(year, i+1)
+            for i in range(12)
+        ]
+    except:
+        abort(404)
+    else:
+        return render_template('new_.html', username=username, year=year, cal=cal_list, training_list=training_list[:-1], logged_training=logged_training, race_date=training_list[-1])
+    abort(404)
 
 
 if __name__ == "__main__":
