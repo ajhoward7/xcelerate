@@ -5,6 +5,7 @@ import generate_plan
 
 import copy
 import pandas as pd
+from datetime import *
 
 # For local testing purposes:
 #import os
@@ -101,6 +102,7 @@ def update_training_plan(user, inputdate):
     Output re-writes 'planned_training.csv' file.
     """
     today = pd.to_datetime(inputdate).date()
+    today = max(today, date.today())
 
     preferences = utils.get_preferences(user)
 
