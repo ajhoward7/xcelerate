@@ -128,20 +128,6 @@ def home(username):
     return redirect(url_for('.foo', username=username))
 
 
-# @app.route("/<username>/home", methods=["GET", "POST"])
-# def foo(username):
-#     """
-#     Renders the home page
-#     """
-#     return render_template('json.html', name=username)
-
-
-# @app.route('/<username>/data')
-# def return_data(username):
-#     with open(users_folder_file_path + username + "/events.json", "r") as input_data:
-#         return input_data.read()
-
-
 @app.route("/showSignup")
 def showSignup():
     """
@@ -230,46 +216,6 @@ def runner_type(username):
         json.dump(data, outfile)
 
     return render_template('runner_type.html', username=username)
-
-
-# @app.route("/runner_type/<username>", methods=['POST'])
-# def runner_type(username):
-#     """
-#     Renders the runner type page
-#     """
-#     path = users_folder_file_path + username
-#     with open(path + '/preferences.txt', 'r+') as json_file:
-#         data = json.load(json_file)
-
-#         data["race_date"] = request.form['race_date']
-
-#         json_file.seek(0)  # rewind
-#         json.dump(data, json_file)
-#         json_file.truncate()
-
-#     return render_template('runner_type.html', username=username)
-
-
-# @app.route("/split/<username>", methods=['POST'])
-# def split(username):
-#     """
-#     If user is a Novice, render the max days page
-#     If user is an Intermediate, render the how page
-#     """
-#     path = users_folder_file_path + username
-#     with open(path + '/preferences.txt', 'r+') as json_file:
-#         data = json.load(json_file)
-
-#         data["runner_type"] = int(request.form['runner_type'])
-
-#         json_file.seek(0)  # rewind
-#         json.dump(data, json_file)
-#         json_file.truncate()
-
-#     if request.form['runner_type'] == "0":
-#         return render_template('max_days.html', username=username)
-#     else:
-#         return render_template('how.html', username=username)
 
 
 @app.route("/prior_training/<username>", methods=['POST'])
