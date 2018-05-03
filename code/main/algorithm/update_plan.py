@@ -40,15 +40,15 @@ def update_miles_per_week(preferences, summary, miles_per_week):
     previous_planned = summary[summary.weeks_before_now == 0].miles_planned
 
     if all(previous_planned == 0):
-        return miles_per_week
+        return 'No update'
 
     if len(previous_planned == 0):
-        return miles_per_week
+        return 'No update'
 
     previous_planned = float(previous_planned[0])
 
     if previous_planned == 0:
-        return miles_per_week
+        return 'No update'
 
     for i in range(len(miles_per_week)):
         diff = float((previous_logged - previous_planned) / previous_planned)
@@ -115,6 +115,9 @@ def update_training_plan(user):
     # Update MpW and days per week:
     # MAKE THIS MORE RIGOROUS
     updated_miles_per_week = update_miles_per_week(preferences, summary, training_plan_summary.miles.tolist())
+
+    if updated_miles_per_week == 'No update':
+        return 'No update'
     updated_days_per_week = update_days_per_week(summary, training_plan_summary.run_date.tolist())
 
     run_vector = utils.get_run_vector(preferences)
@@ -128,9 +131,8 @@ def update_training_plan(user):
     return updated_training_plan
 
 def update_plan(user):
-    training_plan = update_training_plan(user)
-    training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
-    return(training_plan)
+    update_training_plan(user)
+    return(True)
 
 if __name__ == "__main__":
 

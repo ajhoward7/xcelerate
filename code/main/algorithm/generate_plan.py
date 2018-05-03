@@ -24,7 +24,7 @@ Method:
 """
 
 
-def generate_mpw(mileage_baseline, mileage_limit, weeks):
+def generate_mpw(mileage_baseline, mileage_limit, weeks, preferences):
     """
     Given the preferences dictionary and number of weeks in the plan, this function returns a list of weekly mileages
     for the individual.
@@ -42,8 +42,11 @@ def generate_mpw(mileage_baseline, mileage_limit, weeks):
 
     for i in range(weeks):
         miles_per_week[i] = current_mileage
-        if i % constants.increase_period == 0 and current_mileage < mileage_limit:
-            current_mileage *= (1+constants.increase_factor)
+        if i % constants.increase_period == 0 and current_mileage < mileage_limit and preferences['runner_type'] == 0:
+            current_mileage *= (1+constants.increase_factor_novice)
+        if i % constants.increase_period == 0 and current_mileage < mileage_limit and preferences['runner_type'] == 0:
+            current_mileage *= (1+constants.increase_factor_inter)
+
 
     for i in range(weeks):
         if i+1 % constants.easy_week_frequency == 0:
@@ -257,7 +260,7 @@ def build_plan(user):
     if mileage_limit <= mileage_baseline + 5:
         mileage_limit = mileage_baseline + 5
 
-    miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks)
+    miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks, preferences)
     assert(len(miles_per_week) == weeks)  # De-bugging
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
 
