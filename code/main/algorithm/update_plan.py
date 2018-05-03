@@ -109,6 +109,10 @@ def update_training_plan(user, today):
 
     training_plan = utils.get_all_planned_training(user)
 
+    previous_training = training_plan[training_plan.run_date <= today]
+    previous_training.run_date = previous_training.run_date.apply(lambda x : x.date())
+    previous_training.week_start = previous_training.week_start.apply(lambda x: x.date())
+
     # Generate summary statistics from planned training and logged training:
     summary = lib.generate_week_summary_stats(recent_planned_training, recent_logged_training, today)
     training_plan_summary = lib.retrieve_summary_stats(training_plan, today)
@@ -124,8 +128,10 @@ def update_training_plan(user, today):
     run_vector = utils.get_run_vector(preferences)
 
     # Combine these with function taken from `generate_plan` python script:
-    updated_training_plan = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
+    future_training = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
                                                                 preferences, run_vector)
+
+    updated_training_plan = pd.concat([previous_training, future_training])
 
     updated_training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
 
@@ -143,7 +149,7 @@ def update_plan(user, inputdate):
         planned_run = list(planned_training[planned_training.run_date == today].miles)[0]
         logged_run = list(logged_training[logged_training.run_date == today].miles)[0]
 
-        if abs((planned_run - logged_run)/planned_run) < 0.2:
+        if abs((planned_run - logged_run)/planned_run) <= 0.2:
             return True
 
     update_training_plan(user, today)
