@@ -113,6 +113,7 @@ def update_training_plan(user):
     training_plan_summary = lib.retrieve_summary_stats(training_plan)
 
     # Update MpW and days per week:
+    # MAKE THIS MORE RIGOROUS
     updated_miles_per_week = update_miles_per_week(preferences, summary, training_plan_summary.miles.tolist())
     updated_days_per_week = update_days_per_week(summary, training_plan_summary.run_date.tolist())
 
