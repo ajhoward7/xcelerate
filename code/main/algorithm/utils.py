@@ -21,30 +21,30 @@ def get_run_vector(preferences):
     return run_vector
 
 
-def get_recent_logged_training(user, n_weeks=3):
+def get_recent_logged_training(user, n_weeks, today):
     """
     Subset logged training based on n_weeks prior
     """
-    x_weeks_before = date.today() - timedelta(days=7 * n_weeks)
+    x_weeks_before = today - timedelta(days=7 * n_weeks)
 
     logged_training = get_all_logged_training(user)
 
     recent_logged_training = logged_training[(logged_training.run_date >= x_weeks_before) &
-                                               (logged_training.run_date <= date.today())]
+                                               (logged_training.run_date <= today)]
 
     return recent_logged_training
 
 
-def get_recent_planned_training(user, n_weeks=3):
+def get_recent_planned_training(user, n_weeks, today):
     """
     Subset planned training based on n_weeks prior
     """
     planned_training = get_all_planned_training(user)
 
-    x_weeks_before = date.today() - timedelta(days=7 * n_weeks)
+    x_weeks_before = today - timedelta(days=7 * n_weeks)
 
     recent_planned_training = planned_training[(planned_training.run_date >= x_weeks_before) &
-                                               (planned_training.run_date <= date.today())]
+                                               (planned_training.run_date <= today)]
 
     return recent_planned_training
 

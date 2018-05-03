@@ -1,10 +1,10 @@
 import utils
 import lib
 import constants
-
 import generate_plan
 
 import copy
+import pandas as pd
 
 # For local testing purposes:
 #import os
@@ -91,7 +91,7 @@ def update_days_per_week(summary, days_per_week):
     return updated_days_per_week
 
 
-def update_training_plan(user):
+def update_training_plan(user, inputdate):
     """
     Method:
     1. Update MpW
@@ -100,17 +100,18 @@ def update_training_plan(user):
 
     Output re-writes 'planned_training.csv' file.
     """
+    today = pd.to_datetime(inputdate).date()
 
     preferences = utils.get_preferences(user)
 
-    recent_logged_training = utils.get_recent_logged_training(user, n_weeks=3)
-    recent_planned_training = utils.get_recent_planned_training(user, n_weeks=3)
+    recent_logged_training = utils.get_recent_logged_training(user, 3, today)
+    recent_planned_training = utils.get_recent_planned_training(user, 3, today)
 
     training_plan = utils.get_all_planned_training(user)
 
     # Generate summary statistics from planned training and logged training:
-    summary = lib.generate_week_summary_stats(recent_planned_training, recent_logged_training)
-    training_plan_summary = lib.retrieve_summary_stats(training_plan)
+    summary = lib.generate_week_summary_stats(recent_planned_training, recent_logged_training, today)
+    training_plan_summary = lib.retrieve_summary_stats(training_plan, today)
 
     # Update MpW and days per week:
     # MAKE THIS MORE RIGOROUS
@@ -130,8 +131,8 @@ def update_training_plan(user):
 
     return updated_training_plan
 
-def update_plan(user):
-    update_training_plan(user)
+def update_plan(user, inputdate):
+    update_training_plan(user, inputdate)
     return(True)
 
 if __name__ == "__main__":
