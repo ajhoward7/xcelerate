@@ -112,18 +112,33 @@ def home(username):
     """
     inputdate = request.form['inputdate']
     inputmiles = request.form['inputmiles']
-    inputtime = request.form['inputtime']
-    inputtitle = request.form['inputtitle']
+    print(1)
+    inputdifficulty = int(request.form['inputdifficulty'])
+    print(2)
+    # print("danai look here!")
+    # print(request.form['inputdifficulty'])
+    # inputtime = request.form['inputtime']
+    # inputtitle = request.form['inputtitle']
+    path = users_folder_file_path + username
+
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+
+        data['difficulty'] = inputdifficulty
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate()
 
     if request.form['submit'] == 'add more':
         with open(users_folder_file_path + username + '/logged_training.csv', 'a') as f:
             writer = csv.writer(f)
-            writer.writerow([inputdate, inputmiles, inputtime, inputtitle])
+            writer.writerow([inputdate, inputmiles])
+
 
     elif request.form['submit'] == 'finish update':
         with open(users_folder_file_path + username + '/logged_training.csv', 'a') as f:
             writer = csv.writer(f)
-            writer.writerow([inputdate, inputmiles, inputtime, inputtitle])
+            writer.writerow([inputdate, inputmiles])
         update_plan(username, inputdate)
 
     return redirect(url_for('.foo', username=username))

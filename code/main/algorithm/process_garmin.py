@@ -53,7 +53,7 @@ def write_planned_training(training, user):
     training['run_date'] = pd.to_datetime(training['Date']).apply(lambda x : x.date())
     training['miles'] = training['Distance']
 
-    training[['run_date','miles','Time','Title']].to_csv('main/users/{}/logged_training.csv'.format(user), index=False)
+    training[['run_date','miles']].to_csv('main/users/{}/logged_training.csv'.format(user), index=False)
 	
     return True
 
