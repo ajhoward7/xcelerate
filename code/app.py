@@ -359,7 +359,10 @@ def max_days(username):
         json.dump(data, json_file)
         json_file.truncate() 
 
-    return render_template('max_days.html', username=username)
+    if data['runner_type'] == 0:
+        return render_template('max_days.html', username=username)
+    elif data['runner_type'] == 1:
+        return render_template('max_days_int.html', username=username)
 
 
 @app.route("/thankyou/<username>", methods=['POST'])
