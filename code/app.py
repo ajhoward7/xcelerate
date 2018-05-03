@@ -10,6 +10,7 @@ sys.path.insert(0, './main/algorithm')
 try:
     from update_plan import *
     from generate_plan import *
+    from process_garmin import *
 except ImportError:
     raise
 
@@ -360,9 +361,21 @@ def upload(username):
 
 @app.route("/increase/<username>", methods=['POST'])
 def increase(username):
-    file = request.files['newfile']
-    file.save('main/users/{}/activities.csv'.format(username))
+    # file = request.files['newfile']
+    # file.save('main/users/{}/activities.csv'.format(username))
+    path = users_folder_file_path + username
+    dow_list = request.form.getlist('available_days')
+    dow_list_int = [int(x) for x in dow_list]
+    
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
 
+        data["max_days_per_week"] = int(request.form['max_days_per_week'])
+        data["available_days"] = dow_list_int
+
+        json_file.seek(0)  # rewind
+        json.dump(data, json_file)
+        json_file.truncate() 
     return render_template('increase.html', username=username)
 
 
@@ -397,6 +410,15 @@ def thankyou(username):
         json_file.truncate()
 
     return redirect(url_for('.gohome', username=username))
+
+@app.route("/daysperweek/<username>", methods=['POST'])
+def daysperweek(username):
+    file = request.files['newfile']
+    file.save('main/users/{}/activities.csv'.format(username))
+
+    process_garmin(file, username)
+
+    return render_template('daysperweek.html', username=username)
 
 
 if __name__ == "__main__":

@@ -5,16 +5,17 @@ import numpy as np
 import json
 import os
 
-filename = 'activities.csv'
-user = 'alex'
+# filename = '../users/' + user + '/activities.csv'
+# user = 'alex'
 
-training = pd.read_csv(filename)
+# training = pd.read_csv(filename)
 
-def update_preferences(training):
+def update_preferences(training, user):
     """
     Holly: update preferences with prior_miles_per_week and prior_days_per_week based on Garmin file
     """
-    
+    # filename = '../users/' + user + '/activities.csv'
+
     training['Date'] = pd.to_datetime(training['Date'])
     training['Week'] = training['Date'].dt.week
     training['DOW'] = training['Date'].dt.day
@@ -43,7 +44,7 @@ def update_preferences(training):
     return True
 
 
-def write_planned_training(training):
+def write_planned_training(training, user):
     """
     Alex: write planned training with file
     """
@@ -56,7 +57,11 @@ def write_planned_training(training):
     return True
 
 
-if __name__=="__main__":
-    write_planned_training(training)
-    update_preferences(training)
+def process_garmin(training, user):
+    write_planned_training(training, user)
+    update_preferences(training, user)
+
+# if __name__=="__main__":
+#     write_planned_training(training)
+#     update_preferences(training)
 
