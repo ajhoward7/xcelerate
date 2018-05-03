@@ -14,14 +14,7 @@
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
      <h4 align = 'center'><font color="#4d73be">Upload Data</font></h4>
 
-<!--     <form action="{{url_for('increase', username=username)}}" method="post" enctype=multipart/form-data>
-
-        <input type="file" name="myFile">
-        <br>
-        <center>
-          <input class="btn btn-lg btn-success" type="submit" value="Submit">
-        </center>
-    </form> -->
+     
     <form method='post' action="{{url_for('daysperweek', username=username)}}" enctype='multipart/form-data'>
     <center><input type='file' name='newfile'></center>
     <center><input type='submit' value='Submit'></center>

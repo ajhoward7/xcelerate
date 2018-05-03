@@ -14,7 +14,7 @@ def update_preferences(training, user):
     """
     Holly: update preferences with prior_miles_per_week and prior_days_per_week based on Garmin file
     """
-    # filename = '../users/' + user + '/activities.csv'
+    training = pd.read_csv(training)
 
     training['Date'] = pd.to_datetime(training['Date'])
     training['Week'] = training['Date'].dt.week
@@ -30,7 +30,7 @@ def update_preferences(training, user):
     miles_per_week = last_3_weeks_df.groupby(['Week'], as_index = False)['Distance'].sum()
     prior_miles_per_week = np.mean(miles_per_week['Distance'])
 
-    filename = '../users/' + user + '/preferences.txt'
+    filename = 'main/users/' + user + '/preferences.txt'
     with open(filename, 'r') as f:
         data = json.load(f)
 
@@ -48,11 +48,12 @@ def write_planned_training(training, user):
     """
     Alex: write planned training with file
     """
-
+    training = pd.read_csv(training)
+    
     training['run_date'] = pd.to_datetime(training['Date']).apply(lambda x : x.date())
     training['miles'] = training['Distance']
 
-    training[['run_date','miles','Time','Title']].to_csv('../users/{}/logged_training.csv'.format(user), index=False)
+    training[['run_date','miles','Time','Title']].to_csv('main/users/{}/logged_training.csv'.format(user), index=False)
 	
     return True
 

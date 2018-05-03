@@ -14,15 +14,48 @@
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
      <h4 align = 'center'><font color="#4d73be">What sort of runner would you classify yourself as?</font></h4>
 
-    <form class="form-signin" method="post" action="{{url_for('split', username=username)}}">
+    <form method="post" action="{{url_for('daysperweek', username=username)}}" enctype='multipart/form-data'>
 
-          <input type="radio" name="runner_type" value="0" required autofocus> Novice<br>
-          <input type="radio" name="runner_type" value="1" required autofocus> Intermediate<br>
-        <center>
-          <input class="btn btn-lg btn-success" type="submit" value="Submit">
-        </center>
+          <center><input onclick="myTest()" type="radio" name="runner_type" value="0" required autofocus> Novice      <br></center>
+          <center><input onclick="myFunction()" type="radio" name="runner_type" value="1" required autofocus> Intermediate<br></center>
+
+       <div id="myDIV" style="display: none;"> 
+        <h4 align = 'center'><font color="#4d73be">How do you want to tell us about your training?</font></h4>
+       <center>
+       <button formaction="{{ url_for('.upload', username=username) }}">Upload Data (GPX, csv)</button>
+       <button formaction="{{ url_for('.rdirect', username=username) }}">Q&A</button>
+       </center>
+       </div>
+
+       <div id="myTEST" style="display: none;">
+        <center><input type='submit' value='Submit'></center>
+       </div>
+
     </form>
   </div>
+
+  <script>
+function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+
+<script>
+function myTest() {
+    var x = document.getElementById("myTEST");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+
   </body>
 </html>
 

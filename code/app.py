@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 import csv
 import json
@@ -46,6 +46,7 @@ class User(object):
 
 
 app = Flask(__name__)
+# app.secret_key = 'some_secret'
 
 
 @app.route("/")
@@ -203,8 +204,8 @@ def race_distance(username):
     return render_template('race_distance.html', username=username)
 
 
-@app.route('/race_date/<username>', methods=['POST'])
-def race_date(username):
+@app.route('/runner_type/<username>', methods=['POST'])
+def runner_type(username):
     """
     Renders the race date page and creates the preferences.txt file
     """
@@ -215,57 +216,58 @@ def race_date(username):
     data['start_date'] = dt.datetime.today().strftime("%Y-%m-%d")
     data['difficulty'] = 1
     data['race_distance'] = int(request.form['race_distance'])
-    data['race_date'] = ''
+    data['race_date'] = request.form['race_date']
     data['runner_type'] = ''
     data['max_days_per_week'] = ''
     data['prior_training'] = ''
     data['prior_days_per_week'] = 0
     data['prior_miles_per_week'] = 0
+    data['training_level_increase'] = 0
 
     with open(new_path + '/preferences.txt', 'w') as outfile:
         json.dump(data, outfile)
 
-    return render_template('race_date.html', username=username)
-
-
-@app.route("/runner_type/<username>", methods=['POST'])
-def runner_type(username):
-    """
-    Renders the runner type page
-    """
-    path = users_folder_file_path + username
-    with open(path + '/preferences.txt', 'r+') as json_file:
-        data = json.load(json_file)
-
-        data["race_date"] = request.form['race_date']
-
-        json_file.seek(0)  # rewind
-        json.dump(data, json_file)
-        json_file.truncate()
-
     return render_template('runner_type.html', username=username)
 
 
-@app.route("/split/<username>", methods=['POST'])
-def split(username):
-    """
-    If user is a Novice, render the max days page
-    If user is an Intermediate, render the how page
-    """
-    path = users_folder_file_path + username
-    with open(path + '/preferences.txt', 'r+') as json_file:
-        data = json.load(json_file)
+# @app.route("/runner_type/<username>", methods=['POST'])
+# def runner_type(username):
+#     """
+#     Renders the runner type page
+#     """
+#     path = users_folder_file_path + username
+#     with open(path + '/preferences.txt', 'r+') as json_file:
+#         data = json.load(json_file)
 
-        data["runner_type"] = int(request.form['runner_type'])
+#         data["race_date"] = request.form['race_date']
 
-        json_file.seek(0)  # rewind
-        json.dump(data, json_file)
-        json_file.truncate()
+#         json_file.seek(0)  # rewind
+#         json.dump(data, json_file)
+#         json_file.truncate()
 
-    if request.form['runner_type'] == "0":
-        return render_template('max_days.html', username=username)
-    else:
-        return render_template('how.html', username=username)
+#     return render_template('runner_type.html', username=username)
+
+
+# @app.route("/split/<username>", methods=['POST'])
+# def split(username):
+#     """
+#     If user is a Novice, render the max days page
+#     If user is an Intermediate, render the how page
+#     """
+#     path = users_folder_file_path + username
+#     with open(path + '/preferences.txt', 'r+') as json_file:
+#         data = json.load(json_file)
+
+#         data["runner_type"] = int(request.form['runner_type'])
+
+#         json_file.seek(0)  # rewind
+#         json.dump(data, json_file)
+#         json_file.truncate()
+
+#     if request.form['runner_type'] == "0":
+#         return render_template('max_days.html', username=username)
+#     else:
+#         return render_template('how.html', username=username)
 
 
 @app.route("/prior_training/<username>", methods=['POST'])
@@ -303,33 +305,48 @@ def prior_training(username):
         return render_template('increase.html', username=username)
 
 
-@app.route("/rdirect/<username>", methods=['POST'])
+@app.route("/rdirect/<username>", methods=["GET", "POST"])
 def rdirect(username):
     """
     """
+
     path = users_folder_file_path + username
 
     with open(path + '/preferences.txt', 'r+') as json_file:
+        # print("here!")
         data = json.load(json_file)
 
-        data["prior_training"] = int(request.form['prior_training'])
+        if data['runner_type'] == "":
+            data["prior_training"] = 1
+            data['runner_type'] = 1
 
-        json_file.seek(0)  # rewind
-        json.dump(data, json_file)
-        json_file.truncate()
+            json_file.seek(0)  # rewind
+            json.dump(data, json_file)
+            json_file.truncate()
+            # print("im here!")
 
-    if request.form['prior_training'] == "1" and data['runner_type'] == 0:
+        elif data['runner_type'] == 0:
+            # print(int(request.form["prior_training"]))
+            data["prior_training"] = int(request.form["prior_training"])
+            json_file.seek(0)  # rewind
+            json.dump(data, json_file)
+            json_file.truncate()
+            print("actually im here!")
+
+    if data['prior_training'] == 1 and data['runner_type'] == 0:
+        print("jere!")
         return render_template('approx.html', username=username)
 
-    elif request.form['prior_training'] == "1" and data['runner_type'] == 1:
+    elif data['prior_training'] == 1 and data['runner_type'] == 1:
         return render_template('approx_int.html', username=username)
     
-    elif request.form['prior_training'] == "0":
+    elif data['prior_training'] == 0:
         generate_plan(username)
         turn_plan_to_json(users_folder_file_path, username)
 
         # return render_template('thankyou.html', username=username)
         return redirect(url_for('.gohome', username=username))
+    # return render_template('upload.html', username=username)
 
 
 @app.route("/fill/<username>", methods=['POST'])
@@ -416,12 +433,41 @@ def thankyou(username):
 
 @app.route("/daysperweek/<username>", methods=['POST'])
 def daysperweek(username):
-    file = request.files['newfile']
-    file.save('main/users/{}/activities.csv'.format(username))
+    
+    path = users_folder_file_path + username
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+        print(1)
+        try:
+            file = request.files['newfile']
+            if file.filename == '':
+                return render_template('upload.html', username=username)
+            elif 'newfile' in request.files:
+            # print("here!")
+                data["runner_type"] = 1
 
-    process_garmin(file, username)
+                json_file.seek(0)  # rewind
+                json.dump(data, json_file)
+                json_file.truncate()
 
-    return render_template('daysperweek.html', username=username)
+                file = request.files['newfile']
+                file.save('main/users/{}/activities.csv'.format(username))
+                filepath = 'main/users/{}/activities.csv'.format(username)
+                process_garmin(filepath, username)
+
+                return render_template('daysperweek.html', username=username)
+        except:
+            data["runner_type"] = 0
+            json_file.seek(0)  # rewind
+            json.dump(data, json_file)
+            json_file.truncate()
+
+            return render_template('max_days.html', username=username)
+        # elif 'newfile' not in request.files:
+        #     flash('No file part')
+        #     return redirect(request.url)
+            
+            # return render_template('max_days.html', username=username)
 
 
 if __name__ == "__main__":
