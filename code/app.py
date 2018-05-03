@@ -117,6 +117,9 @@ def home(username):
             writer.writerow([inputdate, inputmiles, inputtime, inputtitle])
 
     elif request.form['submit'] == 'finish update':
+        with open(users_folder_file_path + username + '/logged_training.csv', 'a') as f:
+            writer = csv.writer(f)
+            writer.writerow([inputdate, inputmiles, inputtime, inputtitle])
         update_plan(username)
 
     return redirect(url_for('.foo', username=username))

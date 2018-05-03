@@ -98,8 +98,6 @@ def generate_week_summary_stats(planned, logged):
     For each number of weeks before present day, generate summary statistics for planned and logged training and merge
     into a single data frame.
     """
-    print(planned)
-    print(logged)
     # Bucket weeks based on integer number of weeks before today:
     planned['weeks_before_now'] = planned.run_date.apply(lambda x : int((date.today() - x.date()).days/7))
     logged['weeks_before_now'] = logged.run_date.apply(lambda x: int((date.today() - x.date()).days / 7))
