@@ -187,9 +187,6 @@ def createUsers():
         new_path = users_folder_file_path + username
         os.makedirs(new_path)
 
-        f = open(new_path + '/future_training.csv', 'w')
-        f.close()
-
         g = open(new_path + '/logged_training.csv', 'w')
         writer = csv.writer(g)
         writer.writerow(['run_date', 'miles', 'time', 'title'])
