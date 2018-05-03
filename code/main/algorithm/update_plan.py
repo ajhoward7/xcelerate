@@ -34,7 +34,7 @@ def update_miles_per_week(preferences, summary, miles_per_week):
     previous_logged = summary[summary.weeks_before_now == 0].miles_logged
     previous_planned = summary[summary.weeks_before_now == 0].miles_planned
 
-    if previous_planned == 0:
+    if previous_planned[-1] == 0:
         return miles_per_week
 
     for i in range(len(miles_per_week)):
