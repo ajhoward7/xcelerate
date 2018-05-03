@@ -243,6 +243,7 @@ def build_plan(user):
     weeks = lib.weeks_of_plan(preferences)  # Jake
     # Part 3: Generate number of days per week to run on each week
     days_per_week = generate_days_per_week(preferences, weeks)  # Holly
+    assert(len(days_per_week)==weeks)
 
     # Part 4: Generate mileage per week for each week
     first_week_days = days_per_week[0]
@@ -253,7 +254,7 @@ def build_plan(user):
         mileage_limit = mileage_baseline + 5
 
     miles_per_week = generate_mpw(mileage_baseline, mileage_limit, weeks)
-
+    assert(len(miles_per_week)==weeks)
     # Part 5: concatenate Part 3 & 4 to create full plan with run vector
 
     return combine_miles_days(miles_per_week, days_per_week, preferences, run_vector)
