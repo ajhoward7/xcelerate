@@ -425,24 +425,28 @@ def foo(username):
     cal = Calendar(0)
     training_list = []
     path = users_folder_file_path + username
-    with open(path + '/planned_training.csv') as csvfile:
-        readCSV = csv.reader(csvfile, delimiter=',')
-        next(readCSV, None)
-        for row in readCSV:
-
-            if datetime.strptime(row[3], '%Y-%m-%d')>= datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) :
-                training_list.append([row[1], int(row[3].split('-')[0]), int(row[3].split('-')[1]), int(row[3].split('-')[2])])
-
 
     logged_training = []
+
     with open(path + '/logged_training.csv') as csvfile:
         readCSV = csv.reader(csvfile, delimiter=',')
         next(readCSV, None)
         for row in readCSV:
             if row[0] != '' and row[1] != '':
-                logged_training.append([row[1], int(row[0].split('-')[0]), int(row[0].split('-')[1]), int(row[0].split('-')[2])])
 
+                logged_training.append(
+                    [row[1], int(row[0].split('-')[0]), int(row[0].split('-')[1]), int(row[0].split('-')[2])])
+    if len(logged_training) > 0:
+        last_day = datetime.strptime('-'.join(str(x) for x in logged_training[-1][1:]), '%Y-%m-%d')
+    else:
+        last_day = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
+    with open(path + '/planned_training.csv') as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+        next(readCSV, None)
+        for row in readCSV:
+            if datetime.strptime(row[3], '%Y-%m-%d')> last_day:
+                training_list.append([row[1], int(row[3].split('-')[0]), int(row[3].split('-')[1]), int(row[3].split('-')[2])])
     try:
         if not year:
             year = date.today().year
@@ -450,6 +454,7 @@ def foo(username):
             cal.monthdatescalendar(year, i+1)
             for i in range(12)
         ]
+
     except:
         abort(404)
     else:
@@ -459,5 +464,5 @@ def foo(username):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host = '0.0.0.0', port = 80)
-    # app.run()
+    # app.run(host = '0.0.0.0', port = 80)
+    app.run()
