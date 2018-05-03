@@ -78,8 +78,27 @@ def authenticate():
 
 @app.route("/fi/<username>", methods=["GET", "POST"])
 def gohome(username):
+
+    generate_plan(username)
+    turn_plan_to_json(users_folder_file_path, username)
+    
     return redirect(url_for('.foo', username=username))
 
+
+@app.route("/add/<username>", methods=['POST'])
+def add(username):
+    path = users_folder_file_path + username
+    with open(path + '/preferences.txt', 'r+') as json_file:
+        data = json.load(json_file)
+
+        if data['runner_type'] == 1:
+            data['training_level_increase'] = int(request.form['training_level_increase'])
+            data['max_days_per_week'] = 99
+
+            json_file.seek(0)  # rewind
+            json.dump(data, json_file)
+            json_file.truncate()
+    return redirect(url_for('.gohome', username=username))
 
 @app.route("/foo/<username>", methods=["POST"])
 def home(username):
@@ -371,18 +390,13 @@ def thankyou(username):
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
-        data['training_level_increase'] = int(request.form['training_level_increase'])
-        data['max_days_per_week'] = 99
+        data['max_days_per_week'] = int(request.form['max_days_per_week'])
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
         json_file.truncate()
 
-    generate_plan(username)
-    turn_plan_to_json(users_folder_file_path, username)
-
     return redirect(url_for('.gohome', username=username))
-    # return render_template('thankyou.html', username=username)
 
 
 if __name__ == "__main__":

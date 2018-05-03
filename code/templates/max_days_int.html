@@ -14,7 +14,7 @@
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
      <h4 align = 'center'><font color="#4d73be">What's the maximum number of days you want to run per week?</font></h4>
 
-    <form class="form-signin" method="post" action="{{url_for('gohome', username=username)}}">
+    <form class="form-signin" method="post" action="{{url_for('thankyou', username=username)}}">
 
         <select class="form-control" id="maxdays" name="max_days_per_week">
           <option>2</option>
