@@ -70,15 +70,14 @@ def authenticate():
         if inputname == row[0] or inputname == row[1]:
             password = row[2]
             if check_password_hash(password, inputpassword):
-                return redirect(url_for('.welcome', username=row[0]))
-                # return render_template('welcomeback.html', username=row[0])
+                return redirect(url_for('.gohome', username=row[0]))
 
     myfile.close()
     return redirect(url_for('login'))
 
 
 @app.route("/fi/<username>", methods=["GET", "POST"])
-def welcome(username):
+def gohome(username):
     return redirect(url_for('.foo', username=username))
 
 
@@ -173,7 +172,6 @@ def createUsers():
         return redirect(url_for('showSignup'))
 
 
-
 @app.route('/race_distance/<username>')
 def race_distance(username):
     """
@@ -247,27 +245,6 @@ def split(username):
         return render_template('how.html', username=username)
 
 
-# @app.route("/daysperweek/<username>", methods=['POST'])
-# def daysperweek(username):
-#     """
-#     Renders the dayperweek page
-#     """
-#     path = users_folder_file_path + username
-#     with open(path + '/preferences.txt', 'r+') as json_file:
-#         data = json.load(json_file)
-
-#         data["max_days_per_week"] = int(request.form['max_days_per_week'])
-
-#         json_file.seek(0)  # rewind
-#         json.dump(data, json_file)
-#         json_file.truncate()    
-
-#     if data['runner_type'] == 0:
-#         return render_template('daysperweek.html', username=username)
-#     elif data['runner_type'] == 1:
-#         return render_template('thankyou.html', username=username)
-
-
 @app.route("/prior_training/<username>", methods=['POST'])
 def prior_training(username):
     """
@@ -328,7 +305,8 @@ def rdirect(username):
         generate_plan(username)
         turn_plan_to_json(users_folder_file_path, username)
 
-        return render_template('thankyou.html', username=username)
+        # return render_template('thankyou.html', username=username)
+        return redirect(url_for('.gohome', username=username))
 
 
 @app.route("/fill/<username>", methods=['POST'])
@@ -349,7 +327,8 @@ def fill(username):
         generate_plan(username)
         turn_plan_to_json(users_folder_file_path, username)
 
-        return render_template('thankyou.html', username=username)
+        # return render_template('thankyou.html', username=username)
+        return redirect(url_for('.gohome', username=username))
         # return redirect(url_for('.home', username=username))
     elif data['runner_type'] == 1:
         return render_template('daysperweek.html', username=username)
@@ -399,7 +378,8 @@ def thankyou(username):
     generate_plan(username)
     turn_plan_to_json(users_folder_file_path, username)
 
-    return render_template('thankyou.html', username=username)
+    return redirect(url_for('.gohome', username=username))
+    # return render_template('thankyou.html', username=username)
 
 
 if __name__ == "__main__":
