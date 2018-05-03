@@ -10,3 +10,4 @@ mama,mama@w,pbkdf2:sha256:50000$6y4y8MtI$8a47f113574d67c359c002bf9c9c476c0daa490
 luke,luke@luke.com,pbkdf2:sha256:50000$IoiZG7YQ$bb738ec951d35c6fe23e2562286c1ce1eaca84805696411539a374bbf939a003
 marathon,marathon@marathon.com,pbkdf2:sha256:50000$ihMw3kUI$5365628a46bddd276b302ed65681e0375d45ec9021c621c8fd4abb9278f9c760
 hugh,hugh@hugh.com,pbkdf2:sha256:50000$zWIHKZts$8b665971084d97baf79e547e109e531da81cc2993258fa4b6380c5de1bf581ca
+jack,jack@j.com,pbkdf2:sha256:50000$vXKnlCOe$e46e12253d00a437d9a62e9e0322b494676ed0b547607a126bd164faa5bb8116

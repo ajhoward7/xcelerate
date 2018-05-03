@@ -43,7 +43,7 @@ def update_miles_per_week(preferences, summary, miles_per_week):
     if all(previous_planned == 0):
         return 'No update'
 
-    if len(previous_planned == 0):
+    if len(previous_planned) == 0:
         return 'No update'
 
     previous_planned = float(previous_planned[0])
