@@ -70,10 +70,10 @@ def generate_days_per_week(preferences, weeks):
     max_days = preferences['max_days_per_week']
     level = preferences['runner_type']
 
-    if 'training_level_increase' in preferences.keys():
+    if 'training_level_increase' in preferences.keys() and level == 1:
         increase = preferences['training_level_increase']
     else:
-        increase = 'NaN'
+        increase = True
 
     if 'prior_days_per_week' in preferences.keys():
         previous_days = preferences['prior_days_per_week']
@@ -119,6 +119,8 @@ def generate_days_per_week(preferences, weeks):
 
     plan[-1] += -1  # One less day training on the last week
 
+    plan = [max(days,1) for days in plan]
+
     return plan
 
 
@@ -127,7 +129,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
     Take MpW and days per week inputs and output training plan appropriate from run vector
     """
 
-    number_of_runs = sum(days_per_week)
+    number_of_runs = sum(days_per_week) + 1
 
     run_vector_length = len(run_vector)
 
