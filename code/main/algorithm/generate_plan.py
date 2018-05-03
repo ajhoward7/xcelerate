@@ -103,7 +103,7 @@ def generate_days_per_week(preferences, weeks):
 
         i = 0
 
-        while plan[i] < max_days:
+        while plan[i] < max_days and len(plan) <= weeks-2:
             days = plan[i] + 1
             plan.append(days)
             plan.append(days)
@@ -155,6 +155,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
     # Loop through each week and place days as appropriate:
     for i in range(len(days_per_week)):
         days_this_week = max(days_per_week[i],1)
+        print(miles_per_week)
         miles_this_week = miles_per_week[i]
         runs_this_week = []
 
@@ -239,7 +240,7 @@ def build_plan(user):
 
     # Part 2: Calculate weeks of plan
     weeks = lib.weeks_of_plan(preferences)  # Jake
-
+    print(weeks)
     # Part 3: Generate number of days per week to run on each week
     days_per_week = generate_days_per_week(preferences, weeks)  # Holly
 
