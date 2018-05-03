@@ -185,7 +185,6 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
         max_arg = np.argmax(runs_this_week)
 
         # Putting longest run as the last run:
-        runs_this_week = [max(run,2) for run in runs_this_week]  # Hack to make sure no 0 values
         runs_this_week[max_arg] = runs_this_week[-1]
         runs_this_week[-1] = max_val
 
@@ -197,7 +196,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector):
     # Format output:
     training_plan = pd.DataFrame([])
     training_plan['week_of_run'] = week_of_run
-    training_plan['miles'] = adj_run_vector
+    training_plan['miles'] = [max(run,1.5) for run in adj_run_vector]  # Hack to make sure no 0's
     training_plan['run_day'] = run_day
     training_plan['run_date'] = [this_date.date() for this_date in run_date]
     #training_plan['workout'] = run_workout[:len(run_date)][::-1]
