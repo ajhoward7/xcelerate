@@ -5,14 +5,13 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-    <link rel="shortcut icon" type="image/x-icon" href="./static/small_logo.png" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/signup.css" rel="stylesheet">
-
     {% block head %}
         <meta charset="utf-8" />
         <!-- Set the viewport width to device width for mobile -->
         <meta name="viewport" content="width=device-width" />
+        <link rel="shortcut icon" type="image/x-icon" href="./static/small_logo.png" />
         <title>flask-calendar</title>
         <!-- Included CSS Files (Uncompressed) -->
         <!--
@@ -27,29 +26,24 @@
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <style type="text/css"><!--
-
         td.past-month {
             color: #bbb;
         }
-
         #cal table {
             margin: 0 10%;
             width: 80%;
             height: 80%;
         }
-
         #cal h1 {
             background-color: #fff;
             padding: 3px;
         }
-
         //--></style>
     {% endblock %}
 </head>
 <body>
     <div class="container">
         <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
-
         <p class="lead"></p>
         <center><h4>Hello {{username}}</h4></center>
         <br>
@@ -62,12 +56,17 @@
                 {% for month in cal %}
                 {% set current_month = loop.index %}
                 <div>
-                    <h1>{{ ['January', 'Febuary', 'March', 'April',
-                            'May', 'June', 'July', 'August',
-                            'September', 'October', 'November', 'December'][loop.index0] }} {{ year }}</h1>
+                    <h1>{{ list_month[loop.index0] }} {{ year }}</h1>
                     <table>
+                        <tr>
+                            {% for dow in weekdays %}
+                            <td>
+                                {{ dow }}
+                            </td>
+                            {% endfor %}
+                        </tr>
                         {% for week in month %}
-                        <tr height="109">
+                        <tr height="133">
                             {% for date in week %}
                                 {% if date.month == current_month %}
                                 <td class="current-month" width="95">
@@ -75,8 +74,6 @@
                                 <td class="past-month" width="95">
                                 {% endif %}
                                 {{ date.day }}
-
-
                                 {% for run in logged_training %}
                                     {% if date.year == run[1] and date.month == run[2] and date.day == run[3] %}
                                     <br>
@@ -84,8 +81,6 @@
                                     {{ run[0] }}
                                     {% endif %}
                                 {% endfor %}
-
-
                                 {% for run in training_list %}
                                     {% if date.year == run[1] and date.month == run[2] and date.day == run[3] %}
                                     <br>
@@ -93,15 +88,10 @@
                                     {{ run[0] }}
                                     {% endif %}
                                 {% endfor %}
-
                                 {% if date.year == race_date[1] and date.month == race_date[2] and date.day == race_date[3] %}
                                 <br>
                                 <img src="{{url_for('static', filename='finishline.png')}}" alt="finish">
                                 {% endif %}
-
-
-
-
                                 </td>
                             {% endfor %}
                         </tr>
@@ -113,27 +103,23 @@
         </div>
     </div>
     </div>
-
     {% endblock %}
     </div>
-		<div id = "leftPanel" style = "float: right; margin: 0 2%; width: 30%; height: 120px; line-height: 90px; margin-top: 150px;">
-			<h1>Record Training</h1>
-			<form action="{{ url_for('.home', username=username) }}" method="post">
-
-        	<label for="inputdate" class="sr-only">Input Date</label>
-        	<input type="date" name="inputdate" id="inputdate" class="form-control" placeholder="Date">
-        	<label for="inputmiles" class="sr-only">Input Miles</label>
-        	<input type="text" name="inputmiles" id="inputmiles" class="form-control" placeholder="Number of miles">
-			<label for="inputtime" class="sr-only">Input Time</label>
-        	<input type="text" name="inputtime" id="inputtime" class="form-control" placeholder="Time">
-			<label for="inputtitle" class="sr-only">Input Title</label>
-        	<input type="text" name="inputtitle" id="inputtitle" class="form-control" placeholder="Title">
-
-        	<p class="lead"></p>
-
-        	<input class="btn btn-lg btn-success" value="add more" type="submit" name="submit">
-			<input class="btn btn-lg btn-success" value="finish update" type="submit" name="submit">
-        	</form>
+        <div id = "leftPanel" style = "float: right; margin: 0 2%; width: 30%; height: 120px; line-height: 90px; margin-top: 150px;">
+            <h1>Record Training</h1>
+            <form action="{{ url_for('.home', username=username) }}" method="post">
+            <label for="inputdate" class="sr-only">Input Date</label>
+            <input type="date" name="inputdate" id="inputdate" class="form-control" placeholder="Date">
+            <label for="inputmiles" class="sr-only">Input Miles</label>
+            <input type="text" name="inputmiles" id="inputmiles" class="form-control" placeholder="Number of miles">
+            <label for="inputtime" class="sr-only">Input Time</label>
+            <input type="text" name="inputtime" id="inputtime" class="form-control" placeholder="Time">
+            <label for="inputtitle" class="sr-only">Input Title</label>
+            <input type="text" name="inputtitle" id="inputtitle" class="form-control" placeholder="Title">
+            <p class="lead"></p>
+            <input class="btn btn-lg btn-success" value="add more" type="submit" name="submit">
+            <input class="btn btn-lg btn-success" value="finish update" type="submit" name="submit">
+            </form>
     </div>
     {% block tail %}
         <!-- Included JS Files (Uncompressed) -->

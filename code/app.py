@@ -7,6 +7,7 @@ import datetime as dt
 from calendar import Calendar
 from datetime import date, datetime
 from werkzeug.security import check_password_hash, generate_password_hash
+from dateutil.relativedelta import relativedelta
 
 sys.path.insert(0, './main/algorithm')
 try:
@@ -411,20 +412,22 @@ def daysperweek(username):
             json_file.truncate()
 
             return render_template('max_days.html', username=username)
-        # elif 'newfile' not in request.files:
-        #     flash('No file part')
-        #     return redirect(request.url)
-            
-            # return render_template('max_days.html', username=username)
 
 
 @app.route('/home/<username>', methods=['GET', 'POST'])
 @app.route('/<int:year>/')
 def foo(username):
     year = 2018
-    cal = Calendar(0)
+    cal = Calendar(-1)
     training_list = []
     path = users_folder_file_path + username
+
+    weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    mydate = date.today()
+    list_month = []
+    for i in range(12):
+        list_month.append(mydate.strftime("%B"))
+        mydate = mydate + relativedelta(months=+1)
 
     logged_training = []
 
@@ -447,21 +450,26 @@ def foo(username):
         readCSV = csv.reader(csvfile, delimiter=',')
         next(readCSV, None)
         for row in readCSV:
-            if datetime.strptime(row[3], '%Y-%m-%d')> last_day:
+            if datetime.strptime(row[3], '%Y-%m-%d') > last_day:
                 training_list.append([row[1], int(row[3].split('-')[0]), int(row[3].split('-')[1]), int(row[3].split('-')[2])])
     try:
         if not year:
             year = date.today().year
         cal_list = [
-            cal.monthdatescalendar(year, i+1)
-            for i in range(12)
-        ]
+            cal.monthdatescalendar(year, i+1) for i in range(12) if i >= date.today().month - 1]
+        cal_list2 = [cal.monthdatescalendar(year, i + 1) for i in range(12) if i < date.today().month - 1]
+
+        cal_list3 = cal_list + cal_list2
+        print(len(cal_list3))
 
     except:
         abort(404)
     else:
-        return render_template('new_.html', username=username, year=year, cal=cal_list, training_list=training_list[:-1], logged_training=logged_training, race_date=training_list[-1])
+        return render_template('new_.html', weekdays=weekdays, list_month=list_month, username=username, year=year, cal=cal_list3, training_list=training_list[:-1], logged_training=logged_training, race_date=training_list[-1])
     abort(404)
+
+
+
 
 
 if __name__ == "__main__":
