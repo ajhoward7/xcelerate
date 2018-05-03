@@ -437,7 +437,9 @@ def foo(username):
                 logged_training.append(
                     [row[1], int(row[0].split('-')[0]), int(row[0].split('-')[1]), int(row[0].split('-')[2])])
     if len(logged_training) > 0:
-        last_day = datetime.strptime('-'.join(str(x) for x in logged_training[-1][1:]), '%Y-%m-%d')
+        dates = [training[1:] for training in logged_training]
+        dates = [datetime.strptime('-'.join(str(x) for x in date), '%Y-%m-%d') for date in dates]
+        last_day = max(dates)
     else:
         last_day = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
