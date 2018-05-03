@@ -6,6 +6,9 @@ import constants
 import lib
 import utils
 
+# For local testing:
+#import os
+#os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
 """
 This code is used to generate an initial training plan for our user, using the user preferences (stored as a dict) and
 our constants - specified in constants.py
