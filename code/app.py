@@ -445,7 +445,7 @@ def daysperweek(username):
             elif 'newfile' in request.files:
             # print("here!")
                 data["runner_type"] = 1
-
+                data["prior_training"] = 1
                 json_file.seek(0)  # rewind
                 json.dump(data, json_file)
                 json_file.truncate()
