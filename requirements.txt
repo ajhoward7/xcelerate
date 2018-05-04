@@ -5,4 +5,5 @@ Jinja2==2.10
 MarkupSafe==1.0
 Werkzeug==0.14.1
 pandas==0.22.0
+plotly==1.9.4
 

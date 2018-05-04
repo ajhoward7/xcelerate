@@ -23,3 +23,4 @@ x,x@x.com,pbkdf2:sha256:50000$cMWXmj73$b2c025b84e40cc3a7557d5335a8bb6bfb39e63eb2
 y,y@y.com,pbkdf2:sha256:50000$YQgBgrzX$eec8526b53fde89e36b2c142024fecb1963b0fb379100c3485c9cefbacc3fb8f
 z,z@z.com,pbkdf2:sha256:50000$jjBpUcLk$08fef7598339448e17394e18c9d281d385003c25fa488aeaa3f7225cb0732a5b
 zz,zz@zz.com,pbkdf2:sha256:50000$YlVHY4Qm$b68638a93b4a2512c16d4fd676864f5f1e43ed27785f7afe8dcb91f0fa4aae76
+new_user,new@new.com,pbkdf2:sha256:50000$pKBSJB0A$7215aead5b9b94ebbdea81926ce6a75a900f5848426a465f4c744982b5f9e4af
