@@ -109,7 +109,7 @@
 
     {% endblock %}
     <!--</div>-->
-        <div id = "leftPanel" style = "float: left; margin: 0 0.2%; width: 20%; height: 50%; line-height: 90px; margin-top: 150px;">
+        <div id = "leftPanel" style = "float: left; margin: 0 0.2%; width: 20%; height: 50%; line-height: 25px; margin-top: 150px; margin-bottom: 25px;">
             <h4 align="center">Record Training</h4>
             <form action="{{ url_for('.home', username=username) }}" method="post" style = "width: 150px; height: 150px; margin: auto; position: relative;">
             <label for="inputdate" class="sr-only">Input Date</label>
@@ -117,14 +117,14 @@
             <label for="inputmiles" class="sr-only">Input Miles</label>
             <input type="text" name="inputmiles" id="inputmiles" class="form-control" placeholder="Distance (miles)">
 
-            <p>My training plan is: </p>
-            <input type="radio" name="inputdifficulty" value="1" style = "padding: 7px; "> Just Right<br>
-            <input type="radio" name="inputdifficulty" value="0"> Too Easy<br>
-            <input type="radio" name="inputdifficulty" value="2"> Too Hard
+            <p style="line-height: 25px; margin-top: 10px; margin-bottom: 5px;">My training plan is: </p>
+            <input type="radio" name="inputdifficulty" value="1" style = "line-height: 5px; padding: 7px; "> Just Right<br/>
+            <input type="radio" name="inputdifficulty" value="0" style = "line-height: 5px; padding: 7px; "> Too Easy<br/>
+            <input type="radio" name="inputdifficulty" value="2" style = "line-height: 5px; padding: 7px; "> Too Hard
 
             <p class="lead"></p>
-            <input class="btn btn-lg btn-success" value="add more" type="submit" name="submit">
-            <input class="btn btn-lg btn-success" value="finish update" type="submit" name="submit">
+            <input class="btn btn-sm btn-success" value="Add More" type="submit" name="submit" style="font-size: 12px; padding: 12px;">
+            <input class="btn btn-sm btn-success" value="Finished" type="submit" name="submit" style="font-size: 12px; padding: 12px;">
 
             </form>
     </div>
