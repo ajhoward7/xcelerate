@@ -129,12 +129,12 @@ def home(username):
         json.dump(data, json_file)
         json_file.truncate()
 
-    if request.form['submit'] == 'add more':
+    if request.form['submit'] == 'Add More':
         with open(path + '/logged_training.csv', 'a') as f:
             writer = csv.writer(f)
             writer.writerow([inputdate, inputmiles])
 
-    elif request.form['submit'] == 'finish update':
+    elif request.form['submit'] == 'Finished':
         with open(path + '/logged_training.csv', 'a') as f:
             writer = csv.writer(f)
             writer.writerow([inputdate, inputmiles])

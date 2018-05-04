@@ -50,14 +50,14 @@
 </head>
 <body>
     <div class="container">
-        <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
+        <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate" style = "width:150px; height: auto;">
 
         <p class="lead"></p>
         <br>
     </div>
     {% block body %}
-    <div id = "rightPanel" style = "float: left; margin: 0 1.5%; width: 73%;">
-    <div class="row">
+    <!--<div id = "rightPanel" style = "float: left; width: 73%;">-->
+    <div class="row" id = "rightPanel" style = "position:relative; float: left; margin: 0 0.3%; width: 70%; height:60%; padding:50px;">
         <div class="twelve columns centered">
             <div id="cal" align = 'center'>
                 {% for month in cal %}
@@ -138,7 +138,7 @@
 			<!--<input class="btn btn-lg btn-success" value="finish update" type="submit" name="submit">-->
         	<!--</form>-->
     <!--</div>-->
-        <div id = "leftPanel" style = "float: left; margin: 0 0.2%; width: 20%; height: 50%; line-height: 25px; margin-top: 150px; margin-bottom: 25px;">
+        <div id = "leftPanel" style = "float: left; width: 20%; height: 50%; line-height: 25px; margin-top: 150px; margin-bottom: 25px;">
             <h4 align="center">Record Training</h4>
             <form action="{{ url_for('.home', username=username) }}" method="post" style = "width: 150px; height: 150px; margin: auto; position: relative;">
             <label for="inputdate" class="sr-only">Input Date</label>
