@@ -7,15 +7,18 @@ import utils
 
 user = 'new_user'
 
-import os
-os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
+#import os
+#os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
 
 def bar_plot(user):
 
     planned_training = utils.get_all_planned_training(user)
     logged_training = utils.get_all_logged_training(user)
 
-    last_logged_day = max(list(logged_training.run_date))
+    try:
+        last_logged_day = max(list(logged_training.run_date))
+    except:
+        last_logged_day = date.today() - timedelta(days=1)
     planned_training = planned_training[planned_training.run_date > last_logged_day]
 
     planned_training = planned_training[['miles','week_start']]
@@ -28,7 +31,7 @@ def bar_plot(user):
     logged_training.columns = ['week_start','miles_logged']
     logged_training = logged_training.groupby(['week_start'], as_index = False).miles_logged.sum()
 
-    df = pd.merge(logged_training, planned_training, on = 'week_start')
+    df = pd.merge(logged_training, planned_training, on = 'week_start', how = 'outer').fillna(0)
 
     data = []
     custom_colours = ['black','blue']
@@ -77,8 +80,4 @@ def bar_plot(user):
 
     return plotly.offline.plot(fig, include_plotlyjs=False,
                                  output_type='div')
-
-
-
-bar_plot(user)
 

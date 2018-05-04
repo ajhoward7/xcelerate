@@ -43,6 +43,7 @@
 </head>
 <body>
     <div class="container">
+        {{ plot|safe }}
         <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
         <p class="lead"></p>
         <center><h4>Hello {{username}}</h4></center>
@@ -156,5 +157,6 @@
        });
     </script>
     {% endblock %}
+
 </body>
 </html>

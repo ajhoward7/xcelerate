@@ -24,3 +24,9 @@ y,y@y.com,pbkdf2:sha256:50000$YQgBgrzX$eec8526b53fde89e36b2c142024fecb1963b0fb37
 z,z@z.com,pbkdf2:sha256:50000$jjBpUcLk$08fef7598339448e17394e18c9d281d385003c25fa488aeaa3f7225cb0732a5b
 zz,zz@zz.com,pbkdf2:sha256:50000$YlVHY4Qm$b68638a93b4a2512c16d4fd676864f5f1e43ed27785f7afe8dcb91f0fa4aae76
 new_user,new@new.com,pbkdf2:sha256:50000$pKBSJB0A$7215aead5b9b94ebbdea81926ce6a75a900f5848426a465f4c744982b5f9e4af
+ray,ray@ray.com,pbkdf2:sha256:50000$UBDLzgSX$58b0542b78b38d1309876a65e692afc6cb53fbbe78039adfc47fed729115cb65
+ray2,ray@ray2.com,pbkdf2:sha256:50000$OCKJfGuH$d9847f94a9d5d4d6b0b40ab06a26f1aff0655921175b369fe28516eeb25b05e6
+ray3,ray@ray3.com,pbkdf2:sha256:50000$HnEu4mDD$573270ab3ab9c4b5b56373a7dbe3b37c1fa4e9cd016e0046f798a7d095c0f50a
+ray4,ray@ray4.com,pbkdf2:sha256:50000$y5eubR5O$7386c8fa13b6effe7abb42a69060ce164e90ff4fcbf6a264aa03ad7232d5f02e
+ray5,ray5@ray.com,pbkdf2:sha256:50000$Gg2JjtCi$3f923e6567d53363f15435ea37c6c38a81435d5eb479eeee842ea37d783d906b
+ian,ian@ian.com,pbkdf2:sha256:50000$QHnfVJ4k$b1b69d5e5df81261f6257a0c6902e97dfad0590ac4c66125df1c0b8ee5f5ac3c
