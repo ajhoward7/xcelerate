@@ -26,7 +26,8 @@ def turn_plan_to_json(path, username):
     list_of_events = []
     for row in reader:
         if row[1] != "miles":
-            list_of_events.append({"title": row[1] + " mile run", "start": str(row[3])})
+            list_of_events.append({"title": row[1] + " mile run",
+                                   "start": str(row[3])})
 
     with open(path + username + "/events.json", 'w') as outfile:
         json.dump(list_of_events, outfile)
@@ -35,6 +36,7 @@ def turn_plan_to_json(path, username):
 
 master_file_path = './main/users/master_users.csv'
 users_folder_file_path = './main/users/'
+
 
 class User(object):
 
@@ -87,7 +89,7 @@ def gohome(username):
 
     generate_plan(username)
     turn_plan_to_json(users_folder_file_path, username)
-    
+
     return redirect(url_for('.foo', username=username))
 
 
@@ -98,7 +100,8 @@ def add(username):
         data = json.load(json_file)
 
         if data['runner_type'] == 1:
-            data['training_level_increase'] = int(request.form['training_level_increase'])
+            data['training_level_increase'] = \
+                int(request.form['training_level_increase'])
             data['max_days_per_week'] = 99
 
             json_file.seek(0)  # rewind
@@ -106,20 +109,16 @@ def add(username):
             json_file.truncate()
     return redirect(url_for('.gohome', username=username))
 
+
 @app.route("/foo/<username>", methods=["POST"])
 def home(username):
     """
     Renders the home page
     """
+    path = users_folder_file_path + username
     inputdate = request.form['inputdate']
     inputmiles = request.form['inputmiles']
-    print(1)
     inputdifficulty = int(request.form['inputdifficulty'])
-    print(2)
-    # print("danai look here!")
-    # print(request.form['inputdifficulty'])
-    # inputtime = request.form['inputtime']
-    # inputtitle = request.form['inputtitle']
     path = users_folder_file_path + username
 
     with open(path + '/preferences.txt', 'r+') as json_file:
@@ -131,13 +130,12 @@ def home(username):
         json_file.truncate()
 
     if request.form['submit'] == 'add more':
-        with open(users_folder_file_path + username + '/logged_training.csv', 'a') as f:
+        with open(path + '/logged_training.csv', 'a') as f:
             writer = csv.writer(f)
             writer.writerow([inputdate, inputmiles])
 
-
     elif request.form['submit'] == 'finish update':
-        with open(users_folder_file_path + username + '/logged_training.csv', 'a') as f:
+        with open(path + '/logged_training.csv', 'a') as f:
             writer = csv.writer(f)
             writer.writerow([inputdate, inputmiles])
         update_plan(username, inputdate)
@@ -240,7 +238,7 @@ def prior_training(username):
     path = users_folder_file_path + username
     dow_list = request.form.getlist('available_days')
     dow_list_int = [int(x) for x in dow_list]
-    
+
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
@@ -250,19 +248,20 @@ def prior_training(username):
 
             json_file.seek(0)  # rewind
             json.dump(data, json_file)
-            json_file.truncate() 
+            json_file.truncate()
 
             return render_template('prior_training.html', username=username)
         elif data['runner_type'] == 1:
 
             data["available_days"] = dow_list_int
-            data['prior_days_per_week'] = int(request.form['prior_days_per_week'])
-            data['prior_miles_per_week'] = float(request.form['prior_miles_per_week'])
+            data['prior_days_per_week'] = \
+                int(request.form['prior_days_per_week'])
+            data['prior_miles_per_week'] = \
+                float(request.form['prior_miles_per_week'])
 
-            json_file.seek(0) 
+            json_file.seek(0)
             json.dump(data, json_file)
-            json_file.truncate() 
-
+            json_file.truncate()
 
         return render_template('increase.html', username=username)
 
@@ -271,11 +270,9 @@ def prior_training(username):
 def rdirect(username):
     """
     """
-
     path = users_folder_file_path + username
 
     with open(path + '/preferences.txt', 'r+') as json_file:
-        # print("here!")
         data = json.load(json_file)
 
         if data['runner_type'] == "":
@@ -285,23 +282,18 @@ def rdirect(username):
             json_file.seek(0)  # rewind
             json.dump(data, json_file)
             json_file.truncate()
-            # print("im here!")
 
         elif data['runner_type'] == 0:
-            # print(int(request.form["prior_training"]))
             data["prior_training"] = int(request.form["prior_training"])
             json_file.seek(0)  # rewind
             json.dump(data, json_file)
             json_file.truncate()
-            print("actually im here!")
 
     if data['prior_training'] == 1 and data['runner_type'] == 0:
-        print("jere!")
         return render_template('approx.html', username=username)
 
     elif data['prior_training'] == 1 and data['runner_type'] == 1:
         return render_template('approx_int.html', username=username)
-    
     elif data['prior_training'] == 0:
         generate_plan(username)
         turn_plan_to_json(users_folder_file_path, username)
@@ -313,17 +305,20 @@ def rdirect(username):
 
 @app.route("/fill/<username>", methods=['POST'])
 def fill(username):
-    print(username)
+    """
+
+    """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
         data['prior_days_per_week'] = int(request.form['prior_days_per_week'])
-        data['prior_miles_per_week'] = float(request.form['prior_miles_per_week'])
+        data['prior_miles_per_week'] = \
+            float(request.form['prior_miles_per_week'])
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
-        json_file.truncate()     
+        json_file.truncate()
 
     if data['runner_type'] == 0:
         generate_plan(username)
@@ -338,17 +333,20 @@ def fill(username):
 
 @app.route("/upload/<username>", methods=['GET', 'POST'])
 def upload(username):
+    """
+
+    """
     return render_template('upload.html', username=username)
 
 
 @app.route("/increase/<username>", methods=['POST'])
 def increase(username):
-    # file = request.files['newfile']
-    # file.save('main/users/{}/activities.csv'.format(username))
+    """
+
+    """
     path = users_folder_file_path + username
     dow_list = request.form.getlist('available_days')
     dow_list_int = [int(x) for x in dow_list]
-    
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
@@ -357,21 +355,25 @@ def increase(username):
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
-        json_file.truncate() 
+        json_file.truncate()
     return render_template('increase.html', username=username)
 
 
 @app.route("/max_days/<username>", methods=['POST'])
 def max_days(username):
+    """
+
+    """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
 
-        data['training_level_increase'] = int(request.form['training_level_increase'])
+        data['training_level_increase'] = \
+            int(request.form['training_level_increase'])
 
         json_file.seek(0)  # rewind
         json.dump(data, json_file)
-        json_file.truncate() 
+        json_file.truncate()
 
     if data['runner_type'] == 0:
         return render_template('max_days.html', username=username)
@@ -381,6 +383,9 @@ def max_days(username):
 
 @app.route("/thankyou/<username>", methods=['POST'])
 def thankyou(username):
+    """
+
+    """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
@@ -393,19 +398,20 @@ def thankyou(username):
 
     return redirect(url_for('.gohome', username=username))
 
+
 @app.route("/daysperweek/<username>", methods=['POST'])
 def daysperweek(username):
-    
+    """
+
+    """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
-        print(1)
         try:
             file = request.files['newfile']
             if file.filename == '':
                 return render_template('upload.html', username=username)
             elif 'newfile' in request.files:
-            # print("here!")
                 data["runner_type"] = 1
                 data["prior_training"] = 1
                 json_file.seek(0)  # rewind
@@ -430,12 +436,16 @@ def daysperweek(username):
 @app.route('/home/<username>', methods=['GET', 'POST'])
 @app.route('/<int:year>/')
 def foo(username):
+    """
+
+    """
     year = 2018
     cal = Calendar(-1)
     training_list = []
     path = users_folder_file_path + username
 
-    weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    weekdays = ['Sunday', 'Monday', 'Tuesday',
+                'Wednesday', 'Thursday', 'Friday', 'Saturday']
     mydate = date.today()
     list_month = []
     for i in range(12):
@@ -451,35 +461,57 @@ def foo(username):
             if row[0] != '' and row[1] != '':
 
                 logged_training.append(
-                    [row[1], int(row[0].split('-')[0]), int(row[0].split('-')[1]), int(row[0].split('-')[2])])
+                    [row[1], int(row[0].split('-')[0]),
+                     int(row[0].split('-')[1]), int(row[0].split('-')[2])])
+
     if len(logged_training) > 0:
         dates = [training[1:] for training in logged_training]
-        dates = [datetime.strptime('-'.join(str(x) for x in date1), '%Y-%m-%d') for date1 in dates]
+        dates = [datetime.strptime('-'.join(str(x) for x in date1),
+                                   '%Y-%m-%d') for date1 in dates]
         last_day = max(dates)
     else:
-        last_day = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        last_day = datetime.now().replace(hour=0,
+                                          minute=0,
+                                          second=0,
+                                          microsecond=0)
 
     with open(path + '/planned_training.csv') as csvfile:
         readCSV = csv.reader(csvfile, delimiter=',')
         next(readCSV, None)
         for row in readCSV:
             if datetime.strptime(row[2], '%Y-%m-%d') > last_day:
-                training_list.append([row[0], int(row[2].split('-')[0]), int(row[2].split('-')[1]), int(row[2].split('-')[2])])
+                training_list.append([row[0],
+                                      int(row[2].split('-')[0]),
+                                      int(row[2].split('-')[1]),
+                                      int(row[2].split('-')[2])])
     try:
         if not year:
             year = date.today().year
         cal_list = [
-            cal.monthdatescalendar(year, i+1) for i in range(12) if i >= date.today().month - 1]
-        cal_list2 = [cal.monthdatescalendar(year, i + 1) for i in range(12) if i < date.today().month - 1]
+            cal.monthdatescalendar(year, i+1)
+            for i in range(12)
+            if i >= date.today().month - 1]
+        cal_list2 = [
+            cal.monthdatescalendar(year, i + 1)
+            for i in range(12)
+            if i < date.today().month - 1]
 
         cal_list3 = cal_list + cal_list2
-        # print(len(cal_list3))
 
-    except:
+    except IOError:
         abort(404)
     else:
         race_miles = training_list[-1][0]
-        return render_template('new_.html', weekdays=weekdays, list_month=list_month, username=username, year=year, cal=cal_list3, training_list=training_list[:-1], logged_training=logged_training, race_date=training_list[-1], race_miles = race_miles)
+        return render_template('new_.html',
+                               weekdays=weekdays,
+                               list_month=list_month,
+                               username=username,
+                               year=year,
+                               cal=cal_list3,
+                               training_list=training_list[:-1],
+                               logged_training=logged_training,
+                               race_date=training_list[-1],
+                               race_miles=race_miles)
     abort(404)
 
 
