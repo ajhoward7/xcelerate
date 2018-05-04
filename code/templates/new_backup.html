@@ -5,7 +5,7 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-    {% include 'google_analytics.html' %}
+
     <link rel="shortcut icon" type="image/x-icon" href="../static/small_logo.png" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/signup.css" rel="stylesheet">
@@ -49,17 +49,18 @@
     <div class="container">
         <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
         <p class="lead"></p>
+        <center><h4>Hello {{username}}</h4></center>
         <br>
     </div>
     {% block body %}
-    <!--<div id = "rightPanel" style = "float: left; margin: 0 0.3%; width: 80%;">-->
-    <div class="row" id = "rightPanel" style = "position:relative; float: left; margin: 0 0.3%; width: 70%; height:80%;">
+    <div id = "rightPanel" style = "float: left; margin: 0 1.5%; width: 63%;">
+    <div class="row">
         <div class="twelve columns centered">
             <div id="cal">
                 {% for month in cal %}
                 {% set current_month = loop.index %}
                 <div>
-                    <h1 align="center" >{{ list_month[loop.index0] }} {{ year }}</h1>
+                    <h1>{{ list_month[loop.index0] }} {{ year }}</h1>
                     <table>
                         <tr>
                             {% for dow in weekdays %}
@@ -81,20 +82,20 @@
                                     {% if date.year == run[1] and date.month == run[2] and date.day == run[3] %}
                                     <br>
                                     <img src="{{url_for('static', filename='runner_black.png')}}" alt="blackrunner">
-                                    <p align="right" style = "font-family: Tahoma, Geneva, sans-serif; color: black;">{{ run[0] }} miles</p>
+                                    <p align="right">{{ run[0] }} miles</p>
                                     {% endif %}
                                 {% endfor %}
                                 {% for run in training_list %}
                                     {% if date.year == run[1] and date.month == run[2] and date.day == run[3] %}
                                     <br>
                                     <img src="{{url_for('static', filename='runner_blue.png')}}" alt="bluerunner">
-                                    <p align="right" style = "font-family: Tahoma, Geneva, sans-serif; color: black;">{{ run[0] }} miles</p>
+                                    <p align="right">{{ run[0] }} miles</p>
                                     {% endif %}
                                 {% endfor %}
                                 {% if date.year == race_date[1] and date.month == race_date[2] and date.day == race_date[3] %}
                                 <br>
                                 <img src="{{url_for('static', filename='finishline.png')}}" alt="finish">
-                                <p align="center" style = "font-family: Tahoma, Geneva, sans-serif; color: black; position: relative; top: -30px; font-weight: bold; font-size: 150%;">{{ race_miles }} </p>
+                                <p align="center">{{ race_miles }} </p>
                                 {% endif %}
                                 </td>
                             {% endfor %}
@@ -108,24 +109,23 @@
     </div>
     </div>
     {% endblock %}
-    <!--</div>-->
-        <div id = "leftPanel" style = "float: left; margin: 0 0.2%; width: 20%; height: 50%; line-height: 90px; margin-top: 150px;">
-            <h4 align="center">Record Training</h4>
-            <form action="{{ url_for('.home', username=username) }}" method="post" style = "width: 150px; height: 150px; margin: auto; position: relative;">
+    </div>
+        <div id = "leftPanel" style = "float: right; margin: 0 2%; width: 30%; height: 120px; line-height: 90px; margin-top: 150px;">
+            <h1>Record Training</h1>
+            <form action="{{ url_for('.home', username=username) }}" method="post">
             <label for="inputdate" class="sr-only">Input Date</label>
             <input type="date" name="inputdate" id="inputdate" class="form-control" placeholder="Date">
             <label for="inputmiles" class="sr-only">Input Miles</label>
             <input type="text" name="inputmiles" id="inputmiles" class="form-control" placeholder="Distance (miles)">
-
+            
             <p>My training plan is: </p>
-            <input type="radio" name="inputdifficulty" value="1" style = "padding: 7px; "> Just Right<br>
-            <input type="radio" name="inputdifficulty" value="0"> Too Easy<br>
+            <input type="radio" name="inputdifficulty" value="1"> Just Right
+            <input type="radio" name="inputdifficulty" value="0"> Too Easy
             <input type="radio" name="inputdifficulty" value="2"> Too Hard
 
             <p class="lead"></p>
             <input class="btn btn-lg btn-success" value="add more" type="submit" name="submit">
             <input class="btn btn-lg btn-success" value="finish update" type="submit" name="submit">
-
             </form>
     </div>
     {% block tail %}
