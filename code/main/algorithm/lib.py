@@ -95,32 +95,41 @@ def get_race_distance(preferences):
 
 def generate_week_summary_stats(planned, logged, today):
     """
-    For each number of weeks before present day, generate summary statistics for planned and logged training and merge
+    For each number of weeks before present day,
+    generate summary statistics for planned and logged training and merge
     into a single data frame.
     """
     # Bucket weeks based on integer number of weeks before today:
-    planned['weeks_before_now'] = planned.run_date.apply(lambda x : int((today - x.date()).days/7))
-    logged['weeks_before_now'] = logged.run_date.apply(lambda x: int((today - x.date()).days / 7))
+    planned['weeks_before_now'] = planned.run_date.\
+        apply(lambda x: int((today - x.date()).days/7))
+    logged['weeks_before_now'] = logged.run_date.\
+        apply(lambda x: int((today - x.date()).days / 7))
 
     # Group data frames based on 'weeks_before_now':
-    planned_grouped = planned.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
-    logged_grouped = logged.groupby(['weeks_before_now'],as_index = False).agg({'miles':'sum','run_date':'count'})
+    planned_grouped = planned.groupby(['weeks_before_now'], as_index=False).\
+        agg({'miles': 'sum', 'run_date': 'count'})
+    logged_grouped = logged.groupby(['weeks_before_now'], as_index=False).\
+        agg({'miles': 'sum', 'run_date': 'count'})
 
     # Join appropriately to return:
     output = pd.merge(planned_grouped, logged_grouped, how='outer',
-                      on='weeks_before_now', suffixes=['_planned','_logged']).fillna(0)
+                      on='weeks_before_now',
+                      suffixes=['_planned', '_logged']).fillna(0)
 
     return output
 
 
 def retrieve_summary_stats(planned, today):
     """
-    Read in the planned_training dataframe and retrieve summary statistics (miles per week, days per week) to work from
+    Read in the planned_training dataframe and retrieve summary
+    statistics (miles per week, days per week) to work from
     when updated training plans.
     """
-    future_training = planned[planned.run_date >= today - timedelta(days=today.weekday())]
+    future_training = planned[planned.run_date >=
+                              today - timedelta(days=today.weekday())]
 
-    future_by_week = future_training.groupby(['week_start'], as_index = False).agg({'miles':'sum','run_date':'count'}).\
-                        sort_values('week_start',ascending = True)
+    future_by_week = future_training.groupby(['week_start'], as_index=False).\
+        agg({'miles': 'sum', 'run_date': 'count'}).\
+        sort_values('week_start', ascending=True)
 
     return future_by_week
