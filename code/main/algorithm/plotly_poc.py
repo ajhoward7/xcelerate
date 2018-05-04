@@ -5,8 +5,6 @@ import pandas as pd
 
 import utils
 
-user = 'new_user'
-
 #import os
 #os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
 
