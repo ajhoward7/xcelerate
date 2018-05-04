@@ -20,3 +20,5 @@ bench,b@c.com,pbkdf2:sha256:50000$9yYQQ5kn$920f55fc0fa5efb371430821d2c1eab9c9b40
 bench2,bench2@hotmail.com,pbkdf2:sha256:50000$hy4PS4gN$d2deda8c2d1a088d27a13adeed8c10fe18a6cac06b1113c31dd55bed9d02770a
 bench3,be@b.com,pbkdf2:sha256:50000$DXfmrDpj$31cfcb0a64555913907808e64e9b909878de04582cc16ebffd6eb525493632ad
 x,x@x.com,pbkdf2:sha256:50000$cMWXmj73$b2c025b84e40cc3a7557d5335a8bb6bfb39e63eb246d8a130a8b1c2f3b97b633
+y,y@y.com,pbkdf2:sha256:50000$YQgBgrzX$eec8526b53fde89e36b2c142024fecb1963b0fb379100c3485c9cefbacc3fb8f
+z,z@z.com,pbkdf2:sha256:50000$jjBpUcLk$08fef7598339448e17394e18c9d281d385003c25fa488aeaa3f7225cb0732a5b

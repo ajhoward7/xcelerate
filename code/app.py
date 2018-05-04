@@ -462,8 +462,8 @@ def foo(username):
         readCSV = csv.reader(csvfile, delimiter=',')
         next(readCSV, None)
         for row in readCSV:
-            if datetime.strptime(row[3], '%Y-%m-%d') > last_day:
-                training_list.append([row[1], int(row[3].split('-')[0]), int(row[3].split('-')[1]), int(row[3].split('-')[2])])
+            if datetime.strptime(row[2], '%Y-%m-%d') > last_day:
+                training_list.append([row[0], int(row[2].split('-')[0]), int(row[2].split('-')[1]), int(row[2].split('-')[2])])
     try:
         if not year:
             year = date.today().year
