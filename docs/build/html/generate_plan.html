@@ -34,38 +34,46 @@
 <dl class="function">
 <dt id="generate_plan.build_plan">
 <code class="descclassname">generate_plan.</code><code class="descname">build_plan</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#build_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.build_plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Steps:
-1. Decide how many days to run on each week up until race day
-2. Decide how many miles to run on each week
-3. Select appropriate proportion of run vector
-4. Return plan, divided by week</p>
+<dd><p>Master function to build plan
+1: Read in preferences and appropriate run vector
+2: Calculate weeks of plan
+3: Generate number of days per week to run on each week
+4: Generate mileage per week for each week
+5: concatenate Part 3 &amp; 4 to create full plan with run vector</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="generate_plan.combine_miles_days">
-<code class="descclassname">generate_plan.</code><code class="descname">combine_miles_days</code><span class="sig-paren">(</span><em>miles_per_week</em>, <em>days_per_week</em>, <em>preferences</em>, <em>run_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#combine_miles_days"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.combine_miles_days" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">generate_plan.</code><code class="descname">combine_miles_days</code><span class="sig-paren">(</span><em>miles_per_week</em>, <em>days_per_week</em>, <em>preferences</em>, <em>run_vector</em>, <em>today</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#combine_miles_days"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.combine_miles_days" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take MpW and days per week inputs and output training
+plan appropriate from run vector</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="generate_plan.generate_days_per_week">
 <code class="descclassname">generate_plan.</code><code class="descname">generate_days_per_week</code><span class="sig-paren">(</span><em>preferences</em>, <em>weeks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_days_per_week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_days_per_week" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the preferences dictionary and the number of weeks in the plan, this function returns
-a list of the number of training days per week for each week of the training plan.</p>
-<p>INPUTS
-max_days: number of days per week the user wants to run
-level: intermediate or novice
-increase: boolean to indicate whether the user (intermediate only) wants to increase training. Will be True if level = novice
-weeks: number of weeks left until race day
-previous_days: number of training days per week from previous training. Will be -1 if no previous data</p>
-<p>OUTPUTS
-plan: vector of number of days per week for remaining training</p>
+<dd><p>Given the preferences dictionary and the number of weeks in the plan,
+this function returns a list of the number of training days per week
+for each week of the training plan.</p>
+<p>Number of days per week initialised and then increased every 2nd week
+until reach maximum.</p>
+<p>– PERHAPS CHANGE THIS TO MATCH MILES_PER_WEEK FUNCTION</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="generate_plan.generate_mpw">
-<code class="descclassname">generate_plan.</code><code class="descname">generate_mpw</code><span class="sig-paren">(</span><em>mileage_baseline</em>, <em>mileage_limit</em>, <em>weeks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_mpw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_mpw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the preferences dictionary and number of weeks in the plan, this function returns a list of weekly mileages
+<code class="descclassname">generate_plan.</code><code class="descname">generate_mpw</code><span class="sig-paren">(</span><em>mileage_baseline</em>, <em>mileage_limit</em>, <em>weeks</em>, <em>preferences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_plan.html#generate_mpw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_plan.generate_mpw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the preferences dictionary and number of weeks in the plan,
+this function returns a list of weekly mileages
 for the individual.</p>
+<p>Steps:
+1. Initialise to 0
+2. Set baseline (previous training if applicable,
+else baseline defined in constants)
+3. Increase by constant factor (<cite>increase_factor</cite>),
+every <cite>increase_period</cite> number of weeks
+4. Adjust weekly mileage down every <cite>easy_week_frequency</cite> number of weeks
+5. Adjust mileage for final two weeks (TO DO)</p>
 </dd></dl>
 
 <dl class="function">

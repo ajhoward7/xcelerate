@@ -34,9 +34,9 @@ def generate_mpw(mileage_baseline, mileage_limit, weeks, preferences):
     Steps:
     1. Initialise to 0
     2. Set baseline (previous training if applicable,
-       else baseline defined in constants)
+    else baseline defined in constants)
     3. Increase by constant factor (`increase_factor`),
-       every `increase_period` number of weeks
+    every `increase_period` number of weeks
     4. Adjust weekly mileage down every `easy_week_frequency` number of weeks
     5. Adjust mileage for final two weeks (TO DO)
     """
