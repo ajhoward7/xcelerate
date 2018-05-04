@@ -16,7 +16,7 @@ def bar_plot(user):
 
     try:
         last_logged_day = max(list(logged_training.run_date))
-    except:
+    except BaseException:
         last_logged_day = date.today() - timedelta(days=1)
     planned_training = planned_training[
         planned_training.run_date > last_logged_day]
@@ -87,7 +87,9 @@ def bar_plot(user):
 
     path = '/Users/danaiavg/Desktop/App_Developemnt/xcelerate/code/main/users/'
 
-    return plotly.offline.plot(fig, include_plotlyjs=False, filename=path + user + '/plot.html', auto_open=False)
+    return plotly.offline.plot(fig, include_plotlyjs=False,
+                               filename=path + user + '/plot.html',
+                               auto_open=False)
 
     # return plotly.offline.plot(fig, include_plotlyjs=False,
     #                            output_type='div')
