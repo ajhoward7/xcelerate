@@ -465,9 +465,6 @@ def foo(username):
         for row in readCSV:
             if datetime.strptime(row[2], '%Y-%m-%d') > last_day:
                 training_list.append([row[0], int(row[2].split('-')[0]), int(row[2].split('-')[1]), int(row[2].split('-')[2])])
-
-    plotly_output = bar_plot(username)
-
     try:
         if not year:
             year = date.today().year
@@ -476,17 +473,14 @@ def foo(username):
         cal_list2 = [cal.monthdatescalendar(year, i + 1) for i in range(12) if i < date.today().month - 1]
 
         cal_list3 = cal_list + cal_list2
-        print(len(cal_list3))
-
+        # print(len(cal_list3))
 
     except:
         abort(404)
     else:
-        return render_template('new_.html', weekdays=weekdays, list_month=list_month, username=username, year=year, cal=cal_list3, training_list=training_list[:-1], logged_training=logged_training, race_date=training_list[-1], plot=plotly_output)
+        race_miles = training_list[-1][0]
+        return render_template('new_.html', weekdays=weekdays, list_month=list_month, username=username, year=year, cal=cal_list3, training_list=training_list[:-1], logged_training=logged_training, race_date=training_list[-1], race_miles = race_miles)
     abort(404)
-
-
-
 
 
 if __name__ == "__main__":
