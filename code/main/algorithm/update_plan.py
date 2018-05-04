@@ -59,10 +59,13 @@ def update_miles_per_week(preferences, summary, miles_per_week):
         previous_planned = miles_per_week[i]
 
     if preferences['difficulty'] == 2:
-        updated_miles_per_week = [miles * (1+constants.increase_factor) for miles in updated_miles_per_week]
+        updated_miles_per_week = [miles * (1-constants.increase_factor) for miles in updated_miles_per_week]
 
     if preferences['difficulty'] == 0:
-        updated_miles_per_week = [miles * (1-constants.increase_factor) for miles in updated_miles_per_week]
+        print(updated_miles_per_week)
+        updated_miles_per_week = [miles * (1+constants.increase_factor) for miles in updated_miles_per_week]
+        print("got here")
+        print(updated_miles_per_week)
 
     return updated_miles_per_week
 
@@ -145,7 +148,9 @@ def update_plan(user, inputdate):
     logged_training = utils.get_all_logged_training(user)
     planned_training = utils.get_all_planned_training(user)
 
-    if len(planned_training[planned_training.run_date == today]) == 1:
+    preferences = utils.get_preferences(user)
+
+    if len(planned_training[planned_training.run_date == today]) == 1 and preferences['difficulty']==1:
         planned_run = list(planned_training[planned_training.run_date == today].miles)[0]
         logged_run = list(logged_training[logged_training.run_date == today].miles)[0]
 
