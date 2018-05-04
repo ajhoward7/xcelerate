@@ -24,15 +24,15 @@
        <div id="myDIV" style="display: none;"> 
         <h4 align = 'center'><font color="#4d73be">How do you want to tell us about your training?</font></h4>
        <center>
-       <button formaction="{{ url_for('.upload', username=username) }}">Upload Data (GPX, csv)</button>
-       <button formaction="{{ url_for('.rdirect', username=username) }}">Q&A</button>
+       <button formaction="{{ url_for('.upload', username=username) }}" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'data', 'value' : 0 });">Upload Data (GPX, csv)</button>
+       <button formaction="{{ url_for('.rdirect', username=username) }}" onclick="gtag('event', 'reference', {'event_category' : 'navigate', 'event_label' : 'qa', 'value' : 0 });">Q&A</button>
        </center>
        </div>
 
        <div id="myTEST" style="display: none;">
        <br>
        <br>
-        <center><input type='submit' value='Submit'></center>
+        <center><input type='submit' value='Submit' onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'runner_level', 'value' : 0 });"></center>
        </div>
 
     </form>

@@ -25,11 +25,11 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
         <p class="lead"></p>
-        <center><input class="btn btn-lg btn-success" value="Submit" type="submit"></center>
+        <center><input class="btn btn-lg btn-success" value="Submit" type="submit" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'signup', 'value' : 0 });"></center>
 
         <h4 align = 'center'><font color="#4d73be">Or</font></h4>
 
-        <center><input class="btn btn-lg btn-success" value="Sign up with Fitbit" type="submit"></center>
+        <center><input class="btn btn-lg btn-success" value="Sign up with Fitbit" type="submit" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'fitbit', 'value' : 0 });"></center>
 
       </form>
       </div>

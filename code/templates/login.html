@@ -26,12 +26,12 @@
         <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
         <p class="lead"></p>
 
-        <center><input class="btn btn-lg btn-success" value="Submit" type="submit"></center>
+        <center><input class="btn btn-lg btn-success" value="Submit" type="submit" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'login', 'value' : 0 });"></center>
         </form>
 
       </div>
       <div style = 'text-align:center;'>
-        <a href="showSignup">Sign up</a>
+        <a href="showSignup" onclick="gtag('event', 'reference', {'event_category' : 'navigate', 'event_label' : 'signup', 'value' : 0 });">Sign up</a>
       </div>
 
       <footer>
