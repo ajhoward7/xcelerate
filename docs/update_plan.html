@@ -34,19 +34,32 @@
 <dl class="function">
 <dt id="update_plan.update_days_per_week">
 <code class="descclassname">update_plan.</code><code class="descname">update_days_per_week</code><span class="sig-paren">(</span><em>summary</em>, <em>days_per_week</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/update_plan.html#update_days_per_week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#update_plan.update_days_per_week" title="Permalink to this definition">¶</a></dt>
-<dd><p>JUST THIS TO COMPLETE</p>
+<dd><p>Update days per week from initial training plan -
+compute difference for previous week and halve this iteratively</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="update_plan.update_miles_per_week">
 <code class="descclassname">update_plan.</code><code class="descname">update_miles_per_week</code><span class="sig-paren">(</span><em>preferences</em>, <em>summary</em>, <em>miles_per_week</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/update_plan.html#update_miles_per_week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#update_plan.update_miles_per_week" title="Permalink to this definition">¶</a></dt>
-<dd><p>Starting point: just use previous week training and halve distance to expect</p>
+<dd><p>Update miles per week for new training plan -
+calculate difference for previous week and halve this difference
+iteratively</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="update_plan.update_training_plan">
-<code class="descclassname">update_plan.</code><code class="descname">update_training_plan</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/update_plan.html#update_training_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#update_plan.update_training_plan" title="Permalink to this definition">¶</a></dt>
+<dt id="update_plan.update_plan">
+<code class="descclassname">update_plan.</code><code class="descname">update_plan</code><span class="sig-paren">(</span><em>user</em>, <em>inputdate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/update_plan.html#update_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#update_plan.update_plan" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="update_plan.update_training_plan">
+<code class="descclassname">update_plan.</code><code class="descname">update_training_plan</code><span class="sig-paren">(</span><em>user</em>, <em>today</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/update_plan.html#update_training_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#update_plan.update_training_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method:
+1. Update MpW
+2. Update Days per Week
+3. Combine identically as when producing initial training plan</p>
+<p>Output re-writes ‘planned_training.csv’ file.</p>
+</dd></dl>
 
 </div>
 

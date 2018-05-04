@@ -33,12 +33,15 @@
 <span id="auto-generated-documentation"></span><h1>Auto Generated Documentation<a class="headerlink" href="#module-lib" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="lib.generate_week_summary_stats">
-<code class="descclassname">lib.</code><code class="descname">generate_week_summary_stats</code><span class="sig-paren">(</span><em>planned</em>, <em>logged</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#generate_week_summary_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.generate_week_summary_stats" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">lib.</code><code class="descname">generate_week_summary_stats</code><span class="sig-paren">(</span><em>planned</em>, <em>logged</em>, <em>today</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#generate_week_summary_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.generate_week_summary_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each number of weeks before present day,
+generate summary statistics for planned and logged training and merge
+into a single data frame.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="lib.get_baseline_mileage">
-<code class="descclassname">lib.</code><code class="descname">get_baseline_mileage</code><span class="sig-paren">(</span><em>preferences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#get_baseline_mileage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.get_baseline_mileage" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lib.</code><code class="descname">get_baseline_mileage</code><span class="sig-paren">(</span><em>preferences</em>, <em>first_week_days</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#get_baseline_mileage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.get_baseline_mileage" title="Permalink to this definition">¶</a></dt>
 <dd><ol class="arabic simple">
 <li>Novice, no prior training - pre-defined constants</li>
 <li>Novice, prior training - prior training levels</li>
@@ -64,8 +67,11 @@
 
 <dl class="function">
 <dt id="lib.retrieve_summary_stats">
-<code class="descclassname">lib.</code><code class="descname">retrieve_summary_stats</code><span class="sig-paren">(</span><em>planned</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#retrieve_summary_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.retrieve_summary_stats" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">lib.</code><code class="descname">retrieve_summary_stats</code><span class="sig-paren">(</span><em>planned</em>, <em>today</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#retrieve_summary_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.retrieve_summary_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in the planned_training dataframe and retrieve summary
+statistics (miles per week, days per week) to work from
+when updated training plans.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="lib.weeks_of_plan">
