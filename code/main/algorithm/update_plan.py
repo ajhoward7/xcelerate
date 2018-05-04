@@ -8,10 +8,11 @@ import pandas as pd
 from datetime import *
 
 # For local testing purposes:
-#import os
-#os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
+# import os
+# os.chdir('/Users/alexhoward/Dropbox/xcelerate/code/')
 """
-This code is used to update a training plan that has been generated for a particular user.
+This code is used to update a training plan
+that has been generated for a particular user.
 
 Training plans can be updated by calling: `update_training_plan(user)`
 
@@ -20,7 +21,8 @@ Method:
 2. Update Days per Week
 3. Combine identically as when producing initial training plan
 
-This script in particular uses helper functions that generate summary statistics from lib.py (e.g.
+This script in particular uses helper functions that
+generate summary statistics from lib.py (e.g.
 `lib.retrieve_summary_statistics()`.
 
 """
@@ -28,7 +30,8 @@ This script in particular uses helper functions that generate summary statistics
 
 def update_miles_per_week(preferences, summary, miles_per_week):
     """
-    Update miles per week for new training plan - calculate difference for previous week and halve this difference
+    Update miles per week for new training plan -
+    calculate difference for previous week and halve this difference
     iteratively
     """
 
@@ -59,11 +62,13 @@ def update_miles_per_week(preferences, summary, miles_per_week):
         previous_planned = miles_per_week[i]
 
     if preferences['difficulty'] == 2:
-        updated_miles_per_week = [miles * (1-constants.increase_factor) for miles in updated_miles_per_week]
+        updated_miles_per_week = [miles * (1-constants.increase_factor)
+                                  for miles in updated_miles_per_week]
 
     if preferences['difficulty'] == 0:
         print(updated_miles_per_week)
-        updated_miles_per_week = [miles * (1+constants.increase_factor) for miles in updated_miles_per_week]
+        updated_miles_per_week = [miles * (1+constants.increase_factor)
+                                  for miles in updated_miles_per_week]
         print("got here")
         print(updated_miles_per_week)
 
@@ -72,7 +77,8 @@ def update_miles_per_week(preferences, summary, miles_per_week):
 
 def update_days_per_week(summary, days_per_week):
     """
-    Update days per week from initial training plan - compute difference for previous week and halve this iteratively
+    Update days per week from initial training plan -
+    compute difference for previous week and halve this iteratively
     """
     updated_days_per_week = copy.copy(days_per_week)
 
@@ -87,7 +93,8 @@ def update_days_per_week(summary, days_per_week):
 
     for i in range(len(days_per_week)):
         diff = int((previous_logged - previous_planned) / previous_planned)
-        updated_days_per_week[i] = int((1 + diff / 2) * updated_days_per_week[i])
+        updated_days_per_week[i] = \
+            int((1 + diff / 2) * updated_days_per_week[i])
 
         previous_logged = updated_days_per_week[i]
         previous_planned = days_per_week[i]
@@ -113,35 +120,44 @@ def update_training_plan(user, today):
     training_plan = utils.get_all_planned_training(user)
 
     previous_training = training_plan[training_plan.run_date <= today]
-    previous_training.run_date = previous_training.run_date.apply(lambda x : x.date())
-    previous_training.week_start = previous_training.week_start.apply(lambda x: x.date())
+    previous_training.run_date = previous_training.\
+        run_date.apply(lambda x: x.date())
+    previous_training.week_start = previous_training.\
+        week_start.apply(lambda x: x.date())
 
     # Generate summary statistics from planned training and logged training:
-    summary = lib.generate_week_summary_stats(recent_planned_training, recent_logged_training, today)
+    summary = lib.generate_week_summary_stats(
+        recent_planned_training, recent_logged_training, today)
     training_plan_summary = lib.retrieve_summary_stats(training_plan, today)
 
     # Update MpW and days per week:
     # MAKE THIS MORE RIGOROUS
-    updated_miles_per_week = update_miles_per_week(preferences, summary, training_plan_summary.miles.tolist())
+    updated_miles_per_week = update_miles_per_week(
+        preferences, summary, training_plan_summary.miles.tolist())
 
     if updated_miles_per_week == 'No update':
         return 'No update'
-    updated_days_per_week = update_days_per_week(summary, training_plan_summary.run_date.tolist())
+    updated_days_per_week = update_days_per_week(
+        summary, training_plan_summary.run_date.tolist())
 
     run_vector = utils.get_run_vector(preferences)
 
     # Combine these with function taken from `generate_plan` python script:
-    future_training = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
-                                                                preferences, run_vector, today)
+    future_training = generate_plan.\
+        combine_miles_days(updated_miles_per_week, updated_days_per_week,
+                           preferences, run_vector, today)
 
     updated_training_plan = pd.concat([previous_training, future_training])
 
-    updated_training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
+    updated_training_plan.\
+        to_csv('main/users/{}/planned_training.csv'.format(user), index=False)
 
     return updated_training_plan
 
+
 def update_plan(user, inputdate):
-    # If training logged is within 20% of planned then keep the same training plan
+    # If training logged is within 20% of planned
+    # then keep the same training plan
     today = pd.to_datetime(inputdate).date()
     today = max(today, date.today())
 
@@ -150,15 +166,19 @@ def update_plan(user, inputdate):
 
     preferences = utils.get_preferences(user)
 
-    if len(planned_training[planned_training.run_date == today]) == 1 and preferences['difficulty']==1:
-        planned_run = list(planned_training[planned_training.run_date == today].miles)[0]
-        logged_run = list(logged_training[logged_training.run_date == today].miles)[0]
+    if len(planned_training[planned_training.run_date == today]) == 1 and \
+            preferences['difficulty'] == 1:
+        planned_run = list(planned_training[planned_training.
+                           run_date == today].miles)[0]
+        logged_run = list(logged_training[logged_training.
+                          run_date == today].miles)[0]
 
         if abs((planned_run - logged_run)/planned_run) <= 0.2:
             return True
 
     update_training_plan(user, today)
     return True
+
 
 if __name__ == "__main__":
 
