@@ -8,3 +8,6 @@ boobs,boobs@w,pbkdf2:sha256:50000$0TQ2GmEq$a290424134ef76291d881856cd38cc8bc7546
 trackme,trackme@gmail.com,pbkdf2:sha256:50000$KxQy3itx$2cca52fd48fc94752ed0a8b74aa3cf7434b28107aab6be534d5ec93a37f0c894
 rubber,rubber@w,pbkdf2:sha256:50000$fS5iLGlM$97f4edc5fe8c812b392e3caf423efa977b21daa251a423711083c4ebdca61f0f
 dnd,dnd@dice,pbkdf2:sha256:50000$pwPELJLH$027499ac206e2a5047a6dfecf05aa4b3b0199d34ed70a402acca19587b6eed6e
+t,t1@f1,pbkdf2:sha256:50000$SiRwe2Vt$447ad977a4039563b605fe159743aa3ce1dcf125b306ccb8e88c0be7ba5bb348
+t1,g1@g1,pbkdf2:sha256:50000$QyxGckW7$f0acefc74a9db3df022de432d97c21e05e33aad94dccadc01f19234041719b82
+t3,g3@t3,pbkdf2:sha256:50000$zwB0nOpZ$e2626de25a7d830bc87e2df57fff57fc64da5c9f4cba03dd7e85c35d87a4e0f5

@@ -284,7 +284,13 @@ def rdirect(username):
             json_file.truncate()
 
         elif data['runner_type'] == 0:
-            data["prior_training"] = int(request.form["prior_training"])
+            dow_list = request.form.getlist('available_days')
+            dow_list_int = [int(x) for x in dow_list]
+                
+            data["max_days_per_week"] = int(request.form['max_days_per_week'])
+            data["available_days"] = dow_list_int
+
+        #     data["prior_training"] = int(request.form["prior_training"])
             json_file.seek(0)  # rewind
             json.dump(data, json_file)
             json_file.truncate()
@@ -294,13 +300,11 @@ def rdirect(username):
 
     elif data['prior_training'] == 1 and data['runner_type'] == 1:
         return render_template('approx_int.html', username=username)
-    elif data['prior_training'] == 0:
+    elif data['runner_type'] == 0:
         generate_plan(username)
         turn_plan_to_json(users_folder_file_path, username)
 
-        # return render_template('thankyou.html', username=username)
         return redirect(url_for('.gohome', username=username))
-    # return render_template('upload.html', username=username)
 
 
 @app.route("/fill/<username>", methods=['POST'])
@@ -517,5 +521,5 @@ def foo(username):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host = '0.0.0.0', port = 80)
-    # app.run()
+    # app.run(host = '0.0.0.0', port = 80)
+    app.run()
