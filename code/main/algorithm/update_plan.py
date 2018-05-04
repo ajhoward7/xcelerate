@@ -131,12 +131,6 @@ def update_training_plan(user, today):
     future_training = generate_plan.combine_miles_days(updated_miles_per_week, updated_days_per_week,
                                                                 preferences, run_vector, today)
 
-    print("a")
-    print(future_training['run_date'])
-    print("b")
-    print(previous_training['run_date'])
-    print("c")
-
     updated_training_plan = pd.concat([previous_training, future_training])
 
     updated_training_plan.to_csv('main/users/{}/planned_training.csv'.format(user), index=False)

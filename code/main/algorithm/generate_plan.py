@@ -167,6 +167,7 @@ def combine_miles_days(miles_per_week, days_per_week, preferences, run_vector, t
         runs_this_week = []
 
         if days_this_week <= len(available_days):
+            np.random.seed(start_of_week.day + start_of_week.month)
             which_days_this_week = np.sort(np.random.choice(available_days, days_this_week, False))
 
         else:
