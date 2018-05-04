@@ -119,9 +119,9 @@ def home(username):
     inputdate = request.form['inputdate']
     inputmiles = request.form['inputmiles']
     inputdifficulty = int(request.form['inputdifficulty'])
-    path = users_folder_file_path + username
 
     with open(path + '/preferences.txt', 'r+') as json_file:
+        print(1)
         data = json.load(json_file)
 
         data['difficulty'] = inputdifficulty
@@ -521,5 +521,5 @@ def foo(username):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=80)
-    # app.run()
+    # app.run(host='0.0.0.0', port=80)
+    app.run()
