@@ -505,6 +505,7 @@ def foo(username):
     except IOError:
         abort(404)
     else:
+        # bar_plot(username)
         race_miles = training_list[-1][0]
         return render_template('new_.html',
                                weekdays=weekdays,
