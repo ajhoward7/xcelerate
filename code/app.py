@@ -286,7 +286,7 @@ def rdirect(username):
         elif data['runner_type'] == 0:
             dow_list = request.form.getlist('available_days')
             dow_list_int = [int(x) for x in dow_list]
-                
+
             data["max_days_per_week"] = int(request.form['max_days_per_week'])
             data["available_days"] = dow_list_int
 
@@ -428,7 +428,7 @@ def daysperweek(username):
                 process_garmin(filepath, username)
 
                 return render_template('daysperweek.html', username=username)
-        except:
+        except BaseException:
             data["runner_type"] = 0
             json_file.seek(0)  # rewind
             json.dump(data, json_file)
