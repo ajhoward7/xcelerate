@@ -52,7 +52,6 @@ class User(object):
 
 
 app = Flask(__name__)
-# app.secret_key = 'some_secret'
 
 
 @app.route("/")
@@ -86,7 +85,9 @@ def authenticate():
 
 @app.route("/fi/<username>", methods=["GET", "POST"])
 def gohome(username):
-
+    """
+    Generates user's training plan and redirects to home page
+    """
     generate_plan(username)
     turn_plan_to_json(users_folder_file_path, username)
 
@@ -95,6 +96,9 @@ def gohome(username):
 
 @app.route("/add/<username>", methods=['POST'])
 def add(username):
+    """
+    Add training level increase and redirects to home page
+    """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
         data = json.load(json_file)
@@ -233,7 +237,8 @@ def runner_type(username):
 @app.route("/prior_training/<username>", methods=['POST'])
 def prior_training(username):
     """
-
+    Renders prior training page if Novice,
+    Renders increase page if Intermediate
     """
     path = users_folder_file_path + username
     dow_list = request.form.getlist('available_days')
@@ -269,6 +274,8 @@ def prior_training(username):
 @app.route("/rdirect/<username>", methods=["GET", "POST"])
 def rdirect(username):
     """
+    Redirects to home page if Novice,
+    Renders approximation page if Intermediate
     """
     path = users_folder_file_path + username
 
@@ -310,7 +317,8 @@ def rdirect(username):
 @app.route("/fill/<username>", methods=['POST'])
 def fill(username):
     """
-
+    Redirects to home page if Novice,
+    Renders days per week page if Intermediate
     """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
@@ -338,7 +346,7 @@ def fill(username):
 @app.route("/upload/<username>", methods=['GET', 'POST'])
 def upload(username):
     """
-
+    Renders upload page
     """
     return render_template('upload.html', username=username)
 
@@ -346,7 +354,7 @@ def upload(username):
 @app.route("/increase/<username>", methods=['POST'])
 def increase(username):
     """
-
+    Renders increase page
     """
     path = users_folder_file_path + username
     dow_list = request.form.getlist('available_days')
@@ -366,7 +374,7 @@ def increase(username):
 @app.route("/max_days/<username>", methods=['POST'])
 def max_days(username):
     """
-
+    Renders max days per week page
     """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
@@ -388,7 +396,7 @@ def max_days(username):
 @app.route("/thankyou/<username>", methods=['POST'])
 def thankyou(username):
     """
-
+    Redirects to home page
     """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
@@ -406,7 +414,8 @@ def thankyou(username):
 @app.route("/daysperweek/<username>", methods=['POST'])
 def daysperweek(username):
     """
-
+    Renders max days per week page if Novice,
+    Renders days per week page if Intermediate
     """
     path = users_folder_file_path + username
     with open(path + '/preferences.txt', 'r+') as json_file:
@@ -441,7 +450,7 @@ def daysperweek(username):
 @app.route('/<int:year>/')
 def foo(username):
     """
-
+    Renders calendar and home page
     """
     year = 2018
     cal = Calendar(-1)
@@ -522,5 +531,5 @@ def foo(username):
 
 if __name__ == "__main__":
     app.debug = True
-    # app.run(host='0.0.0.0', port=80)
-    app.run()
+    app.run(host='0.0.0.0', port=80)
+    # app.run()
