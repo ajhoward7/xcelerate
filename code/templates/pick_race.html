@@ -26,22 +26,19 @@
               <td width="20%"></td>
             </tr>
             <tr>
-                <td style="text-align: center;"><a style="color:black; font-size:20px;" href="{{url_link[k]}}"><img style = "width:  150px;,height: 150px;" src="../static/{{id_[k]}}.png" alt="race"></a></td>
+            <td style="text-align: center;"><a style="color:black; font-size:20px;" href="{{url_link[k]}}"><img style = "width:  150px;,height: 150px;" src="../static/{{id_[k]}}.png" alt="race"></a></td>
             <td rowspan="2">
 
-            <br>
             <p><img style = "max-width:10%; max-height:10%;" src="../static/location.png" alt="location">  {{location[k]}}</p>
-            <br>
             <p><img style = "max-width:10%; max-height:10%;" src="../static/runner_black.png" alt="date">   {{printed_distance[k]}}</p>
+            <p><img style = "max-width:12%; max-height:12%;" src="../static/calendar.png" alt="date">   {{race_date[k]}}</p>
+
             </td>
             <td>
-            <br>
-            <p><img style = "max-width:12%; max-height:12%;" src="../static/calendar.png" alt="date">   {{race_date[k]}}</p>
-            <br>
             <form style = "margin: 0%;" class="form-signin" action="{{url_for('redirecting_pick_race', username=username, race_id=id_[k])}}" method="post">
 
             <input class="btn btn-lg btn-success" type="submit" value="Creat Plan" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'distance', 'value' : 0 });">
-
+            <br>
             </form>
             </td>
             </tr>
