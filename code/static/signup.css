@@ -23,6 +23,7 @@ body {
           box-sizing: border-box;
   padding: 10px;
   font-size: 16px;
+  margin: 0%;
 }
 .form-signin .form-control:focus {
   z-index: 2;
@@ -54,7 +55,7 @@ img.resize {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  max-width:35%;
+  max-width:25%;
   max-height:35%;
 }
 

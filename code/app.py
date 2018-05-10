@@ -111,7 +111,6 @@ def home(username):
     inputdifficulty = int(request.form['inputdifficulty'])
 
     with open(path + '/preferences.txt', 'r+') as json_file:
-        print(1)
         data = json.load(json_file)
 
         data['difficulty'] = inputdifficulty
@@ -219,18 +218,6 @@ def createUsers():
         return redirect(url_for('showSignup'))
 
 
-# @app.route('/pick_race/<username>')
-# def pick_race(username):
-#     """
-#     Renders the race distance page
-#     """
-#     print(1)
-#     with open(races_path + '/races.csv', 'r+') as f:
-#         for line in f:
-#             print(line)
-#     return render_template('pick_race.html', username=username)
-
-
 @app.route('/race_distance/<username>')
 def race_distance(username):
     """
@@ -246,7 +233,6 @@ def redirecting_pick_race(username, race_id):
     with open(races_path + '/races.csv', 'r+') as f:
         readCSV = csv.reader(f, delimiter=',')
         for line in readCSV:
-            print(line[0])
             if line[0] == race_id:
                 miles = int(line[4])
                 race_date = line[3]
