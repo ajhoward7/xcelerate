@@ -58,4 +58,18 @@ img.resize {
   max-height:35%;
 }
 
+th, td {
+    text-align: left;
+}
+
+.race_img {
+    position: relative;
+    float: left;
+    width:  150px;
+    height: 150px;
+    background-position: 50% 50%;
+    background-repeat:   no-repeat;
+    background-size:     cover;
+}
+
 

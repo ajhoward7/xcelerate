@@ -19,23 +19,9 @@ except ImportError:
     raise
 
 
-def turn_plan_to_json(path, username):
-    myfile = open(path + username + "/planned_training.csv", "r+")
-    reader = csv.reader(myfile, delimiter=',')
-
-    list_of_events = []
-    for row in reader:
-        if row[1] != "miles":
-            list_of_events.append({"title": row[1] + " mile run",
-                                   "start": str(row[3])})
-
-    with open(path + username + "/events.json", 'w') as outfile:
-        json.dump(list_of_events, outfile)
-    return
-
-
 master_file_path = './main/users/master_users.csv'
 users_folder_file_path = './main/users/'
+races_path = './main/races'
 
 
 class User(object):
@@ -89,7 +75,7 @@ def gohome(username):
     Generates user's training plan and redirects to home page
     """
     generate_plan(username)
-    turn_plan_to_json(users_folder_file_path, username)
+    # turn_plan_to_json(users_folder_file_path, username)
 
     return redirect(url_for('.foo', username=username))
 
@@ -158,7 +144,7 @@ def showSignup():
 @app.route("/createUsers", methods=["POST"])
 def createUsers():
     """
-    Requests the new usre's username, email and password
+    Requests the new user's username, email and password
     """
     username = request.form['inputName']
     email = request.form['inputEmail']
@@ -195,9 +181,54 @@ def createUsers():
         writer.writerow(['run_date', 'miles', 'time', 'title'])
         g.close()
 
-        return render_template('race_distance.html', username=username)
+        title = []
+        distance = []
+        location = []
+        race_date = []
+        url_link = []
+        id_ = []
+
+        with open(races_path + '/races.csv') as f:
+            readCSV = csv.reader(f, delimiter=',')
+            next(readCSV, None)
+
+            for line in readCSV:
+                title.append(line[1])
+                distance.append(line[4])
+                location.append(line[2])
+                race_date.append(line[3])
+                url_link.append(line[5])
+                id_.append(line[0])
+
+        printed_distance = []
+        for i in distance:
+            if i == "0":
+                printed_distance.append('5k')
+            elif i == "1":
+                printed_distance.append('10k')
+            elif i == "2":
+                printed_distance.append('Half Marathon')
+            elif i == "3":
+                printed_distance.append('Marathon')
+
+        return render_template('pick_race.html', username=username,
+                               title=title, location=location, race_date=race_date,
+                               url_link=url_link, id_=id_, len1=len(id_),
+                               printed_distance=printed_distance)
     else:
         return redirect(url_for('showSignup'))
+
+
+# @app.route('/pick_race/<username>')
+# def pick_race(username):
+#     """
+#     Renders the race distance page
+#     """
+#     print(1)
+#     with open(races_path + '/races.csv', 'r+') as f:
+#         for line in f:
+#             print(line)
+#     return render_template('pick_race.html', username=username)
 
 
 @app.route('/race_distance/<username>')
@@ -208,13 +239,42 @@ def race_distance(username):
     return render_template('race_distance.html', username=username)
 
 
-@app.route('/runner_type/<username>', methods=['POST'])
-def runner_type(username):
+@app.route('/li/<username>/<race_id>', methods=['POST'])
+def redirecting_pick_race(username, race_id):
     """
-    Renders the race date page and creates the preferences.txt file
     """
-    new_path = users_folder_file_path + username
+    with open(races_path + '/races.csv', 'r+') as f:
+        readCSV = csv.reader(f, delimiter=',')
+        for line in readCSV:
+            print(line[0])
+            if line[0] == race_id:
+                miles = int(line[4])
+                race_date = line[3]
+    data = {}
+    data['username'] = username
+    data['start_date'] = dt.datetime.today().strftime("%Y-%m-%d")
+    data['difficulty'] = 1
+    data['race_distance'] = miles
+    data['race_date'] = race_date
+    data['runner_type'] = ''
+    data['max_days_per_week'] = ''
+    data['prior_training'] = ''
+    data['prior_days_per_week'] = 0
+    data['prior_miles_per_week'] = 0
+    data['training_level_increase'] = 0
+    # I want to return the username and the data and redirect it to the runner type function
 
+    new_path = users_folder_file_path + username
+    with open(new_path + '/preferences.txt', 'w') as outfile:
+        json.dump(data, outfile)
+
+    return redirect(url_for('.runner_type', username=username))
+
+
+@app.route('/la/<username>', methods=["POST"])
+def redirecting_pick_miles(username):
+    """
+    """
     data = {}
     data['username'] = username
     data['start_date'] = dt.datetime.today().strftime("%Y-%m-%d")
@@ -228,13 +288,21 @@ def runner_type(username):
     data['prior_miles_per_week'] = 0
     data['training_level_increase'] = 0
 
+    new_path = users_folder_file_path + username
     with open(new_path + '/preferences.txt', 'w') as outfile:
         json.dump(data, outfile)
+    return redirect(url_for('.runner_type', username=username))
 
+
+@app.route('/runner_type/<username>', methods=["GET"])
+def runner_type(username):
+    """
+    Renders the race date page and creates the preferences.txt file
+    """
     return render_template('runner_type.html', username=username)
 
 
-@app.route("/prior_training/<username>", methods=['POST'])
+@app.route("/prior_training/<username>", methods=['GET'])
 def prior_training(username):
     """
     Renders prior training page if Novice,
@@ -309,7 +377,7 @@ def rdirect(username):
         return render_template('approx_int.html', username=username)
     elif data['runner_type'] == 0:
         generate_plan(username)
-        turn_plan_to_json(users_folder_file_path, username)
+        # turn_plan_to_json(users_folder_file_path, username)
 
         return redirect(url_for('.gohome', username=username))
 
@@ -334,7 +402,7 @@ def fill(username):
 
     if data['runner_type'] == 0:
         generate_plan(username)
-        turn_plan_to_json(users_folder_file_path, username)
+        # turn_plan_to_json(users_folder_file_path, username)
 
         # return render_template('thankyou.html', username=username)
         return redirect(url_for('.gohome', username=username))
@@ -531,5 +599,5 @@ def foo(username):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=80)
-    # app.run()
+    # app.run(host='0.0.0.0', port=80)
+    app.run()

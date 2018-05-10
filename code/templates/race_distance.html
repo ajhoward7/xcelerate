@@ -16,7 +16,7 @@
      <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
      <h4 align = 'center'><font color="#4d73be">What distance are you training for?</font></h4>
 
-    <form class="form-signin" action="{{url_for('runner_type', username=username)}}" method="post">
+    <form class="form-signin" action="{{url_for('redirecting_pick_miles', username=username)}}" method="post">
 
           <input type="radio" name="race_distance" value=0 required autofocus> 5K<br>
           <input type="radio" name="race_distance" value=1 required autofocus> 10K<br>
