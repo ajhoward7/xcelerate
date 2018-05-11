@@ -118,26 +118,6 @@
     </div>
 
     {% endblock %}
-    <!--</div>-->
-		<!--<div id = "leftPanel" style = "float: right; margin: 0 2%; width: 30%; height: 120px; line-height: 90px; margin-top: 150px;">-->
-			<!--<h1>Record Training</h1>-->
-			<!--<form action="{{ url_for('.home', username=username) }}" method="post">-->
-
-        	<!--<label for="inputdate" class="sr-only">Input Date</label>-->
-        	<!--<input type="date" name="inputdate" id="inputdate" class="form-control" placeholder="Date">-->
-        	<!--<label for="inputmiles" class="sr-only">Input Miles</label>-->
-        	<!--<input type="text" name="inputmiles" id="inputmiles" class="form-control" placeholder="Number of miles">-->
-			<!--<label for="inputtime" class="sr-only">Input Time</label>-->
-        	<!--<input type="text" name="inputtime" id="inputtime" class="form-control" placeholder="Time">-->
-			<!--<label for="inputtitle" class="sr-only">Input Title</label>-->
-        	<!--<input type="text" name="inputtitle" id="inputtitle" class="form-control" placeholder="Title">-->
-
-        	<!--<p class="lead"></p>-->
-
-        	<!--<input class="btn btn-lg btn-success" value="add more" type="submit" name="submit">-->
-			<!--<input class="btn btn-lg btn-success" value="finish update" type="submit" name="submit">-->
-        	<!--</form>-->
-    <!--</div>-->
         <div id = "leftPanel" style = "float: left; width: 20%; height: 50%; line-height: 25px; margin-top: 150px; margin-bottom: 25px;">
             <h4 align="center">Record Training</h4>
             <form action="{{ url_for('.home', username=username) }}" method="post" style = "width: 150px; height: 150px; margin: auto; position: relative;">
@@ -158,22 +138,6 @@
             </form>
     </div>
     {% block tail %}
-        <!-- Included JS Files (Uncompressed) -->
-        <!--
-        <script src="{{ url_for('static', filename='foundation/javascripts/modernizr.foundation.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.mediaQueryToggle.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.reveal.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.orbit.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.navigation.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.buttons.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.tabs.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.forms.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.tooltips.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.accordion.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.placeholder.js') }}"></script>
-        <script src="{{ url_for('static', filename='foundation/javascripts/jquery.foundation.alerts.js') }}"></script>
-        -->
         <!-- Included JS Files (Compressed) -->
         <script src="{{ url_for('static', filename='foundation/javascripts/foundation.min.js') }}"></script>
         <!-- Initialize JS Plugins -->

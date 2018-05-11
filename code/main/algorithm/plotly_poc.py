@@ -85,11 +85,6 @@ def bar_plot(user):
 
     fig = go.Figure(data=data, layout=layout)
 
-    path = '/Users/danaiavg/Desktop/App_Developemnt/xcelerate/code/main/users/'
+    path = '../code/main/users/'
 
-    return plotly.offline.plot(fig, include_plotlyjs=False,
-                               filename=path + user + '/plot.html',
-                               auto_open=False)
-
-    # return plotly.offline.plot(fig, include_plotlyjs=False,
-    #                            output_type='div')
+    return plotly.offline.plot(fig, filename=path + user + '/plot.html', auto_open=False)
