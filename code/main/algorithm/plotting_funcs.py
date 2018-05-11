@@ -52,7 +52,7 @@ def generate_map(user, date):
 
     fig = go.Figure(data=data, layout=layout)
 
-    path = '../code/main/users/{}/{}.html'.format(user, date)
+    path = '../users/{}/{}.html'.format(user, date)  # THIS PATH MAY NEED TO CHANGE
 
     return plotly.offline.plot(fig, filename=path, auto_open=False)
 
