@@ -4,7 +4,9 @@ import pandas as pd
 from pandas.io.json import json_normalize
 import polyline
 import json
+from datetime import *
 
+import utils
 
 def generate_map(user, date):
 
@@ -58,5 +60,47 @@ def generate_map(user, date):
 
 
 def generate_mileage_line(user):
+    planned_training = pd.read_csv('../users/{}/planned_training.csv'.format(user),
+                                   parse_dates=['run_date', 'week_start'])
+    logged_training = pd.read_csv('../users/{}/logged_training.csv'.format(user),
+                                  parse_dates=['run_date'])
 
-    return True
+    planned_training = planned_training.groupby(['week_start'], as_index=False).miles.sum()
+    logged_training['week_start'] = logged_training.run_date.apply(lambda x: x - timedelta(days=x.weekday()))
+    logged_training = logged_training.groupby(['week_start'], as_index=False).miles.sum()
+
+    trace0 = go.Scatter(
+        x=logged_training.week_start,
+        y=logged_training.miles,
+        mode='lines+markers',
+        name='Miles per Week Logged',
+        hoverinfo='none',
+        marker=dict(color='black',
+                    size=10)
+    )
+
+    trace1 = go.Scatter(
+        x=planned_training.week_start,
+        y=planned_training.miles,
+        mode='lines+markers',
+        name='Miles per Week Planned',
+        hoverinfo='none',
+        marker=dict(color='blue',
+                    size=10)
+    )
+
+    layout = go.Layout(
+        title='Miles per Week',
+        yaxis=dict(
+            title='Total Miles'
+        ),
+        showlegend=True
+    )
+
+    data = [trace0, trace1]
+
+    fig = go.Figure(data=data, layout=layout)
+
+    path = '../users/{}/mpw.html'.format(user)
+
+    return plotly.offline.plot(fig, filename=path, auto_open=False)
