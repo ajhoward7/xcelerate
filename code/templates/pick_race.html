@@ -13,15 +13,27 @@
 
   <body>
 
+
         <img class = 'resize' style="max-width:25%;" src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate">
         <h4 align = 'center'><font color="#4d73be">Pick a Race</font></h4>
+        <br>
+        <form class="form-signin" action="{{url_for('race_distance', username=username)}}">
+        <center>
+          <input align="right" class="btn btn-lg btn-success" type="submit" value="Race not Included" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'distance', 'value' : 0 });">
+        </center>
+        </form>
         <br><br>
 
     {% for k in range(len1)%}
     <center>
         <table style="width:80%">
             <tr>
+              {% if k==0 or k==1%}
+              <td width="20%" style="text-align: center;"><a style="color:black; font-size:20px;" href="{{url_link[k]}}"><img style = "max-width:5%; max-height:5%;" src="../static/star.png" alt="featured"> {{title[k]}}</a></td>
+              {% else %}
               <td width="20%" style="text-align: center;"><a style="color:black; font-size:20px;" href="{{url_link[k]}}">{{title[k]}}</a></td>
+              {% endif %}
+
               <td width="20%"></td>
               <td width="20%"></td>
             </tr>
@@ -37,7 +49,7 @@
             <td>
             <form style = "margin: 0%;" class="form-signin" action="{{url_for('redirecting_pick_race', username=username, race_id=id_[k])}}" method="post">
 
-            <input class="btn btn-lg btn-success" type="submit" value="Creat Plan" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'distance', 'value' : 0 });">
+            <input class="btn btn-lg btn-success" type="submit" value="Select this Race" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'distance', 'value' : 0 });">
             <br>
             </form>
             </td>
@@ -48,12 +60,6 @@
         <hr>
     {% endfor%}
 
-
-    <form class="form-signin" action="{{url_for('race_distance', username=username)}}">
-    <center>
-      <input class="btn btn-lg btn-success" type="submit" value="Race not Included" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'distance', 'value' : 0 });">
-    </center>
-    </form>
 
   </body>
 </html>

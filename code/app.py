@@ -75,7 +75,10 @@ def gohome(username):
     Generates user's training plan and redirects to home page
     """
     generate_plan(username)
-    # turn_plan_to_json(users_folder_file_path, username)
+    bar_plot(username)
+
+    # path = '/Users/danaiavg/Desktop/App_Developemnt/xcelerate/code/main/'
+    # plotly.offline.plot(fig, filename=path + username + '/plot.html')
 
     return redirect(url_for('.foo', username=username))
 
@@ -128,6 +131,8 @@ def home(username):
             writer = csv.writer(f)
             writer.writerow([inputdate, inputmiles])
         update_plan(username, inputdate)
+        bar_plot(username)
+
 
     return redirect(url_for('.foo', username=username))
 
@@ -363,6 +368,7 @@ def rdirect(username):
         return render_template('approx_int.html', username=username)
     elif data['runner_type'] == 0:
         generate_plan(username)
+        bar_plot(username)
         # turn_plan_to_json(users_folder_file_path, username)
 
         return redirect(url_for('.gohome', username=username))
@@ -388,6 +394,7 @@ def fill(username):
 
     if data['runner_type'] == 0:
         generate_plan(username)
+        bar_plot(username)
         # turn_plan_to_json(users_folder_file_path, username)
 
         # return render_template('thankyou.html', username=username)
@@ -568,7 +575,6 @@ def foo(username):
     except IOError:
         abort(404)
     else:
-        # bar_plot(username)
         race_miles = training_list[-1][0]
         return render_template('new_.html',
                                weekdays=weekdays,
