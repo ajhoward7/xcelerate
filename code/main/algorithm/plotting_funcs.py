@@ -65,9 +65,9 @@ def generate_map(user, date):
     fig = go.Figure(data=data, layout=layout)
     print(user)
 
-    path = '../code/main/users/{}/map.html'.format(user)
-
-    return plotly.offline.plot(fig, filename=path, auto_open=False)
+    # path = '../code/main/users/{}/map.html'.format(user)
+    # return plotly.offline.plot(fig, filename=path, auto_open=False)
+    return py.plot(fig, filename='testing2', auto_open=False)
 
 
 def generate_mileage_line(user):
@@ -112,7 +112,6 @@ def generate_mileage_line(user):
 
     fig = go.Figure(data=data, layout=layout)
 
-    path = '../code/main/users/{}/mpw.html'.format(user)
-
+    # path = '../code/main/users/{}/mpw.html'.format(user)
     # return plotly.offline.plot(fig, filename=path, auto_open=False)
     return py.plot(fig, filename='testing', auto_open=False)
