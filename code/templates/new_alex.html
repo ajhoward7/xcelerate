@@ -63,7 +63,7 @@
                 {% for month in cal %}
                 {% set current_month = loop.index %}
                 <div>
-                    <h1>{{ list_month[loop.index0] }} {{ year }}</h1>
+                    <h1 style="font-size:250%;">{{ list_month[loop.index0] }} 2018</h1>
                     <table>
                         <tr>
                             {% for dow in weekdays %}
@@ -138,6 +138,8 @@
             <input class="btn btn-sm btn-success" value="Finished" type="submit" name="submit" style="font-size: 12px; padding: 12px;" onclick="gtag('event', 'reference', {'event_category' : 'submit', 'event_label' : 'training', 'value' : 0 });">
 
             </form>
+            <br><br><br><br><br><br>
+            <iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/23.embed"></iframe>
     </div>
     {% block tail %}
         <!-- Included JS Files (Compressed) -->
@@ -156,7 +158,6 @@
        });
     </script>
     {% endblock %}
-    <iframe width="1400" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/21.embed"></iframe>
-    <iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/23.embed"></iframe>
+    <iframe width="1600" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/21.embed"></iframe>
 </body>
 </html>

@@ -8,24 +8,23 @@ from datetime import *
 import plotly.plotly as py
 import utils
 
-plotly.tools.set_credentials_file(username='t2liu', api_key='lTbNwAyxLOCeOxmJCVtX')
+plotly.tools.set_credentials_file(username='t2liu',
+                                  api_key='lTbNwAyxLOCeOxmJCVtX')
 
 
 def generate_map(user, date):
-
+    """
+    Creates the map from the strava data
+    """
     mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'
     data = json.load(open('../code/main/users/alex/strava_activities.json'))
     activities_df = json_normalize(data)
     activities_df = activities_df[
-        ['average_speed', 'distance', 'moving_time', 'name', 'start_date_local', 'id', 'workout_type', 'type',
+        ['average_speed', 'distance', 'moving_time', 'name',
+         'start_date_local', 'id', 'workout_type', 'type',
          'map.summary_polyline']]
-    activities_df['date'] = activities_df.start_date_local.apply(lambda x: x.split('T')[0])
-
-    print(activities_df)
-    print('#####')
-    print(date)
-    print('#####')
-    print(activities_df[activities_df.date == date]['map.summary_polyline'])
+    activities_df['date'] = activities_df.start_date_local.\
+        apply(lambda x: x.split('T')[0])
 
     map_polyline = activities_df[activities_df.date == date].reset_index()['map.summary_polyline'][0]
 
@@ -63,22 +62,26 @@ def generate_map(user, date):
     )
 
     fig = go.Figure(data=data, layout=layout)
-    print(user)
-
-    # path = '../code/main/users/{}/map.html'.format(user)
-    # return plotly.offline.plot(fig, filename=path, auto_open=False)
     return py.plot(fig, filename='testing2', auto_open=False)
 
 
 def generate_mileage_line(user):
-    planned_training = pd.read_csv('../code/main/users/{}/planned_training.csv'.format(user),
-                                   parse_dates=['run_date', 'week_start'])
-    logged_training = pd.read_csv('../code/main/users/{}/logged_training.csv'.format(user),
-                                  parse_dates=['run_date'])
+    """
+    Create the line plot that show the user's progress
+    """
+    planned_training = pd.\
+        read_csv('../code/main/users/{}/planned_training.csv'.format(user),
+                 parse_dates=['run_date', 'week_start'])
+    logged_training = pd.\
+        read_csv('../code/main/users/{}/logged_training.csv'.format(user),
+                 parse_dates=['run_date'])
 
-    planned_training = planned_training.groupby(['week_start'], as_index=False).miles.sum()
-    logged_training['week_start'] = logged_training.run_date.apply(lambda x: x - timedelta(days=x.weekday()))
-    logged_training = logged_training.groupby(['week_start'], as_index=False).miles.sum()
+    planned_training = planned_training.groupby(['week_start'],
+                                                as_index=False).miles.sum()
+    logged_training['week_start'] = logged_training.run_date.\
+        apply(lambda x: x - timedelta(days=x.weekday()))
+    logged_training = logged_training.groupby(['week_start'],
+                                              as_index=False).miles.sum()
 
     trace0 = go.Scatter(
         x=logged_training.week_start,
@@ -111,7 +114,4 @@ def generate_mileage_line(user):
     data = [trace0, trace1]
 
     fig = go.Figure(data=data, layout=layout)
-
-    # path = '../code/main/users/{}/mpw.html'.format(user)
-    # return plotly.offline.plot(fig, filename=path, auto_open=False)
     return py.plot(fig, filename='testing', auto_open=False)

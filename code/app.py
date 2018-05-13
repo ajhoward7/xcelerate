@@ -106,7 +106,7 @@ def add(username):
 @app.route("/foo/<username>", methods=["POST"])
 def home(username):
     """
-    Renders the home page
+    Renders the home page and save preferences
     """
     path = users_folder_file_path + username
     inputdate = request.form['inputdate']
@@ -135,7 +135,6 @@ def home(username):
         if username == 'alex':
             last_date = '2018-04-18'
             generate_map(username, last_date)
-
 
     return redirect(url_for('.foo', username=username))
 
@@ -218,9 +217,14 @@ def createUsers():
             elif i == "3":
                 printed_distance.append('Marathon')
 
-        return render_template('pick_race.html', username=username,
-                               title=title, location=location, race_date=race_date,
-                               url_link=url_link, id_=id_, len1=len(id_),
+        return render_template('pick_race.html',
+                               username=username,
+                               title=title,
+                               location=location,
+                               race_date=race_date,
+                               url_link=url_link,
+                               id_=id_,
+                               len1=len(id_),
                                printed_distance=printed_distance)
     else:
         return redirect(url_for('showSignup'))
@@ -237,6 +241,7 @@ def race_distance(username):
 @app.route('/li/<username>/<race_id>', methods=['POST'])
 def redirecting_pick_race(username, race_id):
     """
+    Save the information from the race picked
     """
     with open(races_path + '/races.csv', 'r+') as f:
         readCSV = csv.reader(f, delimiter=',')
@@ -256,7 +261,6 @@ def redirecting_pick_race(username, race_id):
     data['prior_days_per_week'] = 0
     data['prior_miles_per_week'] = 0
     data['training_level_increase'] = 0
-    # I want to return the username and the data and redirect it to the runner type function
 
     new_path = users_folder_file_path + username
     with open(new_path + '/preferences.txt', 'w') as outfile:
@@ -268,6 +272,7 @@ def redirecting_pick_race(username, race_id):
 @app.route('/la/<username>', methods=["POST"])
 def redirecting_pick_miles(username):
     """
+    Saves the information if the user manually added the miles and the date
     """
     data = {}
     data['username'] = username
@@ -359,7 +364,6 @@ def rdirect(username):
             data["max_days_per_week"] = int(request.form['max_days_per_week'])
             data["available_days"] = dow_list_int
 
-        #     data["prior_training"] = int(request.form["prior_training"])
             json_file.seek(0)  # rewind
             json.dump(data, json_file)
             json_file.truncate()
@@ -404,9 +408,7 @@ def fill(username):
             last_date = "2018-04-18"
             generate_map(username, last_date)
 
-        # return render_template('thankyou.html', username=username)
         return redirect(url_for('.gohome', username=username))
-        # return redirect(url_for('.home', username=username))
     elif data['runner_type'] == 1:
         return render_template('daysperweek.html', username=username)
 
@@ -596,19 +598,19 @@ def foo(username):
                                    race_miles=race_miles)
         else:
             return render_template('new_.html',
-                               weekdays=weekdays,
-                               list_month=list_month,
-                               username=username,
-                               year=year,
-                               cal=cal_list3,
-                               training_list=training_list[:-1],
-                               logged_training=logged_training,
-                               race_date=training_list[-1],
-                               race_miles=race_miles)
+                                   weekdays=weekdays,
+                                   list_month=list_month,
+                                   username=username,
+                                   year=year,
+                                   cal=cal_list3,
+                                   training_list=training_list[:-1],
+                                   logged_training=logged_training,
+                                   race_date=training_list[-1],
+                                   race_miles=race_miles)
     abort(404)
 
 
-@app.route("/map/<username>/<last_date>", methods=["GET","POST"])
+@app.route("/map/<username>/<last_date>", methods=["GET", "POST"])
 def redirectmap(username, last_date):
     """
     Renders the home page
