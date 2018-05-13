@@ -14,7 +14,6 @@ try:
     from update_plan import *
     from generate_plan import *
     from process_garmin import *
-    from plotly_poc import *
     from plotting_funcs import *
 except ImportError:
     raise
@@ -76,11 +75,10 @@ def gohome(username):
     Generates user's training plan and redirects to home page
     """
     generate_plan(username)
-    bar_plot(username)
     generate_mileage_line(username)
-
-    # path = '/Users/danaiavg/Desktop/App_Developemnt/xcelerate/code/main/'
-    # plotly.offline.plot(fig, filename=path + username + '/plot.html')
+    if username == 'alex':
+        last_date = '2018-04-18'
+        generate_map(username, last_date)
 
     return redirect(url_for('.foo', username=username))
 
@@ -133,9 +131,10 @@ def home(username):
             writer = csv.writer(f)
             writer.writerow([inputdate, inputmiles])
         update_plan(username, inputdate)
-        bar_plot(username)
         generate_mileage_line(username)
-
+        if username == 'alex':
+            last_date = '2018-04-18'
+            generate_map(username, last_date)
 
 
     return redirect(url_for('.foo', username=username))
@@ -297,7 +296,7 @@ def runner_type(username):
     return render_template('runner_type.html', username=username)
 
 
-@app.route("/prior_training/<username>", methods=['GET'])
+@app.route("/prior_training/<username>", methods=['GET', 'POST'])
 def prior_training(username):
     """
     Renders prior training page if Novice,
@@ -372,10 +371,10 @@ def rdirect(username):
         return render_template('approx_int.html', username=username)
     elif data['runner_type'] == 0:
         generate_plan(username)
-        bar_plot(username)
         generate_mileage_line(username)
-
-        # turn_plan_to_json(users_folder_file_path, username)
+        if username == 'alex':
+            last_date = '2018-04-18'
+            generate_map(username, last_date)
 
         return redirect(url_for('.gohome', username=username))
 
@@ -400,10 +399,10 @@ def fill(username):
 
     if data['runner_type'] == 0:
         generate_plan(username)
-        bar_plot(username)
         generate_mileage_line(username)
-
-        # turn_plan_to_json(users_folder_file_path, username)
+        if username == 'alex':
+            last_date = "2018-04-18"
+            generate_map(username, last_date)
 
         # return render_template('thankyou.html', username=username)
         return redirect(url_for('.gohome', username=username))
@@ -584,7 +583,19 @@ def foo(username):
         abort(404)
     else:
         race_miles = training_list[-1][0]
-        return render_template('new_.html',
+        if username == 'alex':
+            return render_template('new_alex.html',
+                                   weekdays=weekdays,
+                                   list_month=list_month,
+                                   username=username,
+                                   year=year,
+                                   cal=cal_list3,
+                                   training_list=training_list[:-1],
+                                   logged_training=logged_training,
+                                   race_date=training_list[-1],
+                                   race_miles=race_miles)
+        else:
+            return render_template('new_.html',
                                weekdays=weekdays,
                                list_month=list_month,
                                username=username,
@@ -595,6 +606,19 @@ def foo(username):
                                race_date=training_list[-1],
                                race_miles=race_miles)
     abort(404)
+
+
+@app.route("/map/<username>/<last_date>", methods=["GET","POST"])
+def redirectmap(username, last_date):
+    """
+    Renders the home page
+    """
+    if username == 'alex':
+        generate_map(username, str(last_date))
+        return redirect(url_for('.foo', username=username))
+
+    else:
+        return redirect(url_for('.foo', username=username))
 
 
 if __name__ == "__main__":
