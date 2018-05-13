@@ -6,12 +6,15 @@ import polyline
 import json
 from datetime import *
 
+import plotly.plotly as py
+plotly.tools.set_credentials_file(username='t2liu', api_key='lTbNwAyxLOCeOxmJCVtX')
+
 import utils
 
 def generate_map(user, date):
 
     mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'
-    data = json.load(open('../users/{}/strava_activities.json').format(user))
+    data = json.load(open('main/users/{}/strava_activities.json').format(user))
     activities_df = json_normalize(data)
     activities_df = activities_df[
         ['average_speed', 'distance', 'moving_time', 'name', 'start_date_local', 'id', 'workout_type', 'type',
@@ -54,15 +57,15 @@ def generate_map(user, date):
 
     fig = go.Figure(data=data, layout=layout)
 
-    path = '../users/{}/{}.html'.format(user, date)  # THIS PATH MAY NEED TO CHANGE
+    path = 'main/users/{}/{}.html'.format(user, date)  # THIS PATH MAY NEED TO CHANGE
 
     return plotly.offline.plot(fig, filename=path, auto_open=False)
 
 
 def generate_mileage_line(user):
-    planned_training = pd.read_csv('../users/{}/planned_training.csv'.format(user),
+    planned_training = pd.read_csv('main/users/{}/planned_training.csv'.format(user),
                                    parse_dates=['run_date', 'week_start'])
-    logged_training = pd.read_csv('../users/{}/logged_training.csv'.format(user),
+    logged_training = pd.read_csv('main/users/{}/logged_training.csv'.format(user),
                                   parse_dates=['run_date'])
 
     planned_training = planned_training.groupby(['week_start'], as_index=False).miles.sum()
@@ -101,6 +104,8 @@ def generate_mileage_line(user):
 
     fig = go.Figure(data=data, layout=layout)
 
-    path = '../users/{}/mpw.html'.format(user)
+    path = 'main/users/{}/mpw.html'.format(user)
 
-    return plotly.offline.plot(fig, filename=path, auto_open=False)
+    py.plot(fig, filename='testing', auto_open=False)
+
+    # return plotly.offline.plot(fig, filename=path, auto_open=False)

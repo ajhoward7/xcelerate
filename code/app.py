@@ -15,6 +15,7 @@ try:
     from generate_plan import *
     from process_garmin import *
     from plotly_poc import *
+    from plotting_funcs import *
 except ImportError:
     raise
 
@@ -76,6 +77,7 @@ def gohome(username):
     """
     generate_plan(username)
     bar_plot(username)
+    generate_mileage_line(username)
 
     # path = '/Users/danaiavg/Desktop/App_Developemnt/xcelerate/code/main/'
     # plotly.offline.plot(fig, filename=path + username + '/plot.html')
@@ -132,6 +134,8 @@ def home(username):
             writer.writerow([inputdate, inputmiles])
         update_plan(username, inputdate)
         bar_plot(username)
+        generate_mileage_line(username)
+
 
 
     return redirect(url_for('.foo', username=username))
@@ -369,6 +373,8 @@ def rdirect(username):
     elif data['runner_type'] == 0:
         generate_plan(username)
         bar_plot(username)
+        generate_mileage_line(username)
+
         # turn_plan_to_json(users_folder_file_path, username)
 
         return redirect(url_for('.gohome', username=username))
@@ -395,6 +401,8 @@ def fill(username):
     if data['runner_type'] == 0:
         generate_plan(username)
         bar_plot(username)
+        generate_mileage_line(username)
+
         # turn_plan_to_json(users_folder_file_path, username)
 
         # return render_template('thankyou.html', username=username)
