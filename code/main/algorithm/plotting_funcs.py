@@ -8,8 +8,10 @@ from datetime import *
 import plotly.plotly as py
 import utils
 
-plotly.tools.set_credentials_file(username='t2liu',
-                                  api_key='lTbNwAyxLOCeOxmJCVtX')
+# plotly.tools.set_credentials_file(username='t2liu',
+#                                   api_key='lTbNwAyxLOCeOxmJCVtX')
+plotly.tools.set_credentials_file(username='dsavg',
+                                  api_key='J2DLrCvrnRGYGsBA9RYJ')
 
 
 def generate_map(user, date):
@@ -26,6 +28,7 @@ def generate_map(user, date):
     activities_df['date'] = activities_df.start_date_local.\
         apply(lambda x: x.split('T')[0])
 
+    print(activities_df[activities_df.date == date])
     map_polyline = activities_df[activities_df.date == date].reset_index()['map.summary_polyline'][0]
 
     gps = polyline.decode(map_polyline)
@@ -45,9 +48,10 @@ def generate_map(user, date):
         )])
 
     layout = go.Layout(
+        title=date,
         autosize=False,
         hovermode='closest',
-        showlegend=False,
+        showlegend=True,
         mapbox=dict(
             accesstoken=mapbox_access_token,
             bearing=0,

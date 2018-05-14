@@ -10,49 +10,120 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/signup.css" rel="stylesheet">
 
-    {% block head %}
-        <meta charset="utf-8" />
-        <!-- Set the viewport width to device width for mobile -->
-        <meta name="viewport" content="width=device-width" />
-        <link rel="shortcut icon" type="image/x-icon" href="./static/small_logo.png" />
-        <title>Home</title>
-        <!-- Included CSS Files (Uncompressed) -->
-        <!--
-        <link rel="stylesheet" href="{{ url_for('static', filename='foundation/stylesheets/foundation.css') }}">
-        -->
-        <!-- Included CSS Files (Compressed) -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='foundation/stylesheets/foundation.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='foundation/stylesheets/app.css') }}">
-        <script src="{{ url_for('static', filename='foundation/javascripts/modernizr.foundation.js') }}"></script>
-        <!-- IE Fix for HTML5 Tags -->
-        <!--[if lt IE 9]>
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        <style type="text/css"><!--
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" type="image/x-icon" href="./static/small_logo.png" />
+    <title>Home</title>
+    <!-- Included CSS Files (Uncompressed) -->
+    <!--
+    <link rel="stylesheet" href="{{ url_for('static', filename='foundation/stylesheets/foundation.css') }}">
+    -->
+    <!-- Included CSS Files (Compressed) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='foundation/stylesheets/foundation.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='foundation/stylesheets/app.css') }}">
+    <script src="{{ url_for('static', filename='foundation/javascripts/modernizr.foundation.js') }}"></script>
+    <!-- IE Fix for HTML5 Tags -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style type="text/css"><!--
+    body {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
 
-        td.past-month {
-            color: #bbb;
-        }
+    .form-signin {
+      max-width: 330px;
+      padding: 15px;
+      margin: 0 auto;
+    }
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+      margin-bottom: 10px;
+    }
+    .form-signin .checkbox {
+      font-weight: normal;
+    }
+    .form-signin .form-control {
+      position: relative;
+      height: auto;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+      margin: 0%;
+    }
+    .form-signin .form-control:focus {
+      z-index: 2;
+    }
+    .form-signin input[type="email"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    .container {
+        padding: 10px;
+    }
+    /* Style the submit button with a specific background color etc */
+    input[type=submit] {
+        background-color: #4270c1;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-        #cal table {
-            margin: 0 10%;
-            width: 80%;
-            height: 80%;
-        }
+    img.resize {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-width:25%;
+      max-height:35%;
+    }
 
-        #cal h1 {
-            background-color: #fff;
-            padding: 3px;
-        }
+    th, td {
+        text-align: left;
+    }
 
-        //--></style>
-    {% endblock %}
+    .race_img {
+        position: relative;
+        float: left;
+        width:  150px;
+        height: 150px;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
+    }
+
+    td.past-month {
+        color: #bbb;
+    }
+
+    #cal table {
+        margin: 0 10%;
+        width: 80%;
+        height: 80%;
+    }
+
+    #cal h1 {
+        background-color: #fff;
+        padding: 3px;
+    }
+
+    //--></style>
+
 </head>
 <body>
     <div class="container">
         <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate" style = "width:150px; height: auto;">
-
-        <p class="lead"></p>
         <br>
     </div>
     {% block body %}
@@ -67,13 +138,13 @@
                     <table>
                         <tr>
                             {% for dow in weekdays %}
-                            <td>
+                            <td height="30">
                                 {{ dow }}
                             </td>
                             {% endfor %}
                         </tr>
                         {% for week in month %}
-                        <tr height="133">
+                        <tr height="167">
                             {% for date in week %}
                                 {% if date.month == current_month %}
                                 <td class="current-month" width="95">
@@ -139,7 +210,8 @@
 
             </form>
             <br><br><br><br><br><br>
-            <iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/23.embed"></iframe>
+            <!--<iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/23.embed"></iframe>-->
+            <iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~dsavg/2"></iframe>
     </div>
     {% block tail %}
         <!-- Included JS Files (Compressed) -->

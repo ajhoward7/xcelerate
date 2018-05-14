@@ -63,6 +63,9 @@ def authenticate():
         if inputname == row[0] or inputname == row[1]:
             password = row[2]
             if check_password_hash(password, inputpassword):
+                if inputname == 'alex':
+                    last_date = '2018-04-18'
+                    generate_map(inputname, last_date)
                 return redirect(url_for('.foo', username=row[0]))
 
     myfile.close()
@@ -76,9 +79,9 @@ def gohome(username):
     """
     generate_plan(username)
     generate_mileage_line(username)
-    if username == 'alex':
-        last_date = '2018-04-18'
-        generate_map(username, last_date)
+    # if username == 'alex':
+    #     last_date = '2018-04-18'
+    #     generate_map(username, last_date)
 
     return redirect(url_for('.foo', username=username))
 
@@ -132,9 +135,9 @@ def home(username):
             writer.writerow([inputdate, inputmiles])
         update_plan(username, inputdate)
         generate_mileage_line(username)
-        if username == 'alex':
-            last_date = '2018-04-18'
-            generate_map(username, last_date)
+        # if username == 'alex':
+        #     last_date = '2018-04-18'
+        #     generate_map(username, last_date)
 
     return redirect(url_for('.foo', username=username))
 
@@ -376,9 +379,9 @@ def rdirect(username):
     elif data['runner_type'] == 0:
         generate_plan(username)
         generate_mileage_line(username)
-        if username == 'alex':
-            last_date = '2018-04-18'
-            generate_map(username, last_date)
+        # if username == 'alex':
+        #     last_date = '2018-04-18'
+        #     generate_map(username, last_date)
 
         return redirect(url_for('.gohome', username=username))
 
@@ -404,9 +407,9 @@ def fill(username):
     if data['runner_type'] == 0:
         generate_plan(username)
         generate_mileage_line(username)
-        if username == 'alex':
-            last_date = "2018-04-18"
-            generate_map(username, last_date)
+        # if username == 'alex':
+        #     last_date = "2018-04-18"
+        #     generate_map(username, last_date)
 
         return redirect(url_for('.gohome', username=username))
     elif data['runner_type'] == 1:
@@ -540,12 +543,27 @@ def foo(username):
     with open(path + '/logged_training.csv') as csvfile:
         readCSV = csv.reader(csvfile, delimiter=',')
         next(readCSV, None)
+        year_t = 0
+        month_t = 0
+        day_t = 0
+        count = 0
         for row in readCSV:
             if row[0] != '' and row[1] != '':
+                if year_t == int(row[0].split('-')[0]) and \
+                                month_t == int(row[0].split('-')[1]) and \
+                                day_t == int(row[0].split('-')[2]):
 
-                logged_training.append(
-                    [row[1], int(row[0].split('-')[0]),
-                     int(row[0].split('-')[1]), int(row[0].split('-')[2])])
+                    logged_training[count-1][0] = logged_training[count-1][0] + float(row[1])
+
+                else:
+                    logged_training.append(
+                        [float(row[1]), int(row[0].split('-')[0]),
+                         int(row[0].split('-')[1]), int(row[0].split('-')[2])])
+
+                    year_t = int(row[0].split('-')[0])
+                    month_t = int(row[0].split('-')[1])
+                    day_t = int(row[0].split('-')[2])
+                    count += 1
 
     if len(logged_training) > 0:
         dates = [training[1:] for training in logged_training]
@@ -586,6 +604,8 @@ def foo(username):
     else:
         race_miles = training_list[-1][0]
         if username == 'alex':
+            generate_mileage_line(username)
+
             return render_template('new_alex.html',
                                    weekdays=weekdays,
                                    list_month=list_month,
@@ -597,6 +617,7 @@ def foo(username):
                                    race_date=training_list[-1],
                                    race_miles=race_miles)
         else:
+            generate_mileage_line(username)
             return render_template('new_.html',
                                    weekdays=weekdays,
                                    list_month=list_month,
@@ -617,6 +638,7 @@ def redirectmap(username, last_date):
     """
     if username == 'alex':
         generate_map(username, str(last_date))
+        print(last_date)
         return redirect(url_for('.foo', username=username))
 
     else:

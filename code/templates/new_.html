@@ -29,7 +29,80 @@
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <style type="text/css"><!--
+            body {
+              padding-top: 40px;
+              padding-bottom: 40px;
+            }
 
+            .form-signin {
+              max-width: 330px;
+              padding: 15px;
+              margin: 0 auto;
+            }
+            .form-signin .form-signin-heading,
+            .form-signin .checkbox {
+              margin-bottom: 10px;
+            }
+            .form-signin .checkbox {
+              font-weight: normal;
+            }
+            .form-signin .form-control {
+              position: relative;
+              height: auto;
+              -webkit-box-sizing: border-box;
+                 -moz-box-sizing: border-box;
+                      box-sizing: border-box;
+              padding: 10px;
+              font-size: 16px;
+              margin: 0%;
+            }
+            .form-signin .form-control:focus {
+              z-index: 2;
+            }
+            .form-signin input[type="email"] {
+              margin-bottom: -1px;
+              border-bottom-right-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+            .form-signin input[type="password"] {
+              margin-bottom: 10px;
+              border-top-left-radius: 0;
+              border-top-right-radius: 0;
+            }
+            .container {
+                padding: 10px;
+            }
+            /* Style the submit button with a specific background color etc */
+            input[type=submit] {
+                background-color: #4270c1;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            img.resize {
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              max-width:25%;
+              max-height:35%;
+            }
+
+            th, td {
+                text-align: left;
+            }
+
+            .race_img {
+                position: relative;
+                float: left;
+                width:  150px;
+                height: 150px;
+                background-position: 50% 50%;
+                background-repeat:   no-repeat;
+                background-size:     cover;
+            }
         td.past-month {
             color: #bbb;
         }
@@ -64,7 +137,7 @@
                 {% set current_month = loop.index %}
                 <div>
                     <h1 style="font-size:250%;">{{ list_month[loop.index0] }} 2018</h1>
-                    <table>
+                    <table height="30">
                         <tr>
                             {% for dow in weekdays %}
                             <td>
@@ -73,7 +146,7 @@
                             {% endfor %}
                         </tr>
                         {% for week in month %}
-                        <tr height="133">
+                        <tr height="167">
                             {% for date in week %}
                                 {% if date.month == current_month %}
                                 <td class="current-month" width="95">
@@ -156,6 +229,6 @@
        });
     </script>
     {% endblock %}
-    <iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/21.embed"></iframe>
+    <iframe width="1600" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/21.embed"></iframe>
 </body>
 </html>
