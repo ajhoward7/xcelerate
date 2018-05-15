@@ -63,8 +63,8 @@ def authenticate():
         if inputname == row[0] or inputname == row[1]:
             password = row[2]
             if check_password_hash(password, inputpassword):
-                if inputname == 'alex':
-                    last_date = '2018-04-18'
+                if inputname == 'alex' or inputname == 'Diane':
+                    last_date = '2018-05-06'
                     generate_map(inputname, last_date)
                 return redirect(url_for('.foo', username=row[0]))
 
@@ -130,6 +130,7 @@ def home(username):
             writer.writerow([inputdate, inputmiles])
 
     elif request.form['submit'] == 'Finished':
+        print(1)
         with open(path + '/logged_training.csv', 'a') as f:
             writer = csv.writer(f)
             writer.writerow([inputdate, inputmiles])
@@ -553,7 +554,8 @@ def foo(username):
                                 month_t == int(row[0].split('-')[1]) and \
                                 day_t == int(row[0].split('-')[2]):
 
-                    logged_training[count-1][0] = logged_training[count-1][0] + float(row[1])
+                    logged_training[count-1][0] = \
+                        logged_training[count-1][0] + float(row[1])
 
                 else:
                     logged_training.append(
@@ -603,7 +605,7 @@ def foo(username):
         abort(404)
     else:
         race_miles = training_list[-1][0]
-        if username == 'alex':
+        if username == 'alex' or username == 'Diane':
             generate_mileage_line(username)
 
             return render_template('new_alex.html',
@@ -636,9 +638,8 @@ def redirectmap(username, last_date):
     """
     Renders the home page
     """
-    if username == 'alex':
+    if username == 'alex' or username == 'Diane':
         generate_map(username, str(last_date))
-        print(last_date)
         return redirect(url_for('.foo', username=username))
 
     else:

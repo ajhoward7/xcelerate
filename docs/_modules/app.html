@@ -46,28 +46,14 @@
     <span class="kn">from</span> <span class="nn">update_plan</span> <span class="k">import</span> <span class="o">*</span>
     <span class="kn">from</span> <span class="nn">generate_plan</span> <span class="k">import</span> <span class="o">*</span>
     <span class="kn">from</span> <span class="nn">process_garmin</span> <span class="k">import</span> <span class="o">*</span>
-    <span class="kn">from</span> <span class="nn">plotly_poc</span> <span class="k">import</span> <span class="o">*</span>
+    <span class="kn">from</span> <span class="nn">plotting_funcs</span> <span class="k">import</span> <span class="o">*</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span>
 
 
-<div class="viewcode-block" id="turn_plan_to_json"><a class="viewcode-back" href="../app.html#app.turn_plan_to_json">[docs]</a><span class="k">def</span> <span class="nf">turn_plan_to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
-    <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">username</span> <span class="o">+</span> <span class="s2">&quot;/planned_training.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">)</span>
-    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">myfile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-
-    <span class="n">list_of_events</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;miles&quot;</span><span class="p">:</span>
-            <span class="n">list_of_events</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; mile run&quot;</span><span class="p">,</span>
-                                   <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">])})</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">username</span> <span class="o">+</span> <span class="s2">&quot;/events.json&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">list_of_events</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
-    <span class="k">return</span></div>
-
-
 <span class="n">master_file_path</span> <span class="o">=</span> <span class="s1">&#39;./main/users/master_users.csv&#39;</span>
 <span class="n">users_folder_file_path</span> <span class="o">=</span> <span class="s1">&#39;./main/users/&#39;</span>
+<span class="n">races_path</span> <span class="o">=</span> <span class="s1">&#39;./main/races&#39;</span>
 
 
 <div class="viewcode-block" id="User"><a class="viewcode-back" href="../app.html#app.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -109,6 +95,9 @@
         <span class="k">if</span> <span class="n">inputname</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">inputname</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">password</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">check_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">inputpassword</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">inputname</span> <span class="o">==</span> <span class="s1">&#39;alex&#39;</span> <span class="ow">or</span> <span class="n">inputname</span> <span class="o">==</span> <span class="s1">&#39;Diane&#39;</span><span class="p">:</span>
+                    <span class="n">last_date</span> <span class="o">=</span> <span class="s1">&#39;2018-05-06&#39;</span>
+                    <span class="n">generate_map</span><span class="p">(</span><span class="n">inputname</span><span class="p">,</span> <span class="n">last_date</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.foo&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
     <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -121,7 +110,10 @@
 <span class="sd">    Generates user&#39;s training plan and redirects to home page</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">generate_plan</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
-    <span class="n">turn_plan_to_json</span><span class="p">(</span><span class="n">users_folder_file_path</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+    <span class="n">generate_mileage_line</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="c1"># if username == &#39;alex&#39;:</span>
+    <span class="c1">#     last_date = &#39;2018-04-18&#39;</span>
+    <span class="c1">#     generate_map(username, last_date)</span>
 
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.foo&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span></div>
 
@@ -149,7 +141,7 @@
 <div class="viewcode-block" id="home"><a class="viewcode-back" href="../app.html#app.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/foo/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Renders the home page</span>
+<span class="sd">    Renders the home page and save preferences</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
     <span class="n">inputdate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputdate&#39;</span><span class="p">]</span>
@@ -157,7 +149,6 @@
     <span class="n">inputdifficulty</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputdifficulty&#39;</span><span class="p">])</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;difficulty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputdifficulty</span>
@@ -171,10 +162,15 @@
             <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">inputdate</span><span class="p">,</span> <span class="n">inputmiles</span><span class="p">])</span>
 
     <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;submit&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Finished&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/logged_training.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">inputdate</span><span class="p">,</span> <span class="n">inputmiles</span><span class="p">])</span>
         <span class="n">update_plan</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">inputdate</span><span class="p">)</span>
+        <span class="n">generate_mileage_line</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="c1"># if username == &#39;alex&#39;:</span>
+        <span class="c1">#     last_date = &#39;2018-04-18&#39;</span>
+        <span class="c1">#     generate_map(username, last_date)</span>
 
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.foo&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span></div>
 
@@ -190,7 +186,7 @@
 <div class="viewcode-block" id="createUsers"><a class="viewcode-back" href="../app.html#app.createUsers">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/createUsers&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">createUsers</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Requests the new usre&#39;s username, email and password</span>
+<span class="sd">    Requests the new user&#39;s username, email and password</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputName&#39;</span><span class="p">]</span>
     <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;inputEmail&#39;</span><span class="p">]</span>
@@ -227,7 +223,45 @@
         <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;run_date&#39;</span><span class="p">,</span> <span class="s1">&#39;miles&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">])</span>
         <span class="n">g</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;race_distance.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">race_date</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">url_link</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">races_path</span> <span class="o">+</span> <span class="s1">&#39;/races.csv&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">readCSV</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">readCSV</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">readCSV</span><span class="p">:</span>
+                <span class="n">title</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">distance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+                <span class="n">location</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">race_date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                <span class="n">url_link</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+                <span class="n">id_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">printed_distance</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+                <span class="n">printed_distance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;5k&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+                <span class="n">printed_distance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;10k&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span>
+                <span class="n">printed_distance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Half Marathon&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span>
+                <span class="n">printed_distance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Marathon&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;pick_race.html&#39;</span><span class="p">,</span>
+                               <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+                               <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                               <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                               <span class="n">race_date</span><span class="o">=</span><span class="n">race_date</span><span class="p">,</span>
+                               <span class="n">url_link</span><span class="o">=</span><span class="n">url_link</span><span class="p">,</span>
+                               <span class="n">id_</span><span class="o">=</span><span class="n">id_</span><span class="p">,</span>
+                               <span class="n">len1</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">id_</span><span class="p">),</span>
+                               <span class="n">printed_distance</span><span class="o">=</span><span class="n">printed_distance</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;showSignup&#39;</span><span class="p">))</span></div>
 
@@ -240,13 +274,42 @@
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;race_distance.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="runner_type"><a class="viewcode-back" href="../app.html#app.runner_type">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/runner_type/&lt;username&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">runner_type</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+<div class="viewcode-block" id="redirecting_pick_race"><a class="viewcode-back" href="../app.html#app.redirecting_pick_race">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/li/&lt;username&gt;/&lt;race_id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">redirecting_pick_race</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">race_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Renders the race date page and creates the preferences.txt file</span>
+<span class="sd">    Save the information from the race picked</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">new_path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">races_path</span> <span class="o">+</span> <span class="s1">&#39;/races.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">readCSV</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">readCSV</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">race_id</span><span class="p">:</span>
+                <span class="n">miles</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+                <span class="n">race_date</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;difficulty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;race_distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">miles</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;race_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">race_date</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;max_days_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prior_training&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prior_days_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prior_miles_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;training_level_increase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
+    <span class="n">new_path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.runner_type&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="redirecting_pick_miles"><a class="viewcode-back" href="../app.html#app.redirecting_pick_miles">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/la/&lt;username&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">redirecting_pick_miles</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Saves the information if the user manually added the miles and the date</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -260,13 +323,21 @@
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prior_miles_per_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;training_level_increase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
+    <span class="n">new_path</span> <span class="o">=</span> <span class="n">users_folder_file_path</span> <span class="o">+</span> <span class="n">username</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_path</span> <span class="o">+</span> <span class="s1">&#39;/preferences.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.runner_type&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span></div>
 
+
+<div class="viewcode-block" id="runner_type"><a class="viewcode-back" href="../app.html#app.runner_type">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/runner_type/&lt;username&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">runner_type</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Renders the race date page and creates the preferences.txt file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;runner_type.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="prior_training"><a class="viewcode-back" href="../app.html#app.prior_training">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/prior_training/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="prior_training"><a class="viewcode-back" href="../app.html#app.prior_training">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/prior_training/&lt;username&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">prior_training</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Renders prior training page if Novice,</span>
@@ -329,7 +400,6 @@
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;max_days_per_week&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;max_days_per_week&#39;</span><span class="p">])</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;available_days&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dow_list_int</span>
 
-        <span class="c1">#     data[&quot;prior_training&quot;] = int(request.form[&quot;prior_training&quot;])</span>
             <span class="n">json_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># rewind</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
             <span class="n">json_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
@@ -341,7 +411,10 @@
         <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;approx_int.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">generate_plan</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
-        <span class="n">turn_plan_to_json</span><span class="p">(</span><span class="n">users_folder_file_path</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+        <span class="n">generate_mileage_line</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="c1"># if username == &#39;alex&#39;:</span>
+        <span class="c1">#     last_date = &#39;2018-04-18&#39;</span>
+        <span class="c1">#     generate_map(username, last_date)</span>
 
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.gohome&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span></div>
 
@@ -366,11 +439,12 @@
 
     <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">generate_plan</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
-        <span class="n">turn_plan_to_json</span><span class="p">(</span><span class="n">users_folder_file_path</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+        <span class="n">generate_mileage_line</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="c1"># if username == &#39;alex&#39;:</span>
+        <span class="c1">#     last_date = &quot;2018-04-18&quot;</span>
+        <span class="c1">#     generate_map(username, last_date)</span>
 
-        <span class="c1"># return render_template(&#39;thankyou.html&#39;, username=username)</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.gohome&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span>
-        <span class="c1"># return redirect(url_for(&#39;.home&#39;, username=username))</span>
     <span class="k">elif</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;runner_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;daysperweek.html&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span></div>
 
@@ -502,12 +576,28 @@
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/logged_training.csv&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
         <span class="n">readCSV</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
         <span class="nb">next</span><span class="p">(</span><span class="n">readCSV</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">year_t</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">month_t</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">day_t</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">readCSV</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">year_t</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> \
+                                <span class="n">month_t</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> \
+                                <span class="n">day_t</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]):</span>
 
-                <span class="n">logged_training</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
-                     <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])])</span>
+                    <span class="n">logged_training</span><span class="p">[</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> \
+                        <span class="n">logged_training</span><span class="p">[</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logged_training</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
+                         <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])])</span>
+
+                    <span class="n">year_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">month_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">day_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">logged_training</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">training</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">training</span> <span class="ow">in</span> <span class="n">logged_training</span><span class="p">]</span>
@@ -546,25 +636,52 @@
     <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
         <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># bar_plot(username)</span>
         <span class="n">race_miles</span> <span class="o">=</span> <span class="n">training_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;new_.html&#39;</span><span class="p">,</span>
-                               <span class="n">weekdays</span><span class="o">=</span><span class="n">weekdays</span><span class="p">,</span>
-                               <span class="n">list_month</span><span class="o">=</span><span class="n">list_month</span><span class="p">,</span>
-                               <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
-                               <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
-                               <span class="n">cal</span><span class="o">=</span><span class="n">cal_list3</span><span class="p">,</span>
-                               <span class="n">training_list</span><span class="o">=</span><span class="n">training_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                               <span class="n">logged_training</span><span class="o">=</span><span class="n">logged_training</span><span class="p">,</span>
-                               <span class="n">race_date</span><span class="o">=</span><span class="n">training_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                               <span class="n">race_miles</span><span class="o">=</span><span class="n">race_miles</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="s1">&#39;alex&#39;</span> <span class="ow">or</span> <span class="n">username</span> <span class="o">==</span> <span class="s1">&#39;Diane&#39;</span><span class="p">:</span>
+            <span class="n">generate_mileage_line</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;new_alex.html&#39;</span><span class="p">,</span>
+                                   <span class="n">weekdays</span><span class="o">=</span><span class="n">weekdays</span><span class="p">,</span>
+                                   <span class="n">list_month</span><span class="o">=</span><span class="n">list_month</span><span class="p">,</span>
+                                   <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+                                   <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+                                   <span class="n">cal</span><span class="o">=</span><span class="n">cal_list3</span><span class="p">,</span>
+                                   <span class="n">training_list</span><span class="o">=</span><span class="n">training_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                   <span class="n">logged_training</span><span class="o">=</span><span class="n">logged_training</span><span class="p">,</span>
+                                   <span class="n">race_date</span><span class="o">=</span><span class="n">training_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                   <span class="n">race_miles</span><span class="o">=</span><span class="n">race_miles</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">generate_mileage_line</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;new_.html&#39;</span><span class="p">,</span>
+                                   <span class="n">weekdays</span><span class="o">=</span><span class="n">weekdays</span><span class="p">,</span>
+                                   <span class="n">list_month</span><span class="o">=</span><span class="n">list_month</span><span class="p">,</span>
+                                   <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+                                   <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+                                   <span class="n">cal</span><span class="o">=</span><span class="n">cal_list3</span><span class="p">,</span>
+                                   <span class="n">training_list</span><span class="o">=</span><span class="n">training_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                   <span class="n">logged_training</span><span class="o">=</span><span class="n">logged_training</span><span class="p">,</span>
+                                   <span class="n">race_date</span><span class="o">=</span><span class="n">training_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                   <span class="n">race_miles</span><span class="o">=</span><span class="n">race_miles</span><span class="p">)</span>
     <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="redirectmap"><a class="viewcode-back" href="../app.html#app.redirectmap">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/map/&lt;username&gt;/&lt;last_date&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">redirectmap</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">last_date</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Renders the home page</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="s1">&#39;alex&#39;</span> <span class="ow">or</span> <span class="n">username</span> <span class="o">==</span> <span class="s1">&#39;Diane&#39;</span><span class="p">:</span>
+        <span class="n">generate_map</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">last_date</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.foo&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;.foo&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
-    <span class="c1"># app.run()</span>
+    <span class="c1"># app.run(host=&#39;0.0.0.0&#39;, port=80)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 
           </div>

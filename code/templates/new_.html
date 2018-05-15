@@ -130,8 +130,8 @@
     </div>
     {% block body %}
     <!--<div id = "rightPanel" style = "float: left; width: 73%;">-->
-    <div class="row" id = "rightPanel" style = "position:relative; float: left; margin: 0 0.3%; width: 70%; height:60%; padding:50px;">
-        <div class="twelve columns centered">
+    <div class="row" id = "rightPanel" style = "position:relative; float: left; margin-top: 50px; width: 70%; height:60%; padding:0px; transform: scale(0.7);">
+        <div class="twelve columns centered" style = "top: 0px; left: 0px; position:absolute; border: 0;">
             <div id="cal" align = 'center'>
                 {% for month in cal %}
                 {% set current_month = loop.index %}
@@ -146,7 +146,7 @@
                             {% endfor %}
                         </tr>
                         {% for week in month %}
-                        <tr height="167">
+                        <tr height="172">
                             {% for date in week %}
                                 {% if date.month == current_month %}
                                 <td class="current-month" width="95">
@@ -193,7 +193,7 @@
     </div>
 
     {% endblock %}
-        <div id = "leftPanel" style = "float: left; width: 20%; height: 50%; line-height: 25px; margin-top: 150px; margin-bottom: 25px;">
+    <div id = "leftPanel" style = "float: left; width: 30%; height: 50%; line-height: 25px; margin-top: 50px; margin-bottom: 25px; margin-left: 900px;">
             <h4 align="center">Record Training</h4>
             <form action="{{ url_for('.home', username=username) }}" method="post" style = "width: 150px; height: 150px; margin: auto; position: relative;">
             <label for="inputdate" class="sr-only">Input Date</label>
@@ -229,6 +229,9 @@
        });
     </script>
     {% endblock %}
+    <div style="margin-top: 900px;">
     <iframe width="1600" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/21.embed"></iframe>
+    <!--<iframe width="1600" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~dsavg/0"></iframe>-->
+    </div>
 </body>
 </html>

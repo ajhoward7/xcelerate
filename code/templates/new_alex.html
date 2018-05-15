@@ -124,12 +124,11 @@
 <body>
     <div class="container">
         <img class = 'resize' src="{{url_for('static', filename='xcelerate.png')}}" alt="xcelerate" style = "width:150px; height: auto;">
-        <br>
     </div>
     {% block body %}
     <!--<div id = "rightPanel" style = "float: left; width: 73%;">-->
-    <div class="row" id = "rightPanel" style = "position:relative; float: left; margin: 0 0.3%; width: 70%; height:60%; padding:50px;">
-        <div class="twelve columns centered">
+    <div class="row" id = "rightPanel" style = "position:relative; float: left; margin-top: 50px; width: 70%; height:60%; padding:0px; transform: scale(0.7);">
+        <div class="twelve columns centered" style = "top: 0px; left: 0px; position:absolute; border: 0;">
             <div id="cal" align = 'center'>
                 {% for month in cal %}
                 {% set current_month = loop.index %}
@@ -144,19 +143,19 @@
                             {% endfor %}
                         </tr>
                         {% for week in month %}
-                        <tr height="167">
+                        <tr height="172">
                             {% for date in week %}
                                 {% if date.month == current_month %}
-                                <td class="current-month" width="95">
+                                <td class="current-month" width="105">
                                 {% else %}
-                                <td class="past-month" width="95">
+                                <td class="past-month" width="105">
                                 {% endif %}
                                 {{ date.day }}
                                 {% for run in logged_training %}
                                     {% if date.year == run[1] and date.month == run[2] and date.day == run[3] %}
                                     <br>
                                     <a style="color:black; font-size:20px;" href="{{ url_for('redirectmap', username=username, last_date=date) }}">
-                                    <img src="{{url_for('static', filename='runner_black.png')}}" alt="blackrunner">
+                                    <img style= "display: block; margin-left: auto; margin-right: auto; max-width:90%; max-height:90%;" src="{{url_for('static', filename='runner_black.png')}}" alt="blackrunner">
                                     </a>
                                     <p align="right" style = "font-family: Tahoma, Geneva, sans-serif; color: black;">{{ run[0] }} miles</p>
                                     {% endif %}
@@ -164,14 +163,14 @@
                                 {% for run in training_list %}
                                     {% if date.year == run[1] and date.month == run[2] and date.day == run[3] %}
                                     <br>
-                                    <img src="{{url_for('static', filename='runner_blue.png')}}" alt="bluerunner">
+                                    <img style= "display: block; margin-left: auto; margin-right: auto; max-width:90%; max-height:90%;" src="{{url_for('static', filename='runner_blue.png')}}" alt="bluerunner">
                                     <p align="right" style = "font-family: Tahoma, Geneva, sans-serif; color: black;">{{ run[0] }} miles</p>
                                     {% endif %}
                                 {% endfor %}
 
                                 {% if date.year == race_date[1] and date.month == race_date[2] and date.day == race_date[3] %}
                                 <br>
-                                <img src="{{url_for('static', filename='finishline.png')}}" alt="finish">
+                                <img style= "display: block; margin-left: auto; margin-right: auto; max-width:85%; max-height:85%;" src="{{url_for('static', filename='finishline.png')}}" alt="finish">
                                 <p align="center" style = "font-family: Tahoma, Geneva, sans-serif; color: black; position: relative; top: -30px; font-weight: bold; font-size: 150%;">{{ race_miles }} </p>
                                 {% endif %}
 
@@ -188,10 +187,10 @@
             </div>
         </div>
     </div>
-    </div>
+
 
     {% endblock %}
-        <div id = "leftPanel" style = "float: left; width: 20%; height: 50%; line-height: 25px; margin-top: 150px; margin-bottom: 25px;">
+        <div id = "leftPanel" style = "float: left; width: 30%; height: 50%; line-height: 25px; margin-top: 50px; margin-bottom: 25px; margin-left: 1000px;">
             <h4 align="center">Record Training</h4>
             <form action="{{ url_for('.home', username=username) }}" method="post" style = "width: 150px; height: 150px; margin: auto; position: relative;">
             <label for="inputdate" class="sr-only">Input Date</label>
@@ -210,8 +209,8 @@
 
             </form>
             <br><br><br><br><br><br>
-            <!--<iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/23.embed"></iframe>-->
-            <iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~dsavg/2"></iframe>
+            <iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/23.embed"></iframe>
+            <!--<iframe width="500" height="500" frameborder="0" scrolling="no" src="https://plot.ly/~dsavg/2"></iframe>-->
     </div>
     {% block tail %}
         <!-- Included JS Files (Compressed) -->
@@ -231,5 +230,6 @@
     </script>
     {% endblock %}
     <iframe width="1600" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~t2liu/21.embed"></iframe>
+    <!--<iframe width="1600" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~dsavg/0"></iframe>-->
 </body>
 </html>

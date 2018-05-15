@@ -8,10 +8,10 @@ from datetime import *
 import plotly.plotly as py
 import utils
 
-# plotly.tools.set_credentials_file(username='t2liu',
-#                                   api_key='lTbNwAyxLOCeOxmJCVtX')
-plotly.tools.set_credentials_file(username='dsavg',
-                                  api_key='J2DLrCvrnRGYGsBA9RYJ')
+plotly.tools.set_credentials_file(username='t2liu',
+                                  api_key='lTbNwAyxLOCeOxmJCVtX')
+# plotly.tools.set_credentials_file(username='dsavg',
+#                                   api_key='J2DLrCvrnRGYGsBA9RYJ')
 
 
 def generate_map(user, date):
@@ -19,7 +19,8 @@ def generate_map(user, date):
     Creates the map from the strava data
     """
     mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'
-    data = json.load(open('../code/main/users/alex/strava_activities.json'))
+    data = json.load(
+        open('../code/main/users/{}/strava_activities.json'.format(user)))
     activities_df = json_normalize(data)
     activities_df = activities_df[
         ['average_speed', 'distance', 'moving_time', 'name',
@@ -28,8 +29,8 @@ def generate_map(user, date):
     activities_df['date'] = activities_df.start_date_local.\
         apply(lambda x: x.split('T')[0])
 
-    print(activities_df[activities_df.date == date])
-    map_polyline = activities_df[activities_df.date == date].reset_index()['map.summary_polyline'][0]
+    map_polyline = \
+        activities_df[activities_df.date == date].reset_index()['map.summary_polyline'][0]
 
     gps = polyline.decode(map_polyline)
     df = pd.DataFrame(gps, columns=['lat', 'long'])
@@ -51,7 +52,7 @@ def generate_map(user, date):
         title=date,
         autosize=False,
         hovermode='closest',
-        showlegend=True,
+        showlegend=False,
         mapbox=dict(
             accesstoken=mapbox_access_token,
             bearing=0,

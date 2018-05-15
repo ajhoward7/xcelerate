@@ -1,184 +1,186 @@
 run_date,miles,Time,Title
-2018-05-01,10.39,1:09:17,San Francisco Running
-2018-04-30,7.49,49:14,San Francisco Running
-2018-04-29,5.37,35:38,San Francisco Running
-2018-04-28,13.26,1:28:03,San Francisco Running
-2018-04-27,9.08,1:01:57,San Francisco Running
-2018-04-26,6.85,45:36,San Francisco Running
-2018-04-25,7.46,49:25,San Francisco Running
-2018-04-24,12.54,1:18:02,San Francisco Running
-2018-04-23,5.2,36:10,San Francisco Running
-2018-04-23,6.45,43:20,San Francisco Running
-2018-04-21,4.38,33:33,Santa Clara County Running
-2018-04-21,2.53,18:02,Santa Clara County Running
-2018-04-21,1.42,9:52.6,San Francisco Running
-2018-04-20,5.69,39:06,San Francisco Running
-2018-04-19,6.19,41:39,San Francisco Running
-2018-04-18,6.42,44:10,San Francisco Running
-2018-04-17,2.7,19:17,San Francisco Running
-2018-04-17,2.53,16:17,San Francisco Running
-2018-04-17,2.57,18:55,San Francisco Running
-2018-04-16,5.15,35:01,San Francisco Running
-2018-04-16,6.68,44:18,San Francisco Running
-2018-04-15,13.46,1:27:51,San Francisco Running
-2018-04-14,3.46,24:21,Los Angeles Running
-2018-04-14,2.43,16:34,Los Angeles Running
-2018-04-14,1.48,10:27,West Covina Running
-2018-04-13,1.35,9:11.2,Azusa Running
-2018-04-13,0.72,5:08.2,Azusa Running
-2018-04-13,3.38,24:11,Azusa Running
-2018-04-12,6.46,45:07,San Francisco Running
-2018-04-11,4.31,30:01,San Francisco Running
-2018-04-11,7.68,51:30,San Francisco Running
-2018-04-10,1.54,12:13,San Francisco Running
-2018-04-10,4.43,25:37,San Francisco Running
-2018-04-10,3.0,20:37,San Francisco Running
-2018-04-09,6.62,44:52,San Francisco Running
-2018-04-09,4.77,32:01,San Francisco Running
-2018-04-07,13.57,1:29:12,San Francisco Running
-2018-04-06,1.54,12:31,San Francisco Running
-2018-04-06,3.64,28:42,San Francisco Running
-2018-04-06,4.59,28:55,San Francisco Running
-2018-04-05,4.35,29:57,San Francisco Running
-2018-04-05,6.9,46:39,San Francisco Running
-2018-04-04,8.02,54:03,San Francisco Running
-2018-04-03,2.78,20:08,San Francisco Running
-2018-04-03,3.58,23:42,San Francisco Running
-2018-04-03,2.61,18:35,San Francisco Running
-2018-04-02,5.36,36:55,San Francisco Running
-2018-04-02,6.62,43:19,San Francisco Running
-2018-04-01,14.02,1:33:37,San Francisco Running
-2018-03-31,8.43,57:05,San Francisco Running
-2018-03-30,4.38,33:13,Santa Clara County Running
-2018-03-30,2.56,18:21,Santa Clara County Running
-2018-03-30,1.27,8:56.1,San Francisco Running
-2018-03-29,5.43,36:35,San Francisco Running
-2018-03-28,7.47,48:41,San Francisco Running
-2018-03-27,4.54,30:35,San Francisco Running
-2018-03-27,2.59,18:50,San Francisco Running
-2018-03-26,4.37,30:06,San Francisco Running
-2018-03-26,0.75,5:23.9,San Francisco Running
-2018-03-26,5.93,39:22,San Francisco Running
-2018-03-24,12.02,1:20:01,San Francisco Running
-2018-03-23,1.91,14:12,San Francisco Running
-2018-03-23,2.55,17:55,San Francisco Running
-2018-03-23,5.86,34:57,San Francisco Running
-2018-03-22,7.48,49:16,San Francisco Running
-2018-03-22,4.32,29:51,San Francisco Running
-2018-03-21,8.14,56:20,San Francisco Running
-2018-03-20,2.32,17:02,San Francisco Running
-2018-03-20,3.45,24:21,San Francisco Running
-2018-03-20,2.61,18:34,San Francisco Running
-2018-03-19,5.14,35:56,San Francisco Running
-2018-03-19,5.89,40:14,San Francisco Running
-2018-03-18,13.43,1:32:28,San Francisco Running
-2018-03-17,5.96,42:42,Sacramento Running
-2018-03-17,2.45,17:30,Sacramento Running
-2018-03-16,6.97,50:32,San Francisco Running
-2018-03-15,7.64,50:36,San Francisco Running
-2018-03-14,8.85,58:33,San Francisco Running
-2018-03-13,1.69,13:18,San Francisco Running
-2018-03-13,5.04,29:12,San Francisco Running
-2018-03-13,2.6,18:30,San Francisco Running
-2018-03-12,5.07,34:53,San Francisco Running
-2018-03-12,6.89,45:26,San Francisco Running
-2018-03-10,13.54,1:22:04,San Leandro Running
-2018-03-09,1.74,13:14,San Francisco Running
-2018-03-09,1.14,6:35.7,San Francisco Running
-2018-03-09,5.34,35:43,San Francisco Running
-2018-03-08,8.32,57:26,San Francisco Running
-2018-03-08,4.75,31:47,San Francisco Running
-2018-03-07,5.15,36:11,San Francisco Running
-2018-03-07,1.02,8:05.6,San Francisco Running
-2018-03-07,4.75,28:21,San Francisco Running
-2018-03-07,2.54,17:41,San Francisco Running
-2018-03-06,6.88,46:33,San Francisco Running
-2018-03-05,7.43,50:49,San Francisco Running
-2018-03-05,6.41,43:50,San Francisco Running
-2018-03-04,6.17,39:09,Orinda Running
-2018-03-04,2.73,19:26,Orinda Running
-2018-03-03,7.05,46:17,San Francisco Running
-2018-03-02,4.22,29:26,San Francisco Running
-2018-03-02,0.46,3:33.7,San Francisco Running
-2018-03-02,4.98,34:15,San Francisco Running
-2018-03-01,12.83,1:28:00,San Francisco Running
-2018-02-28,2.16,15:28,San Francisco Running
-2018-02-28,4.24,28:28,San Francisco Running
-2018-02-28,2.6,18:36,San Francisco Running
-2018-02-27,2.98,20:45,San Francisco Running
-2018-02-26,6.37,43:03,San Francisco Running
-2018-02-25,5.11,34:53,San Francisco Running
-2018-02-24,15.87,1:42:51,San Francisco Running
-2018-02-23,7.05,49:59,San Francisco Running
-2018-02-22,6.49,44:26,San Francisco Running
-2018-02-22,4.99,34:19,San Francisco Running
-2018-02-21,5.1,34:27,San Francisco Running
-2018-02-21,2.43,19:05,San Francisco Running
-2018-02-21,4.75,26:52,San Francisco Running
-2018-02-21,2.93,20:46,San Francisco Running
-2018-02-19,5.61,37:11,San Francisco Running
-2018-02-17,14.0,1:30:06,Ross Running
-2018-02-16,4.28,29:09,San Francisco Running
-2018-02-16,2.56,18:07,San Francisco Running
-2018-02-16,2.53,17:34,San Francisco Running
-2018-02-16,5.02,29:18,San Francisco Running
-2018-02-15,9.58,1:03:33,San Francisco Running
-2018-02-14,9.4,1:02:47,San Francisco Running
-2018-02-13,1.5,10:22,San Francisco Running
-2018-02-13,6.17,34:03,San Francisco Running
-2018-02-13,2.79,19:29,San Francisco Running
-2018-02-12,8.48,58:07,San Francisco Running
-2018-02-12,4.1,28:48,San Francisco Running
-2018-02-11,15.09,1:34:24,San Francisco Running
-2018-02-10,6.67,46:25,Seattle Running
-2018-02-09,1.26,9:57.0,Seattle Running
-2018-02-09,2.82,14:58,Running
-2018-02-09,2.46,19:05,Seattle Running
-2018-02-09,1.36,9:21.2,Running
-2018-02-08,1.81,12:22,San Francisco Running
-2018-02-08,0.92,5:29.7,San Francisco Running
-2018-02-08,3.09,21:01,San Francisco Running
-2018-02-07,9.22,59:55,San Francisco Running
-2018-02-06,1.09,8:34.2,San Francisco Running
-2018-02-06,2.47,17:52,San Francisco Running
-2018-02-06,0.7,7:11.7,San Francisco Running
-2018-02-06,3.15,22:07,San Francisco Running
-2018-02-05,6.71,44:49,San Francisco Running
-2018-02-05,4.25,29:31,San Francisco Running
-2018-02-04,4.89,32:54,San Francisco Running
-2018-02-03,13.04,1:22:01,Sausalito Running
-2018-02-02,7.31,59:32,San Francisco Running
-2018-02-01,0.74,4:46.0,San Francisco Running
-2018-02-01,8.35,57:41,San Francisco Running
-2018-01-31,5.88,40:35,San Francisco Running
-2018-01-31,7.98,53:03,San Francisco Running
-2018-01-30,1.62,11:53,San Francisco Running
-2018-01-30,6.92,41:37,San Francisco Running
-2018-01-30,2.75,18:52,San Francisco Running
-2018-01-29,6.03,42:55,San Francisco Running
-2018-01-29,4.28,30:00,San Francisco Running
-2018-01-28,7.95,53:30,San Francisco Running
-2018-01-27,13.92,1:32:49,San Francisco Running
-2018-01-26,1.74,12:16,San Francisco Running
-2018-01-26,4.99,29:52,San Francisco Running
-2018-01-26,2.52,17:51,San Francisco Running
-2018-01-25,8.06,55:49,San Francisco Running
-2018-01-24,6.48,46:32,San Francisco Running
-2018-01-23,10.15,1:04:07,San Francisco Running
-2018-01-22,7.48,51:41,San Francisco Running
-2018-01-22,6.48,43:47,San Francisco Running
-2018-01-21,9.34,1:02:18,San Francisco Running
-2018-01-20,13.3,1:27:23,San Francisco Running
-2018-01-19,5.44,38:10,San Francisco Running
-2018-01-19,7.6,54:50,San Francisco Running
-2018-01-18,7.76,53:52,San Francisco Running
-2018-01-17,5.45,36:58,San Francisco Running
-2018-01-17,9.77,1:04:29,San Francisco Running
-2018-01-16,6.24,43:25,St. James's Ward Running
-2018-01-15,4.89,33:35,St. James's Ward Running
-2018-01-14,11.05,1:18:51,Oxford Running
-2018-01-13,5.64,38:53,Oxford Running
-2018-01-12,8.78,58:18,San Francisco Running
-2018-05-03,10
-2018-05-02,8
-2018-05-04,10
+2018-05-01,3.46,1:09:17,San Francisco Running
+2018-04-30,2.5,49:14:00,San Francisco Running
+2018-04-29,1.79,35:38:00,San Francisco Running
+2018-04-28,4.42,1:28:03,San Francisco Running
+2018-04-27,3.03,1:01:57,San Francisco Running
+2018-04-26,2.28,45:36:00,San Francisco Running
+2018-04-25,2.49,49:25:00,San Francisco Running
+2018-04-24,4.18,1:18:02,San Francisco Running
+2018-04-23,1.73,36:10:00,San Francisco Running
+2018-04-23,2.15,43:20:00,San Francisco Running
+2018-04-21,1.46,33:33:00,Santa Clara County Running
+2018-04-21,0.84,18:02,Santa Clara County Running
+2018-04-21,0.47,09:52.6,San Francisco Running
+2018-04-20,1.9,39:06:00,San Francisco Running
+2018-04-19,2.06,41:39:00,San Francisco Running
+2018-04-18,2.14,44:10:00,San Francisco Running
+2018-04-17,0.9,19:17,San Francisco Running
+2018-04-17,0.84,16:17,San Francisco Running
+2018-04-17,0.86,18:55,San Francisco Running
+2018-04-16,1.72,35:01:00,San Francisco Running
+2018-04-16,2.23,44:18:00,San Francisco Running
+2018-04-15,4.49,1:27:51,San Francisco Running
+2018-04-14,1.15,24:21:00,Los Angeles Running
+2018-04-14,0.81,16:34,Los Angeles Running
+2018-04-14,0.49,10:27,West Covina Running
+2018-04-13,0.45,09:11.2,Azusa Running
+2018-04-13,0.24,05:08.2,Azusa Running
+2018-04-13,1.13,24:11:00,Azusa Running
+2018-04-12,2.15,45:07:00,San Francisco Running
+2018-04-11,1.44,30:01:00,San Francisco Running
+2018-04-11,2.56,51:30:00,San Francisco Running
+2018-04-10,0.51,12:13,San Francisco Running
+2018-04-10,1.48,25:37:00,San Francisco Running
+2018-04-10,1,20:37,San Francisco Running
+2018-04-09,2.21,44:52:00,San Francisco Running
+2018-04-09,1.59,32:01:00,San Francisco Running
+2018-04-07,4.52,1:29:12,San Francisco Running
+2018-04-06,0.51,12:31,San Francisco Running
+2018-04-06,1.21,28:42:00,San Francisco Running
+2018-04-06,1.53,28:55:00,San Francisco Running
+2018-04-05,1.45,29:57:00,San Francisco Running
+2018-04-05,2.3,46:39:00,San Francisco Running
+2018-04-04,2.67,54:03:00,San Francisco Running
+2018-04-03,0.93,20:08,San Francisco Running
+2018-04-03,1.19,23:42,San Francisco Running
+2018-04-03,0.87,18:35,San Francisco Running
+2018-04-02,1.79,36:55:00,San Francisco Running
+2018-04-02,2.21,43:19:00,San Francisco Running
+2018-04-01,4.67,1:33:37,San Francisco Running
+2018-03-31,2.81,57:05:00,San Francisco Running
+2018-03-30,1.46,33:13:00,Santa Clara County Running
+2018-03-30,0.85,18:21,Santa Clara County Running
+2018-03-30,0.42,08:56.1,San Francisco Running
+2018-03-29,1.81,36:35:00,San Francisco Running
+2018-03-28,2.49,48:41:00,San Francisco Running
+2018-03-27,1.51,30:35:00,San Francisco Running
+2018-03-27,0.86,18:50,San Francisco Running
+2018-03-26,1.46,30:06:00,San Francisco Running
+2018-03-26,0.25,05:23.9,San Francisco Running
+2018-03-26,1.98,39:22:00,San Francisco Running
+2018-03-24,4.01,1:20:01,San Francisco Running
+2018-03-23,0.64,14:12,San Francisco Running
+2018-03-23,0.85,17:55,San Francisco Running
+2018-03-23,1.95,34:57:00,San Francisco Running
+2018-03-22,2.49,49:16:00,San Francisco Running
+2018-03-22,1.44,29:51:00,San Francisco Running
+2018-03-21,2.71,56:20:00,San Francisco Running
+2018-03-20,0.77,17:02,San Francisco Running
+2018-03-20,1.15,24:21:00,San Francisco Running
+2018-03-20,0.87,18:34,San Francisco Running
+2018-03-19,1.71,35:56:00,San Francisco Running
+2018-03-19,1.96,40:14:00,San Francisco Running
+2018-03-18,4.48,1:32:28,San Francisco Running
+2018-03-17,1.99,42:42:00,Sacramento Running
+2018-03-17,0.82,17:30,Sacramento Running
+2018-03-16,2.32,50:32:00,San Francisco Running
+2018-03-15,2.55,50:36:00,San Francisco Running
+2018-03-14,2.95,58:33:00,San Francisco Running
+2018-03-13,0.56,13:18,San Francisco Running
+2018-03-13,1.68,29:12:00,San Francisco Running
+2018-03-13,0.87,18:30,San Francisco Running
+2018-03-12,1.69,34:53:00,San Francisco Running
+2018-03-12,2.3,45:26:00,San Francisco Running
+2018-03-10,4.51,1:22:04,San Leandro Running
+2018-03-09,0.58,13:14,San Francisco Running
+2018-03-09,0.38,06:35.7,San Francisco Running
+2018-03-09,1.78,35:43:00,San Francisco Running
+2018-03-08,2.77,57:26:00,San Francisco Running
+2018-03-08,1.58,31:47:00,San Francisco Running
+2018-03-07,1.72,36:11:00,San Francisco Running
+2018-03-07,0.34,08:05.6,San Francisco Running
+2018-03-07,1.58,28:21:00,San Francisco Running
+2018-03-07,0.85,17:41,San Francisco Running
+2018-03-06,2.29,46:33:00,San Francisco Running
+2018-03-05,2.48,50:49:00,San Francisco Running
+2018-03-05,2.14,43:50:00,San Francisco Running
+2018-03-04,2.06,39:09:00,Orinda Running
+2018-03-04,0.91,19:26,Orinda Running
+2018-03-03,2.35,46:17:00,San Francisco Running
+2018-03-02,1.41,29:26:00,San Francisco Running
+2018-03-02,0.15,03:33.7,San Francisco Running
+2018-03-02,1.66,34:15:00,San Francisco Running
+2018-03-01,4.28,1:28:00,San Francisco Running
+2018-02-28,0.72,15:28,San Francisco Running
+2018-02-28,1.41,28:28:00,San Francisco Running
+2018-02-28,0.87,18:36,San Francisco Running
+2018-02-27,0.99,20:45,San Francisco Running
+2018-02-26,2.12,43:03:00,San Francisco Running
+2018-02-25,1.7,34:53:00,San Francisco Running
+2018-02-24,5.29,1:42:51,San Francisco Running
+2018-02-23,2.35,49:59:00,San Francisco Running
+2018-02-22,2.16,44:26:00,San Francisco Running
+2018-02-22,1.66,34:19:00,San Francisco Running
+2018-02-21,1.7,34:27:00,San Francisco Running
+2018-02-21,0.81,19:05,San Francisco Running
+2018-02-21,1.58,26:52:00,San Francisco Running
+2018-02-21,0.98,20:46,San Francisco Running
+2018-02-19,1.87,37:11:00,San Francisco Running
+2018-02-17,4.67,1:30:06,Ross Running
+2018-02-16,1.43,29:09:00,San Francisco Running
+2018-02-16,0.85,18:07,San Francisco Running
+2018-02-16,0.84,17:34,San Francisco Running
+2018-02-16,1.67,29:18:00,San Francisco Running
+2018-02-15,3.19,1:03:33,San Francisco Running
+2018-02-14,3.13,1:02:47,San Francisco Running
+2018-02-13,0.5,10:22,San Francisco Running
+2018-02-13,2.06,34:03:00,San Francisco Running
+2018-02-13,0.93,19:29,San Francisco Running
+2018-02-12,2.83,58:07:00,San Francisco Running
+2018-02-12,1.37,28:48:00,San Francisco Running
+2018-02-11,5.03,1:34:24,San Francisco Running
+2018-02-10,2.22,46:25:00,Seattle Running
+2018-02-09,0.42,09:57.0,Seattle Running
+2018-02-09,0.94,14:58,Running
+2018-02-09,0.82,19:05,Seattle Running
+2018-02-09,0.45,09:21.2,Running
+2018-02-08,0.6,12:22,San Francisco Running
+2018-02-08,0.31,05:29.7,San Francisco Running
+2018-02-08,1.03,21:01,San Francisco Running
+2018-02-07,3.07,59:55:00,San Francisco Running
+2018-02-06,0.36,08:34.2,San Francisco Running
+2018-02-06,0.82,17:52,San Francisco Running
+2018-02-06,0.23,07:11.7,San Francisco Running
+2018-02-06,1.05,22:07,San Francisco Running
+2018-02-05,2.24,44:49:00,San Francisco Running
+2018-02-05,1.42,29:31:00,San Francisco Running
+2018-02-04,1.63,32:54:00,San Francisco Running
+2018-02-03,4.35,1:22:01,Sausalito Running
+2018-02-02,2.44,59:32:00,San Francisco Running
+2018-02-01,0.25,04:46.0,San Francisco Running
+2018-02-01,2.78,57:41:00,San Francisco Running
+2018-01-31,1.96,40:35:00,San Francisco Running
+2018-01-31,2.66,53:03:00,San Francisco Running
+2018-01-30,0.54,11:53,San Francisco Running
+2018-01-30,2.31,41:37:00,San Francisco Running
+2018-01-30,0.92,18:52,San Francisco Running
+2018-01-29,2.01,42:55:00,San Francisco Running
+2018-01-29,1.43,30:00:00,San Francisco Running
+2018-01-28,2.65,53:30:00,San Francisco Running
+2018-01-27,4.64,1:32:49,San Francisco Running
+2018-01-26,0.58,12:16,San Francisco Running
+2018-01-26,1.66,29:52:00,San Francisco Running
+2018-01-26,0.84,17:51,San Francisco Running
+2018-01-25,2.69,55:49:00,San Francisco Running
+2018-01-24,2.16,46:32:00,San Francisco Running
+2018-01-23,3.38,1:04:07,San Francisco Running
+2018-01-22,2.49,51:41:00,San Francisco Running
+2018-01-22,2.16,43:47:00,San Francisco Running
+2018-01-21,3.11,1:02:18,San Francisco Running
+2018-01-20,4.43,1:27:23,San Francisco Running
+2018-01-19,1.81,38:10:00,San Francisco Running
+2018-01-19,2.53,54:50:00,San Francisco Running
+2018-01-18,2.59,53:52:00,San Francisco Running
+2018-01-17,1.82,36:58:00,San Francisco Running
+2018-01-17,3.26,1:04:29,San Francisco Running
+2018-01-16,2.08,43:25:00,St. James's Ward Running
+2018-01-15,1.63,33:35:00,St. James's Ward Running
+2018-01-14,3.68,1:18:51,Oxford Running
+2018-01-13,1.88,38:53:00,Oxford Running
+2018-01-12,2.93,58:18:00,San Francisco Running
+2018-05-03,4
+2018-05-06,4
+2018-05-07,3
+2018-05-08,3
+2018-05-09,2
