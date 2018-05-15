@@ -1,0 +1,1 @@
+{"username": "alex", "dayofweek": ["Thursday"], "runner_type": 0, "startdate": "2018-04-25", "race_distance": 0, "available_days": [0, 1, 2, 3, 4], "difficulty": 0, "max_days_per_week": 5, "race_date": "2018-06-26", "prior_training": 0, "prior_days_per_week": 0}
