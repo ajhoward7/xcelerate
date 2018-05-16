@@ -8,10 +8,12 @@ from datetime import *
 import plotly.plotly as py
 import utils
 
-plotly.tools.set_credentials_file(username='t2liu',
-                                  api_key='lTbNwAyxLOCeOxmJCVtX')
+# plotly.tools.set_credentials_file(username='t2liu',
+#                                   api_key='lTbNwAyxLOCeOxmJCVtX')
 # plotly.tools.set_credentials_file(username='dsavg',
 #                                   api_key='J2DLrCvrnRGYGsBA9RYJ')
+plotly.tools.set_credentials_file(username='jtoffler',
+                                  api_key='tCbPeBD6cFvQFbK7lnkI')
 
 
 def generate_map(user, date):
